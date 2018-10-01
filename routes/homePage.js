@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/home', function(req, res, next) {
-    res.render('homePage', { title: 'tùng' });
+    res.render('homePage');
 });
 
 module.exports = router;
