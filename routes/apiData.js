@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET file page. */
 
-router.get('/file', function(req, res, next) {
+router.get('/""', function(req, res, next) {
     res.render('filePage');
 });
 
