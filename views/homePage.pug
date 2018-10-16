@@ -1,46 +1,62 @@
 extends header
 
 block content
-    div(class="fm_header row")
-          div(class="fm_header_left col-sm-6")
-          div(class="fm_header_left col-sm-6")
-              div(class="row")
-                  label(class="col-sm-4 fm_login_label") Email hoặc điện thoại:
-                  label(class="col-sm-4 fm_login_label") Mật khẩu:
-              div(class="row fm_login_row")
-                  input(id="user" class=" col-sm-4 fm_login_input form-control" type="text" placeholder="Enter email" )
-                  input(id="pass" class=" col-sm-4 fm_login_input form-control" type="password" placeholder="Enter password")
-                  div(class="col-sm-3")
-                      button(id="login_btn" class="btn btn-primary") ĐĂNG NHẬP
-              div(class="row")
-                  div(class="col-sm-4")
-                  div(class="col-sm-4") Quên mật khẩu?
-    div(class="fm_body row")
-          div(class="fm_left_box col-sm-6") left
-          div(class="fm_file_layout col-sm-6")
-              h1 ĐĂNG KÝ
-              h4 Luôn miễn phí
-              div(class="row")
-                  input(id="fm_register_first_name" class="col-sm-5 form-control" placeholder="Họ")
-                  input(id="fm_register_last_name" class="col-sm-5 form-control" placeholder="Tên")
-              input(id="fm_register_email" class="row col-sm-6 form-control" placeholder="Email: ...@gmail.com")
-              input(id="fm_register_phone_number" class="row col-sm-6 form-control" placeholder="Số di động")
-              input(id="fm_register_password" class="row col-sm-6 form-control" placeholder="Mật khẩu")
-              h4 Ngày sinh
-              form(id="fm-register_dateOfBirth" class="")
-                  select(id="fm_register_day" name="Ngày" class="custom-select-sm")
-                    option(selected) Ngày
-                  select(id="fm_register_month" name="Tháng" class="custom-select-sm")
-                      option(selected) Tháng
-                  select(id="fm_register_year" name="Năm" class="custom-select-sm")
-                      option(selected) Năm
-                  div(class="row")
-                      div(class="custom-control custom-radio custom-control-inline")
-                          input(id="sex-male" class="custom-control-input" type="radio")
-                          label(class="custom-control-label" for="sex-male") Nam
-                      div(class="custom-control custom-radio custom-control-inline")
-                          input(id="sex-female" class="custom-control-input" type="radio")
-                          label(class="custom-control-label" for="sex-female") Nữ
+    div.accountbg
+    div.wrapper-page
+        div.display-table
+            div.display-table-cell
+                div.container
+                    div.row
+                        div.col-md-6
+                            img.img-fluid(src='assets/images/extra.png' alt='')
+                        div#home-form.col-md-6
+                            div.card
+                                div.card-body
+                                    div.text-center.pt-3
+                                        a(href='index.html')
+                                            img(src='assets/images/logo-h-lg.png' alt='logo' height='22')
+                                    div.px-3.pb-3
+                                        form.form-horizontal.m-t-20.mb-0(action='http://mannatthemes.com/urora/horizontal/index.html')
+                                            div.form-group.row
+                                                div.col-12
+                                                    input.form-control(type='text' required='' placeholder='Username')
+                                            div.form-group.row
+                                                div.col-12
+                                                    input.form-control(type='password' required='' placeholder='Password')
+                                            div.form-group.row
+                                                div.col-12
+                                                    div.custom-control.custom-checkbox
+                                                        input#customCheck1.custom-control-input(type='checkbox')
+                                                        label.custom-control-label(for='customCheck1') Remember me
+                                            div.form-group.text-right.row.m-t-20
+                                                div.col-12
+                                                    button.btn.btn-primary.btn-raised.btn-block.waves-effect.waves-light(type='submit') Log In
+                                            div.form-group.m-t-10.mb-0.row
+                                                div.col-sm-7.m-t-20
+                                                    a.text-muted(href='#')
+                                                        i.mdi.mdi-lock
+                                                        |  Forgot your password ?
+                                                div.col-sm-5.m-t-20
+                                                    a.text-muted(href='/123')
+                                                        i.mdi.mdi-account-circle
+                                                        |  Create an account ?
+    // jQuery
+    script(src='javascript/homeForm.js')
+
+    script(src='assets/js/jquery.min.js')
+    script(src='assets/js/popper.min.js')
+    script(src='assets/js/bootstrap-material-design.js')
+    script(src='assets/js/modernizr.min.js')
+    script(src='assets/js/detect.js')
+    script(src='assets/js/fastclick.js')
+    script(src='assets/js/jquery.slimscroll.js')
+    script(src='assets/js/jquery.blockUI.js')
+    script(src='assets/js/waves.js')
+    script(src='assets/js/jquery.nicescroll.js')
+    script(src='assets/js/jquery.scrollTo.min.js')
+
+    // App js
+    script(src='assets/js/app.js')
 
 
 
