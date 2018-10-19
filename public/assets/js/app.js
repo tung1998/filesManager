@@ -14,14 +14,13 @@ var UroraApp = (function () {
     var docRef = $(document);
     var bodyContent = $('.body-content');
     var contentWrapper = $("#wrapper");
-    var notificationPanel = $(".slimscroll-noti");
+    var sidebar = $("#sidebar-main");
     var preloaderStatus = $('#status');
     var preloaderContainer = $('#preloader');
-    var mobileToggle = $('#mobileToggle');
+    var mobileToggle = $('.button-menu-mobile');
     var fullScreenToggle = $("#btn-fullscreen");
-    var menuItems = $(".navigation-menu>li");
-    var menuSubItems = $(".navigation-menu li.has-submenu a[href='#']");
-    var navigationMenuItems = $(".navigation-menu a");
+    var sideMenuItems = $("#sidebar-menu a");
+    var sideSubMenus = $('.has_sub');
 
     //inits widgets
     var initWidgets = function () {
@@ -31,44 +30,77 @@ var UroraApp = (function () {
         $('[data-toggle="popover"]').popover();
     };
 
-    //load topbar
-    var initTopbar = function () {
+    //load sidebar
+    var initSidebar = function () {
         var t = this;
         //scroll
-        notificationPanel.slimscroll({
-            height: '230px',
+        sidebar.slimscroll({
+            height: 'auto',
             position: 'right',
-            size: "5px",
-            color: '#98a6ad',
-            wheelStep: 10
+            size: "10px",
+            color: '#9ea5ab'
         });
 
-        // topbar menu toggle for mobile/smaller devices
+        // sidebar menu toggle for mobile/smaller devices
         mobileToggle.on('click', function (e) {
-            $(this).toggleClass('open');
-            $('#navigation').slideToggle(400);
+            e.preventDefault();
+            bodyRef.toggleClass("fixed-left-void");
+            contentWrapper.toggleClass("enlarged");
             return false;
         });
+        // handle sidebar menu item click
+        sideMenuItems.on('click', function (e) {
+            var parent = $(this).parent();
+            var sub = parent.find('> ul');
 
-        // menu items
-        menuItems.slice(-1).addClass('last-elements');
-
-        menuSubItems.on('click', function (e) {
-            if ($(window).width() < 992) {
-                e.preventDefault();
-                $(this).parent('li').toggleClass('open').find('.submenu:first').toggleClass('open');
+            if (!bodyRef.hasClass('sidebar-collapsed')) {
+                if (sub.is(':visible')) {
+                    sub.slideUp(300, function () {
+                        parent.removeClass('nav-active');
+                        bodyContent.css({ height: '' });
+                        adjustMainContentHeight();
+                    });
+                } else {
+                    visibleSubMenuClose();
+                    parent.addClass('nav-active');
+                    sub.slideDown(300, function () {
+                        adjustMainContentHeight();
+                    });
+                }
             }
         });
 
-        //activate menu item by url
-        navigationMenuItems.each(function () {
+        //activate menu item based on url
+        sideMenuItems.each(function () {
             if (this.href == window.location.href) {
+                $(this).addClass("active");
                 $(this).parent().addClass("active"); // add active to li of the current link
+                $(this).parent().parent().prev().addClass("active"); // add active class to an anchor
                 $(this).parent().parent().parent().addClass("active"); // add active class to an anchor
-                $(this).parent().parent().parent().parent().parent().addClass("active"); // add active class to an anchor
+                $(this).parent().parent().prev().click(); // click the item to make it drop
             }
         });
     };
+
+    //sub menu close
+    var visibleSubMenuClose = function () {
+        sideSubMenus.each(function () {
+            var t = $(this);
+            if (t.hasClass('nav-active')) {
+                t.find('> ul').slideUp(300, function () {
+                    t.removeClass('nav-active');
+                });
+            }
+        });
+    }
+
+    // adjust main content height based on menus
+    var adjustMainContentHeight = function () {
+        // Adjust main content height
+        var docHeight = docRef.height();
+        if (docHeight > bodyContent.height())
+            bodyContent.height(docHeight);
+    }
 
     //toggle full screen
     var toggleFullscreen = function (e) {
@@ -112,8 +144,8 @@ var UroraApp = (function () {
         //widgets
         initWidgets();
 
-        // load topbar
-        initTopbar();
+        // load sidebar
+        initSidebar();
 
         // full screen
         toggleFullscreen();

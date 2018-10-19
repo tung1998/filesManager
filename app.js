@@ -58,8 +58,6 @@ connection.connect(function(err) {
       res.render('error');
     });
 
-
-
 });
 
 
