@@ -1,16 +1,3 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-.fm_header{
-  height: 100px;
-  background-color: lightskyblue;
-}
-.fm_login_row{
-  height: 35px;
-}
-.fm_login_input{
-
-}
-.fm_body{
-  padding: 50px;
-}
