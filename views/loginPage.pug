@@ -16,7 +16,7 @@ block content
                                             a(href='index.html')
                                                 img(src='images/logoText.png' alt='logo' height='50')
                                         div.px-3.pb-3
-                                            form.form-horizontal.m-t-20.mb-0()
+                                            form.form-horizontal.m-t-20.mb-0(action="javascript:loginClick()")
                                                 div.form-group.row
                                                     div.col-12
                                                         input#login-id.form-control(type='text' required='' placeholder='Username')
@@ -43,7 +43,7 @@ block content
 
 
         // jQuery
-        script(src='javascript/homeForm.js')
+        script(src='javascript/indexjs/loginPage.js')
 
         script(src='assets/js/jquery.min.js')
         script(src='assets/js/popper.min.js')
