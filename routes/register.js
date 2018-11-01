@@ -30,7 +30,7 @@ router.post('/', function(req, res, next) {
     const salt = md5(Math.random().toString());
     const pass = md5(data.pass+salt);
     const cookie =md5(Math.random().toString());
-    console.log(md5(email+salt));
+    //console.log(md5(email+salt));
     //set email
     var userMail = {
         from: 'filemanager.blackbird@gmail.com',
@@ -62,8 +62,8 @@ router.post('/', function(req, res, next) {
                 console.log(result1);
                 if (!result1.length) {
                     console.log("username can be use");
-                    connection.query("INSERT INTO `account` (`email`, `userName`, `password`, `salt`, `cookie`) VALUES ('" + email + "', '" + username + "', '" + pass + "', '" + salt + "', '" + cookie + "');", (err, result, field) => {
-                        //console.log(result);
+                    connection.query("INSERT INTO 'account' ('email', 'userName', 'password', 'salt', 'cookie') VALUES ('" + email + "', '" + username + "', '" + pass + "', '" + salt + "', '" + cookie + "');", (err, result, field) => {
+                        console.log("INSERT INTO 'account' ('email', 'userName', 'password', 'salt', 'cookie') VALUES ('" + email + "', '" + username + "', '" + pass + "', '" + salt + "', '" + cookie + "');");
                         //send mail confirm
                         transporter.sendMail(userMail, function (error, info) {
                             if (error) {
