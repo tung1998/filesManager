@@ -1,6 +1,8 @@
 $(document).ready( () => {
 
 });
+
+
 function loginClick() {
     var data = {
         id    :   $('#login-id').val(),
@@ -31,4 +33,5 @@ function loginClick() {
             }
         }
     })
+
 }
