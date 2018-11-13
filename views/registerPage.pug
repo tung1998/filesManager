@@ -1,4 +1,4 @@
-extends header
+extends headerAndScript/header
 
 block content
     div.accountbg
@@ -47,22 +47,10 @@ block content
 
 
     // jQuery
-    script(src='javascript/indexjs/registerPage.js')
-
-    script(src='assets/js/jquery.min.js')
-    script(src='assets/js/popper.min.js')
-    script(src='assets/js/bootstrap-material-design.js')
-    script(src='assets/js/modernizr.min.js')
-    script(src='assets/js/detect.js')
-    script(src='assets/js/fastclick.js')
-    script(src='assets/js/jquery.slimscroll.js')
-    script(src='assets/js/jquery.blockUI.js')
-    script(src='assets/js/waves.js')
-    script(src='assets/js/jquery.nicescroll.js')
-    script(src='assets/js/jquery.scrollTo.min.js')
+    include  headerAndScript/script
 
     // App js
-    script(src='assets/js/app.js')
+    script(src='javascript/indexjs/registerPage.js')
 
 
 
