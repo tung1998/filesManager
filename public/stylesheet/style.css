@@ -1,3 +1,19 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+.menu-nav-active{
+  background-color: lightgrey !important;
+}
+.btn-path{
+  font-size: 20px;
+}
+#pageContent{
+  width: 100%;
+  min-height: 1000px;
+}
+#folderPathDropdown a i{
+  font-size: 25px;
+  padding-right: 5px;
+}.tag-content{
+  padding: 10px;
+}

@@ -1,4 +1,5 @@
 /*
+/*
  Template Name: Urora - Bootstrap 4 Admin Dashboard
  Author: Mannatthemes
  Website: www.mannatthemes.com
@@ -19,7 +20,7 @@ var UroraApp = (function () {
     var preloaderContainer = $('#preloader');
     var mobileToggle = $('.button-menu-mobile');
     var fullScreenToggle = $("#btn-fullscreen");
-    var sideMenuItems = $("#sidebar-menu a");
+    var sideMenuItems = $("#sidebar-menu a span i");
     var sideSubMenus = $('.has_sub');
 
     //inits widgets
@@ -49,20 +50,23 @@ var UroraApp = (function () {
             return false;
         });
         // handle sidebar menu item click
-        sideMenuItems.on('click', function (e) {
-            var parent = $(this).parent();
-            var sub = parent.find('> ul');
+        $(document).on('click',"#sidebar-menu a span i", function (e) {
+            var parent = $(this).parent().parent().parent();
+            var sub = parent.find('>ul');
+            // console.log(parent.attr("idFolder"))
 
             if (!bodyRef.hasClass('sidebar-collapsed')) {
                 if (sub.is(':visible')) {
+                    $(this).toggleClass("mdi-chevron-down mdi-chevron-right")
                     sub.slideUp(300, function () {
-                        parent.removeClass('nav-active');
                         bodyContent.css({ height: '' });
                         adjustMainContentHeight();
                     });
-                } else {
-                    visibleSubMenuClose();
-                    parent.addClass('nav-active');
+                }else {
+                    if(sub.html()=="") {
+                        getTreeData(sub, parent.attr("idFolder"))
+                    }
+                    $(this).toggleClass("mdi-chevron-down mdi-chevron-right")
                     sub.slideDown(300, function () {
                         adjustMainContentHeight();
                     });
@@ -73,10 +77,10 @@ var UroraApp = (function () {
         //activate menu item based on url
         sideMenuItems.each(function () {
             if (this.href == window.location.href) {
-                $(this).addClass("active");
-                $(this).parent().addClass("active"); // add active to li of the current link
-                $(this).parent().parent().prev().addClass("active"); // add active class to an anchor
-                $(this).parent().parent().parent().addClass("active"); // add active class to an anchor
+                // $(this).addClass("active");
+                // $(this).parent().addClass("active"); // add active to li of the current link
+                // $(this).parent().parent().prev().addClass("active"); // add active class to an anchor
+                // $(this).parent().parent().parent().addClass("active"); // add active class to an anchor
                 $(this).parent().parent().prev().click(); // click the item to make it drop
             }
         });
@@ -156,6 +160,7 @@ var UroraApp = (function () {
         docRef.ready(onDocReady);
         windowRef.on('load', onWinLoad);
     };
+
 
     // init - initilizes various widgets, elements, events, etc
     var init = function () {

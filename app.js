@@ -12,10 +12,15 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
+const recoverpwRouter = require('./routes/recoverpw');
+const resendconfirmmailRouter = require('./routes/resendconfirmmail');
+const fileRouter = require('./routes/file');
 
 
 const app = express();
 
+
+//mysql
 const mysql      = require('mysql');
 const connection = mysql.createConnection({
     host     : 'localhost',
@@ -29,13 +34,15 @@ const connection = mysql.createConnection({
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+
+//other setup
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
+//connect mysql
 connection.connect((err) => {
     app.locals.connection = connection;
     if (err) {
@@ -45,11 +52,13 @@ connection.connect((err) => {
 
 
 
-    app.use('/', indexRouter);
     app.use('/users', usersRouter);
     app.use('/login', loginRouter);
     app.use('/register', registerRouter);
-
+    app.use('/resendconfirmmail', resendconfirmmailRouter);
+    app.use('/recoverpw', recoverpwRouter);
+    app.use('/file', fileRouter);
+    app.use('/', indexRouter);
 
 
     // catch 404 and forward to error handler

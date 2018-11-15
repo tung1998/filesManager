@@ -1,0 +1,52 @@
+div.left.side-menu
+    button.button-menu-mobile.button-menu-mobile-topbar.open-left.waves-effect(type='button')
+        i.mdi.mdi-close
+    // LOGO
+    div.topbar-left
+        div.text-center
+            a.logo(href='/')
+                img.logo-large(src='/images/logoText.png' alt='' height="100")
+    div#sidebar-main.sidebar-inner.slimscrollleft
+        div#sidebar-menu
+            ul
+                li#myFile.has_sub(idFolder=folderData.userInfo.RootID)
+                    a.waves-effect()
+                        i.mdi.mdi-folder-account
+                        span  My folder
+                        span.float-right
+                            i.mdi.mdi-chevron-right
+                    ul.list-unstyled
+
+                li#fileShare.has_sub
+                    a.waves-effect(href='javascript:void(0);')
+                        i.mdi.mdi-table
+                        span  Share with me
+                        span.float-right
+                            i.mdi.mdi-chevron-right
+                    ul.list-unstyled
+                li#fileInLove.has_sub
+                    a.waves-effect(href='javascript:void(0);')
+                        i.mdi.mdi-heart
+                        span  In love
+                        span.float-right
+                            i.mdi.mdi-chevron-right
+                    ul.list-unstyled
+
+                li#fileOpenRecent.has_sub
+                    a.waves-effect(href='javascript:void(0);')
+                        i.mdi.mdi-av-timer
+                        span  Open recently
+                        span.float-right
+                            i.mdi.mdi-chevron-right
+                    ul.list-unstyled
+
+
+                li.menu-title Extra
+                li#trash.has_sub
+                    a.waves-effect(href='javascript:void(0);')
+                        i.mdi.mdi-delete
+                        span  Trash
+                        span.badge.badge-pill.badge-danger.float-right 2
+                    ul.list-unstyled
+
+        div.clearfix

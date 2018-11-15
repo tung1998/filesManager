@@ -1,19 +1,24 @@
 $(document).ready( () => {
-    $('#login-button').click(()=>{
-        var data = {
-            id    :   $('#login-id').val(),
-            pass  :   $('#register-pass').val(),
-        }
-        console.log(data);
-        $.ajax({
-            type : 'post',
-            url : '/users/login',
-            data : JSON.stringify(data),
-            contentType: "application/json",
-            success: function(data){
-                console.log(data);
 
-            }
-        })
-    })
 });
+
+
+function resendconfirmmail() {
+    var data = {
+        email    :   $('#email').val(),
+    }
+    console.log(data);
+    $.ajax({
+        type : 'post',
+        url : '/resendconfirmmail',
+        data : JSON.stringify(data),
+        contentType: "application/json",
+        success: function(data){
+            console.log(data);
+            if(data=='0') {
+                alertify.error(`Wrong email`)
+            }else alertify.success("SUCCESS")
+
+        }
+    })
+}

@@ -38,30 +38,38 @@ function registerClick() {
                 console.log(data);
                 if (data == 1) {
                     $('form').empty();
+                    // alertify.success("Instructions will be sent to you! Please check your Email to confirm")
                     $('form').prepend('<div class="alert alert-info mt-3 alert-dismissible" style="text-align: center">' +
                         '<button class="close" type="button" data-dismiss="alert" aria-hidden="true">×' +
                         '</button>Instructions will be sent to you! Please check <strong>your Email</strong> to confirm</div>');
                 }
                 else if (data == 2) {
                     $('.alert').remove();
-                    $('form').prepend('<div class="alert alert-info mt-3 alert-dismissible" style="text-align: center">' +
-                        '<button class="close" type="button" data-dismiss="alert" aria-hidden="true">×' +
-                        '</button>Your <strong>Email</strong> had been using' +
-                        '<p>get back your password<a href="/recorverpw"> <strong> hear </strong></a></p></div>');
+                    alertify.log(`Your Email had been using \n\r Click hear to recover your Password \n\r `,(ev) => {
+                        window.location.replace("/recoverpw");
+                    })
+                    // $('form').prepend('<div class="alert alert-info mt-3 alert-dismissible" style="text-align: center">' +
+                    //     '<button class="close" type="button" data-dismiss="alert" aria-hidden="true">×' +
+                    //     '</button>Your <strong>Email</strong> had been using' +
+                    //     '<p>get back your password<a href="/recoverpw"> <strong> hear </strong></a></p></div>');
                 }
                 else if (data == 3) {
+                    alertify.log(`Your Email hadn't been activated \n\r Click hear to resent a confirm mail \n\r `,(ev) => {
+                        window.location.replace("/resendconfirmmail");
+                    })
                     $('.alert').remove();
-                    $('form').prepend('<div class="alert alert-info mt-3 alert-dismissible" style="text-align: center">' +
-                        '<button class="close" type="button" data-dismiss="alert" aria-hidden="true">×' +
-                        '</button>Your <strong>Email</strong> hadn\'t been activated' +
-                        '<p>Please check your email or <a href="/recorverpw"> <strong>resent a confirm mail</strong></a></p></div>');
+                    // $('form').prepend('<div class="alert alert-info mt-3 alert-dismissible" style="text-align: center">' +
+                    //     '<button class="close" type="button" data-dismiss="alert" aria-hidden="true">×' +
+                    //     '</button>Your <strong>Email</strong> hadn\'t been activated' +
+                    //     '<p>Please check your email or <a href="/resendconfirmmail"> <strong>resent a confirm mail</strong></a></p></div>');
                 }
                 else if (data == 4) {
-                    $('.alert').remove();
-                    $('form').prepend('<div class="alert alert-info mt-3 alert-dismissible" style="text-align: center">' +
-                        '<button class="close" type="button" data-dismiss="alert" aria-hidden="true">×' +
-                        '</button>Your <strong>UserName</strong> had been using' +
-                        '<p>Please choose other<strong> UserName </strong></p></div>');
+                    alertify.log(`Your UserName had been using \n\r Please choose other UserName\n\r `)
+                    // $('.alert').remove();
+                    // $('form').prepend('<div class="alert alert-info mt-3 alert-dismissible" style="text-align: center">' +
+                    //     '<button class="close" type="button" data-dismiss="alert" aria-hidden="true">×' +
+                    //     '</button>Your <strong>UserName</strong> had been using' +
+                    //     '<p>Please choose other<strong> UserName </strong></p></div>');
                 }
             }
         })

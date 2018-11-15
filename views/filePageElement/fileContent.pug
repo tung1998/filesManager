@@ -1,0 +1,25 @@
+div.page-content-wrapper
+    div#pageContent.container-fluid
+        div.row
+            div.col-md-12.col-xl-12
+                div.tag-content Folders
+                div.card.m-b-30
+                    div.card-body
+                        div#folderCard.row.icon-demo-content
+                            -
+                                var list = folderData.childrenFolder
+                            each item in list
+                                a.folder-item.btn.col-sm-4.col-md-3.col-lg-2(idFolder=item.id)
+                                    //span(type="hidden")= item.id
+                                    i.mdi.mdi-folder= item.FolderName
+            div.col-md-12.col-xl-12
+                div.tag-content Files
+                div.card.m-b-30
+                    div.card-body
+                        div#fileCard.row.icon-demo-content
+
+
+        // end-row
+    // container
+// Page content Wrapper
+// content

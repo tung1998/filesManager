@@ -1,6 +1,13 @@
 $(document).ready( () => {
+    $('#login-id').val(localStorage.getItem('userName'));
+    $('#login-pass').val(localStorage.getItem('Pass'));
+    if (localStorage.getItem('check')=='true')
+        $('#rememberCheck').prop('checked', true);
+    else $('#rememberCheck').prop('checked', false);
 
 });
+
+
 
 
 function loginClick() {
@@ -16,22 +23,37 @@ function loginClick() {
         contentType: "application/json",
         success: function(data){
             if (data == 0||data == 3) {
-                $('.alert').remove();
-                $('form').prepend('<div class="alert alert-info mt-3 alert-dismissible" style="text-align: center">' +
-                    '<button class="close" type="button" data-dismiss="alert" aria-hidden="true">×' +
-                    '</button>Wrong id or password</div>');
+                alertify.error("Wrong id or password")
+                // $('.alert').remove();
+                // $('form').prepend('<div class="alert alert-info mt-3 alert-dismissible" style="text-align: center">' +
+                //     '<button class="close" type="button" data-dismiss="alert" aria-hidden="true">×' +
+                //     '</button>Wrong id or password</div>');
             }
             else if (data == 1) {
-                $('.alert').remove();
-                $('form').prepend('<div class="alert alert-info mt-3 alert-dismissible" style="text-align: center">' +
-                    '<button class="close" type="button" data-dismiss="alert" aria-hidden="true">×' +
-                    '</button>Your <strong>Email</strong> hadn\'t been activated' +
-                    '<p>Please check your email or <a href="/recorverpw"> <strong>resent a confirm mail</strong></a></p></div>');
+                alertify.log(`Your Email hadn't been activated \n\r Click hear to resent a confirm mail \n\r `,(ev) => {
+                    window.location.replace("/resendconfirmmail");
+                })
+                // $('.alert').remove();
+                // $('form').prepend('<div class="alert alert-info mt-3 alert-dismissible" style="text-align: center">' +
+                //     '<button class="close" type="button" data-dismiss="alert" aria-hidden="true">×' +
+                //     '</button>Your <strong>Email</strong> hadn\'t been activated' +
+                //     '<p>Please check your email or <a href="/resendconfirmmail"> <strong>resent a confirm mail</strong></a></p></div>');
             }
-            else if(data == 2){
-                window.location.replace("/file");
+            else{
+                if($('#rememberCheck').prop("checked")) {
+                    localStorage.setItem('userName', $('#login-id').val());
+                    localStorage.setItem('check', $('#rememberCheck').prop('checked'));
+                    localStorage.setItem('Pass', $('#login-pass').val());
+                    window.location.replace(`/${data}`);
+                }
+                else{
+                    localStorage.setItem('userName', $('#login-id').val());
+                    localStorage.setItem('check', $('#rememberCheck').prop('checked'));
+                    localStorage.setItem('Pass', '');
+                    window.location.replace(`${data}`);
+                }
+
             }
         }
     })
-
 }

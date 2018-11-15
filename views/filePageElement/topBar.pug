@@ -1,0 +1,112 @@
+
+// Top Bar Start
+div.topbar
+    nav.navbar-custom
+        div
+            .dropdown.notification-list.nav-pro-img
+                .list-inline-item.hide-phone.app-search
+                    form(role='search')
+                        .form-group.pt-1
+                            input.form-control(type='text' placeholder='Search..')
+                            a(href='#')
+                                i.fa.fa-search
+            ul.list-inline.float-right.mb-0.mr-3
+                // language
+                li.list-inline-item.dropdown.notification-list(data-toggle="tooltip" data-placement="bottom" title="" data-original-title="messenger")
+                    a.nav-link.dropdown-toggle.arrow-none.waves-effect(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false')
+                        i.ti-email.noti-icon
+                        span.badge.badge-danger.heartbit.noti-icon-badge 5
+                    .dropdown-menu.dropdown-menu-right.dropdown-arrow.dropdown-menu-lg
+                        // item
+                        .dropdown-item.noti-title.align-self-center
+                            h5
+                                span.badge.badge-danger.float-right 745
+                                | Messages
+                        // item
+                        a.dropdown-item.notify-item(href='javascript:void(0);')
+                            .notify-icon
+                                img.img-fluid.rounded-circle(src='/assets/images/users/avatar-2.jpg' alt='user-img')
+                            p.notify-details
+                                b Charles M. Jones
+                                small.text-muted Dummy text of the printing and typesetting industry.
+                        // item
+                        a.dropdown-item.notify-item(href='javascript:void(0);')
+                            .notify-icon
+                                img.img-fluid.rounded-circle(src='/assets/images/users/avatar-3.jpg' alt='user-img')
+                            p.notify-details
+                                b Thomas J. Mimms
+                                small.text-muted You have 87 unread messages
+                        // item
+                        a.dropdown-item.notify-item(href='javascript:void(0);')
+                            .notify-icon
+                                img.img-fluid.rounded-circle(src='/assets/images/users/avatar-4.jpg' alt='user-img')
+                            p.notify-details
+                                b Luis M. Konrad
+                                small.text-muted It is a long established fact that a reader will
+                        // All
+                        a.dropdown-item.notify-item(href='javascript:void(0);')
+                            | View All
+                li.list-inline-item.dropdown.notification-list(data-toggle="tooltip" data-placement="bottom" title="" data-original-title="this is bell")
+                    a.nav-link.dropdown-toggle.arrow-none.waves-effect(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false')
+                        i.ti-bell.noti-icon
+                        span.badge.badge-success.a-animate-blink.noti-icon-badge 3
+                    .dropdown-menu.dropdown-menu-right.dropdown-arrow.dropdown-menu-lg
+                        // item
+                        .dropdown-item.noti-title
+                            h5
+                                span.badge.badge-danger.float-right 87
+                                | Notification
+                        // item
+                        a.dropdown-item.notify-item(href='javascript:void(0);')
+                            .notify-icon.bg-primary
+                                i.mdi.mdi-cart-outline
+                            p.notify-details
+                                b Your order is placed
+                                small.text-muted Dummy text of the printing and typesetting industry.
+                        // item
+                        a.dropdown-item.notify-item(href='javascript:void(0);')
+                            .notify-icon.bg-success
+                                i.mdi.mdi-message
+                            p.notify-details
+                                b New Message received
+                                small.text-muted You have 87 unread messages
+                        // item
+                        a.dropdown-item.notify-item(href='javascript:void(0);')
+                            .notify-icon.bg-warning
+                                i.mdi.mdi-martini
+                            p.notify-details
+                                b Your item is shipped
+                                small.text-muted It is a long established fact that a reader will
+                        // All
+                        a.dropdown-item.notify-item(href='javascript:void(0);')
+                            | View All
+                li.list-inline-item.dropdown.notification-list
+                    a.nav-link.dropdown-toggle.arrow-none.waves-effect.nav-user(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false')
+                        img.rounded-circle.img-thumbnail(src='/assets/images/users/avatar-1.jpg' alt='user')
+                    .dropdown-menu.dropdown-menu-right.profile-dropdown
+                        // item
+                        .dropdown-item.noti-title
+                            h5 Welcome
+                        a.dropdown-item(href='#')
+                            i.mdi.mdi-account-circle.m-r-5.text-muted
+                            |  Profile
+                        a.dropdown-item(href='#')
+                            i.mdi.mdi-wallet.m-r-5.text-muted
+                            |  My Wallet
+                        a.dropdown-item.d-block(href='#')
+                            span.badge.badge-success.float-right 5
+                            i.mdi.mdi-settings.m-r-5.text-muted
+                            |  Settings
+                        a.dropdown-item(href='#')
+                            i.mdi.mdi-lock-open-outline.m-r-5.text-muted
+                            |  Lock screen
+                        .dropdown-divider
+                        a.dropdown-item(href='javascript:logout()')
+                            i.mdi.mdi-logout.m-r-5.text-muted
+                            |  Logout
+            ul.list-inline.menu-left.mb-0
+                li.float-left
+                    button.button-menu-mobile.open-left.waves-light.waves-effect
+                        i.mdi.mdi-menu
+            .clearfix
+        //include pathBar
