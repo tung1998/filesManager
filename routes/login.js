@@ -6,7 +6,24 @@ const cookie = require('cookie');
 
 
 router.get('/', (req, res, next) => {
-    res.render('loginPage');
+    var cookies = cookie.parse(req.headers.cookie || '');
+    // console.log(req.headers.cookie);
+
+    console.log(cookies.name);
+    if (!cookies.name) {
+        res.render('loginPage');
+    }
+    else {
+        connection = res.app.locals.connection;
+        connection.query(`SELECT id, username FROM account WHERE cookie = "${cookies.name}" AND activate="1"`, (err, result, field) => {
+            if(err) throw err;
+            // console.log(result);
+            if (result.length){
+                res.redirect(`/${result[0].username}`);
+            }
+            else res.render('loginPage');
+        })
+    }
 });
 
 
@@ -22,14 +39,21 @@ router.post('/', function(req, res, next) {
     // console.log(data);
 
     connection = res.app.locals.connection;
-    connection.query("SELECT email, userName, salt, password, activate FROM account WHERE  userName = '"+loginID+"'", (err, result, field) => {
+    connection.query(`SELECT email, userName, salt, password, cookie, activate FROM account WHERE  userName = '${loginID}' OR email='${loginID}'`, (err, result, field) => {
+        if(err) throw err;
         // console.log(pass);
         // console.log(result[0].password);
         if (result.length==0) res.send('0');
         else if (result[0].activate==0) res.send('1');
         else {
             const pass = md5(data.pass+result[0].salt);
-            if (pass == result[0].password) res.send('2');
+            if (pass == result[0].password) {
+                res.setHeader('Set-Cookie', cookie.serialize('name', result[0].cookie, {
+                    httpOnly: true,
+                    maxAge: 60 * 60 * 24 * 7 // 1 week
+                }));
+                res.send(result[0].userName);
+            }
             else res.send('3')
         }
     })

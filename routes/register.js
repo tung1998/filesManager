@@ -30,7 +30,7 @@ router.post('/', function(req, res, next) {
     const salt = md5(Math.random().toString());
     const pass = md5(data.pass+salt);
     const cookie =md5(Math.random().toString());
-    //console.log(md5(email+salt));
+    console.log(md5(email+salt));
     //set email
     var userMail = {
         from: 'filemanager.blackbird@gmail.com',
@@ -55,16 +55,28 @@ router.post('/', function(req, res, next) {
     // status = 3 : mail hadn't been activated
     // status = 4 : user had been used
     connection.query("SELECT email,activate FROM account WHERE email = '"+email+"'",(err, result, field) => {
+        if(err) throw err;
         console.log(result[0]);
         if(!result.length) {
             console.log("email can be use");
             connection.query("SELECT userName FROM account WHERE userName = '" + username + "'", (err, result1, field) => {
-                console.log(result1);
+                if(err) throw err;
+                // console.log(result1);
                 if (!result1.length) {
                     console.log("username can be use");
-                    connection.query("INSERT INTO 'account' ('email', 'userName', 'password', 'salt', 'cookie') VALUES ('" + email + "', '" + username + "', '" + pass + "', '" + salt + "', '" + cookie + "');", (err, result, field) => {
-                        console.log("INSERT INTO 'account' ('email', 'userName', 'password', 'salt', 'cookie') VALUES ('" + email + "', '" + username + "', '" + pass + "', '" + salt + "', '" + cookie + "');");
+                    connection.query("INSERT INTO `account` (`email`, `userName`, `password`, `salt`, `cookie`) VALUES ('" + email + "', '" + username + "', '" + pass + "', '" + salt + "', '" + cookie + "');", (err, result, field) => {
+                        if(err) throw err;
+                        // console.log(result);
                         //send mail confirm
+                        // console.log("INSERT INTO `account` (`email`, `userName`, `password`, `salt`, `cookie`) VALUES ('" + email + "', '" + username + "', '" + pass + "', '" + salt + "', '" + cookie + "');");
+                        connection.query(`SELECT id from account where username = "${username}";`, (err, result, field) => {
+                            if(err) throw err;
+                            // console.log(`SELECT id from account where username = ${username};`)
+                            console.log(result);
+                            connection.query(`update account set RootID = (select id from Folder where Owner_id = "${result[0].id}") where id ="${result[0].id}";`, (err, result, field) => {
+                                if(err) throw err;
+                            });
+                        });
                         transporter.sendMail(userMail, function (error, info) {
                             if (error) {
                                 console.log(error);
