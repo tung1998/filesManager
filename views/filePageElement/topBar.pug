@@ -3,50 +3,37 @@
 div.topbar
     nav.navbar-custom
         div
-            .dropdown.notification-list.nav-pro-img
-                .list-inline-item.hide-phone.app-search
-                    form(role='search')
+            #searchForm.dropdown.notification-list.list-inline-item.nav-pro-img
+                div.dropdown.list-inline-item.hide-phone.app-search
+                    div(role='search')
                         .form-group.pt-1
-                            input.form-control(type='text' placeholder='Search..')
-                            a(href='#')
+                            input#Search.form-control(type='text' placeholder='Search..' onkeyup="searchData()")
+                            a(href='javascript:SCGetSearchPage();')
                                 i.fa.fa-search
+                #searchDropdown.dropdown-menu.dropdown-arrow.dropdown-menu-lg(x-placement='bottom-start' style='position: absolute; top: 36px; left: 0px; will-change: top, left;')
+                    //a.dropdown-item(href='#') Action
+                    //a.dropdown-item(href='#') Another action
+                    .dropdown-divider
+                    //a.dropdown-item(href='#') Separated link
             ul.list-inline.float-right.mb-0.mr-3
                 // language
-                li.list-inline-item.dropdown.notification-list(data-toggle="tooltip" data-placement="bottom" title="" data-original-title="messenger")
-                    a.nav-link.dropdown-toggle.arrow-none.waves-effect(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false')
-                        i.ti-email.noti-icon
-                        span.badge.badge-danger.heartbit.noti-icon-badge 5
+                li.list-inline-item.dropdown.notification-list
+                    a.nav-link.dropdown-toggle.arrow-none.waves-effect(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' )
+                        i.mdi.mdi-settings.noti-icon
                     .dropdown-menu.dropdown-menu-right.dropdown-arrow.dropdown-menu-lg
                         // item
                         .dropdown-item.noti-title.align-self-center
                             h5
-                                span.badge.badge-danger.float-right 745
-                                | Messages
+                                | View Setting
                         // item
-                        a.dropdown-item.notify-item(href='javascript:void(0);')
-                            .notify-icon
-                                img.img-fluid.rounded-circle(src='/assets/images/users/avatar-2.jpg' alt='user-img')
-                            p.notify-details
-                                b Charles M. Jones
-                                small.text-muted Dummy text of the printing and typesetting industry.
-                        // item
-                        a.dropdown-item.notify-item(href='javascript:void(0);')
-                            .notify-icon
-                                img.img-fluid.rounded-circle(src='/assets/images/users/avatar-3.jpg' alt='user-img')
-                            p.notify-details
-                                b Thomas J. Mimms
-                                small.text-muted You have 87 unread messages
-                        // item
-                        a.dropdown-item.notify-item(href='javascript:void(0);')
-                            .notify-icon
-                                img.img-fluid.rounded-circle(src='/assets/images/users/avatar-4.jpg' alt='user-img')
-                            p.notify-details
-                                b Luis M. Konrad
-                                small.text-muted It is a long established fact that a reader will
-                        // All
-                        a.dropdown-item.notify-item(href='javascript:void(0);')
-                            | View All
-                li.list-inline-item.dropdown.notification-list(data-toggle="tooltip" data-placement="bottom" title="" data-original-title="this is bell")
+                        a.dropdown-item(href='javascript:ALNotWorkFunction();')
+                            i.mdi.mdi-view-list.m-r-5.text-muted
+                            |  List style
+                        a.dropdown-item.d-block(href='javascript:ALNotWorkFunction();')
+                            i.mdi.mdi-view-module.m-r-5.text-muted
+                            |  Grid Style
+                            .float-right.mdi.mdi-check
+                li.list-inline-item.dropdown.notification-list
                     a.nav-link.dropdown-toggle.arrow-none.waves-effect(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false')
                         i.ti-bell.noti-icon
                         span.badge.badge-success.a-animate-blink.noti-icon-badge 3
@@ -57,28 +44,28 @@ div.topbar
                                 span.badge.badge-danger.float-right 87
                                 | Notification
                         // item
-                        a.dropdown-item.notify-item(href='javascript:void(0);')
+                        a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
                             .notify-icon.bg-primary
                                 i.mdi.mdi-cart-outline
                             p.notify-details
-                                b Your order is placed
-                                small.text-muted Dummy text of the printing and typesetting industry.
+                                b FunctionNotWork
+                                small.text-muted FunctionNotWork
                         // item
-                        a.dropdown-item.notify-item(href='javascript:void(0);')
+                        a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
                             .notify-icon.bg-success
                                 i.mdi.mdi-message
                             p.notify-details
-                                b New Message received
-                                small.text-muted You have 87 unread messages
+                                b FunctionNotWork
+                                small.text-muted FunctionNotWork
                         // item
-                        a.dropdown-item.notify-item(href='javascript:void(0);')
+                        a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
                             .notify-icon.bg-warning
                                 i.mdi.mdi-martini
                             p.notify-details
-                                b Your item is shipped
-                                small.text-muted It is a long established fact that a reader will
+                                b FunctionNotWork
+                                small.text-muted FunctionNotWork
                         // All
-                        a.dropdown-item.notify-item(href='javascript:void(0);')
+                        a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
                             | View All
                 li.list-inline-item.dropdown.notification-list
                     a.nav-link.dropdown-toggle.arrow-none.waves-effect.nav-user(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false')
@@ -87,17 +74,14 @@ div.topbar
                         // item
                         .dropdown-item.noti-title
                             h5 Welcome
-                        a.dropdown-item(href='#')
+                        a.dropdown-item(href='javascript:ALNotWorkFunction();')
                             i.mdi.mdi-account-circle.m-r-5.text-muted
                             |  Profile
-                        a.dropdown-item(href='#')
-                            i.mdi.mdi-wallet.m-r-5.text-muted
-                            |  My Wallet
-                        a.dropdown-item.d-block(href='#')
+                        a.dropdown-item.d-block(href='javascript:ALNotWorkFunction();')
                             span.badge.badge-success.float-right 5
                             i.mdi.mdi-settings.m-r-5.text-muted
                             |  Settings
-                        a.dropdown-item(href='#')
+                        a.dropdown-item(href='javascript:ALNotWorkFunction();')
                             i.mdi.mdi-lock-open-outline.m-r-5.text-muted
                             |  Lock screen
                         .dropdown-divider

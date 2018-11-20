@@ -14,7 +14,9 @@ const loginRouter = require('./routes/login');
 const registerRouter = require('./routes/register');
 const recoverpwRouter = require('./routes/recoverpw');
 const resendconfirmmailRouter = require('./routes/resendconfirmmail');
+const folderRouter = require('./routes/folder');
 const fileRouter = require('./routes/file');
+const trashRouter = require('./routes/trash');
 
 
 const app = express();
@@ -57,7 +59,9 @@ connection.connect((err) => {
     app.use('/register', registerRouter);
     app.use('/resendconfirmmail', resendconfirmmailRouter);
     app.use('/recoverpw', recoverpwRouter);
+    app.use('/folder', folderRouter);
     app.use('/file', fileRouter);
+    app.use('/trash', trashRouter);
     app.use('/', indexRouter);
 
 

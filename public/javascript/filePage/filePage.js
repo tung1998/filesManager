@@ -1,5 +1,6 @@
 let localFolder = folderData.localFolder;
 
+
 //
 // window.onpopstate = function(e){
 //     if(e.state){
@@ -18,12 +19,21 @@ $(function () {
     $('#myFile > a').addClass("menu-nav-active")
 
 
+    $(document).on('click',function(){
+        if($("#Search").is(":focus")&&$("#Search").val().length>=3){
+            $('#searchDropdown').addClass("show")
+        }else {
+            $('#searchDropdown').removeClass("show");
+        }
+    })
+
+
+
     $(document).on('click', '[idFolder]>a', function (e) {
 
         let idFolder = $(this).parent().attr("idFolder");
 
         if(localFolder.id!=idFolder) {
-
             SCGetDataFolder(idFolder);
         }
 
@@ -34,40 +44,36 @@ $(function () {
 
 
 
-    $(document).on('click', '#folderCard a.folder-item', function () {
+
+    $(document).on('dblclick', '#folderCard a.folder-item', function () {
         SCGetDataFolder($(this).attr('idFolder'));
     })
 
-//$('.context-menu-one').contextMenu('update'); // update single menu
-//$.contextMenu('update') // update all open menus
+
+    $(document).on('keydown', '#Search', function (e) {
+        let code = e.charCode || e.keyCode;
+        if (code==13) SCGetSearchPage();
+    })
+
+
+
+
+    $(document).on('dblclick', '#fileCard a.file-item', function () {
+        // SCGetDataFile($(this).attr('idFolder'));
+        showFile($(this));
+    })
+
+    // $('#folderCard a.folder-item').on('click' ,function () {
+    //     SCGetDataFolder($(this).attr('idFolder'));
+    // })
+
+
 })
 
 
 
 
 // });
-
-
-
-
-function rename(a) {
-    alertify
-        .defaultValue(a.children().first().text())
-        .prompt("CreateNewFile", function (folderName, ev) {
-            ev.preventDefault();
-            if(folderName) {
-                alertify.success(" Success change: " + folderName)
-                //make new folder
-                renameFolder(userRootFolder.rootFile, folderName);
-
-            }else {
-                alertify.error('Please insert FolderName')
-                rename(a);
-            }
-        }, function(ev) {
-            ev.preventDefault();
-        });
-}
 
 
 
@@ -87,6 +93,29 @@ function logout() {
             location.reload();
         }
     });
+}
+
+
+function searchData() {
+    let text = $("#Search").val();
+    if(text.length>=3){
+        $('#searchDropdown').addClass("show")
+        SCGetDataSearch(text);
+    }else $('#searchDropdown').removeClass("show");
+}
+
+
+function checkFolderName(folderName) {
+    for(let i=0; i<folderData.childrenFolder.length; i++){
+        if (folderData.childrenFolder[i].FolderName === folderName) return false;
+    }
+    return true;
+}
+function checkFileName(fileName) {
+    for(let i=0; i<folderData.childrenFile.length; i++){
+        if (folderData.childrenFile[i].file_name === fileName) return false;
+    }
+    return true;
 }
 
 

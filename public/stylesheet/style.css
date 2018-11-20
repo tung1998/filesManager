@@ -16,4 +16,115 @@ body {
   padding-right: 5px;
 }.tag-content{
   padding: 10px;
+  font-size: large;
 }
+
+.fileshow-topbar{
+    margin: 5px;
+    font-size: 30px;
+    color: lightgrey;
+}
+.fileshow-topbar span:hover{
+    background-color: #3f3f40;
+    color: lightgrey;
+    cursor: pointer;
+}
+.abc{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.file-name{
+
+}
+.file-show-icon{
+float: right;
+}
+#searchDropdown{
+    margin-top: 15px;
+}
+#file-content{
+    /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1500; /* Sit on top */
+    padding-top: 3px; /* Location of the box */
+    padding-bottom: 30px;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+/*#caption {*/
+    /*font-size: 30px;*/
+    /*color: #5a6268;*/
+    /*margin: auto;*/
+    /*display: block;*/
+    /*width: 80%;*/
+    /*max-width: 700px;*/
+    /*text-align: center;*/
+    /*color: #ccc;*/
+    /*padding: 10px 0;*/
+    /*height: 150px;*/
+/*}*/
+
+.modal-content, #caption {
+
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+
+/* The Close Button */
+/*.close {*/
+    /*position: absolute;*/
+    /*top: 3px;*/
+    /*right: 35px;*/
+    /*color: #f1f1f1;*/
+    /*font-size: 40px;*/
+    /*font-weight: bold;*/
+    /*transition: 0.3s;*/
+/*}*/
+
+.modal-content {
+    max-height: 80%;
+    max-width: 80%;
+    height: auto;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+
+/*.close:hover,*/
+/*.close:focus {*/
+    /*color: #bbb;*/
+    /*text-decoration: none;*/
+    /*cursor: pointer;*/
+/*}*/
+
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
+}
+
+
+
+/*!* *!*/
+/*.panWrapper {position:fixed; width:100%; height:100%; overflow:hidden; background-color:rgba(0,0,0,0.9); z-index:9999; left:0; top:0; display:none; cursor:move;}*/
+/*.panWrapper * {-moz-user-select: -moz-none;-khtml-user-select: none;-webkit-user-select: none;-o-user-select: none;user-select: none;}*/
+
+/*.panWrapper a.controls {background-size:100%; width:32px; height:32px; display:block; position:absolute; left:50%; z-index:2; bottom:30px; cursor:pointer;}*/
+/*.panWrapper a.controls.in{background-image:url('../images/zoomIn.png'); margin-left:-30px;}*/
+/*.panWrapper a.controls.out{background-image:url('../images/zoomOut.png'); margin-left:30px;}*/
+/*.panWrapper a.controls.close{background-image:url('../images/close.png'); left:auto; right:30px; top:30px;}*/
+/*.panWrapper .loading{z-index:3; position:absolute; left:50%; top:50%; margin:-50px 0 0 -50px; width:100px; height:100px; background-image:url(../images/loading.gif); background-repeat:no-repeat; background-size:100%; display:block;}*/

@@ -21,7 +21,7 @@ function loginClick() {
         url : '/login',
         data : JSON.stringify(data),
         contentType: "application/json",
-        success: function(data){
+        success: (data)=>{
             if (data == 0||data == 3) {
                 alertify.error("Wrong id or password")
                 // $('.alert').remove();

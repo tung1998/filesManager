@@ -20,7 +20,7 @@ var UroraApp = (function () {
     var preloaderContainer = $('#preloader');
     var mobileToggle = $('.button-menu-mobile');
     var fullScreenToggle = $("#btn-fullscreen");
-    var sideMenuItems = $("#sidebar-menu a span i");
+    var sideMenuItems = $("#myFolder a span i");
     var sideSubMenus = $('.has_sub');
 
     //inits widgets
@@ -50,7 +50,7 @@ var UroraApp = (function () {
             return false;
         });
         // handle sidebar menu item click
-        $(document).on('click',"#sidebar-menu a span i", function (e) {
+        $(document).on('click',"#myFolder a span i", function (e) {
             var parent = $(this).parent().parent().parent();
             var sub = parent.find('>ul');
             // console.log(parent.attr("idFolder"))
@@ -64,7 +64,7 @@ var UroraApp = (function () {
                     });
                 }else {
                     if(sub.html()=="") {
-                        getTreeData(sub, parent.attr("idFolder"))
+                        SCGetTreeData(sub, parent.attr("idFolder"))
                     }
                     $(this).toggleClass("mdi-chevron-down mdi-chevron-right")
                     sub.slideDown(300, function () {

@@ -16,9 +16,10 @@ router.get('/', (req, res, next) => {
         connection = res.app.locals.connection;
         connection.query(`SELECT id, username, activate FROM account WHERE cookie = "${cookies.name}"`, (err, result, field) => {
             console.log(result);
-            if(result.length)
-            if (result[0].activate){
-                res.redirect(`/${result[0].username}`);
+            if (result.length) {
+                if (result[0].activate) {
+                    res.redirect(`/${result[0].username}`);
+                }
             }
             else res.redirect('/login');
         })
@@ -29,6 +30,25 @@ router.get('/', (req, res, next) => {
     }
 
 });
+
+
+
+router.post('/search',(req,res,next)=>{
+    let text = req.body.text;
+    let id = req.body.Owner_id
+    connection = res.app.locals.connection;
+    let data={};
+    connection.query(`SELECT * FROM folder WHERE FolderName COLLATE UTF8_GENERAL_CI LIKE '%${text}%' and Owner_id ="${id}" limit 20 `, (err, result, field) => {
+        if (err) throw err;
+        data.folderInfor = result;
+        connection.query(`SELECT * FROM file WHERE file_name COLLATE UTF8_GENERAL_CI LIKE '%${text}%'and Owner_id ="${id}" limit 20`, (err, result, field) => {
+            if (err) throw err;
+            data.fileInfor = result;
+            res.send(data);
+            res.end();
+        })
+    })
+})
 
 //
 router.get('/:user/*', (req, res, next) => {
@@ -45,7 +65,7 @@ router.get('/:user/*', (req, res, next) => {
         res.redirect('/login');
     }
     else {
-        connection.query(`SELECT RootID,userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+        connection.query(`SELECT id, RootID,userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
             if (err) throw err;
 
             if (result.length) {
@@ -56,13 +76,18 @@ router.get('/:user/*', (req, res, next) => {
                     if (err) throw err;
                     if (result.length) {
                         data.localFolder = result[0]
-                        connection.query(`SELECT * FROM folder WHERE In_folder = "${result[0].id}"`, (err, result, field) => {
+                        connection.query(`SELECT * FROM folder WHERE In_folder = "${data.localFolder.id}" AND onDelete = '0'`, (err, result, field) => {
                             if (err) throw err;
                             data.childrenFolder = result;
-                            res.render('filePage', {folderData: data});
-                            console.log(data)
-                            res.end();
+                            connection.query(`SELECT * FROM file WHERE In_folder = "${data.localFolder.id}" AND onDelete = '0'`, (err, result, field) => {
+                                if (err) throw err;
+                                data.childrenFile = result;
+                                res.render('filePage', {folderData: data});
+                                // console.log(data)
+                                res.end();
+                            })
                         })
+
                     }
                 })
             }
@@ -73,7 +98,7 @@ router.get('/:user/*', (req, res, next) => {
 
 
 router.get('/:user', (req, res, next) => {
-
+    var path = req.originalUrl.substr(1);
     var cookies = cookie.parse(req.headers.cookie || '');
     // console.log(req.headers.cookie);
     // console.log(cookies.name);
@@ -82,7 +107,7 @@ router.get('/:user', (req, res, next) => {
     }
     else {
         connection = res.app.locals.connection;
-        connection.query(`SELECT RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
             if(err) throw err;
             var data = {
                 userInfo: result[0]
@@ -92,11 +117,16 @@ router.get('/:user', (req, res, next) => {
                     if(err) throw err;
                     data.localFolder = result[0];
                     // console.log(result);
-                    connection.query(`SELECT * FROM folder WHERE In_folder ='${result[0].id}'`,(err, result, field) => {
+                    connection.query(`SELECT * FROM folder WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`,(err, result, field) => {
                         if(err) throw err;
                         data.childrenFolder = result;
-                        res.render('filePage',{folderData:data});
-                        res.end();
+                        connection.query(`SELECT * FROM file WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`,(err, result, field) => {
+                            if(err) throw err;
+                            data.childrenFile = result;
+                            console.log(result)
+                            res.render('filePage',{folderData:data});
+                            res.end();
+                        })
                     })
                 })
             }
