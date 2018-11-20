@@ -3171,11 +3171,12 @@ select.custom-file-control:not([size]):not([multiple]), select.form-control:not(
 ===================*/
 .accountbg {
   background: url("../../images/background.jpg");
-  position: absolute;
-  height: 100%;
-  width: 100%;
+ /* position: absolute;*/
+
+  /*height: 100%;
+  width: 100%*/;
   background-position: center center;
-  background-size: cover;
+  background-size: 100% 100%;
 }
 
 .wrapper-page {
