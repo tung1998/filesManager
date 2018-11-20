@@ -157,6 +157,19 @@ function SCDeleteFile(file) {
 }
 
 
+function SCGetPicturePath(file) {
+    $.ajax({
+        type: 'post',
+        url: '/file/getPath',
+        data: JSON.stringify({id:file.attr("idFile")}),
+        contentType: "application/json",
+        success: function (data) {
+            console.log(data)
+            showFilePicture(file,data);
+        }
+    })
+}
+
 
 function SCAddNewFileToDb() {
     // console.log($("#fileUpload").val())

@@ -1,6 +1,5 @@
 let localFolder = folderData.localFolder;
 
-
 //
 // window.onpopstate = function(e){
 //     if(e.state){
@@ -103,6 +102,12 @@ function searchData() {
         SCGetDataSearch(text);
     }else $('#searchDropdown').removeClass("show");
 }
+
+
+function profile() {
+
+}
+
 
 
 function checkFolderName(folderName) {

@@ -17,6 +17,7 @@ const resendconfirmmailRouter = require('./routes/resendconfirmmail');
 const folderRouter = require('./routes/folder');
 const fileRouter = require('./routes/file');
 const trashRouter = require('./routes/trash');
+const errorRouter = require('./routes/error');
 
 
 const app = express();
@@ -62,6 +63,7 @@ connection.connect((err) => {
     app.use('/folder', folderRouter);
     app.use('/file', fileRouter);
     app.use('/trash', trashRouter);
+    app.use('/error', errorRouter);
     app.use('/', indexRouter);
 
 

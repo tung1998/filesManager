@@ -8,17 +8,19 @@ function showFile(file){
     // console.log(file)
     // console.log(type);
     if(type=='1'){
-        showFilePicture(file)
+        SCGetPicturePath(file)
     }
 }
 
-async function showFilePicture(file) {
-    captionText.find('i').text(file.find('i').first().text())
-    fileBox.attr("src",`/userFile/${localFolder.path}/${captionText.text()}`)
+async function showFilePicture(file,path) {
+    let name = file.find('i').first().text();
+    captionText.find('i').text(name)
+    fileBox.attr("src",`/userFile/${path}/${name}`)
     modal.show();
-
 }
-modal.on("click",()=>{
+
+
+fileBox.on("click",()=>{
     modal.hide();
 })
 

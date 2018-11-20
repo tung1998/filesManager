@@ -81,6 +81,19 @@ router.post('/getFileData', (req, res, next) => {
 
 });
 
+router.post('/getPath', (req, res, next) => {
+    const idFile = req.body.id;
+    connection = res.app.locals.connection;
+    // console.log(idFolder)
+    connection.query(`SELECT path FROM folder WHERE id =(Select In_folder from file where file_id="${idFile}")`,(err, result, field) => {
+        if(err) throw err;
+        console.log(result[0].path)
+        res.send(result[0].path);
+        res.end()
+    })
+
+});
+
 // router.post('/getFile', (req, res, next) => {
 //     const idFile = req.body.id;
 //     connection = res.app.locals.connection;
