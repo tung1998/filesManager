@@ -2,7 +2,6 @@ extends ../headerAndScript/header
 
 block content
     body.fixed-left
-        include ../filePageElement/fileShow
 
         div#preloader
             div#status
@@ -10,16 +9,102 @@ block content
         // Begin page
         div#wrapper
             // ========== Left Sidebar Start ==========
-            include ../filePageElement/leftSideMenu
+            div.left.side-menu
+                button.button-menu-mobile.button-menu-mobile-topbar.open-left.waves-effect(type='button' onclick="")
+                    i.mdi.mdi-close
+                // LOGO
+                div.topbar-left
+                    div.text-center
+                        a.logo(href='/')
+                            img.logo-large(src='/images/logoText.png' alt='' height="100")
+                div#sidebar-main.sidebar-inner.slimscrollleft
                 // end sidebarinner
             // Left Sidebar End
             // Start right Content here
             div.content-page
                 // Start content
                 div#idFolder.content
-                    include ../filePageElement/topBar.pug
+                    div.topbar
+                        nav.navbar-custom
+                            div
+                                ul.list-inline.float-right.mb-0.mr-3
+                                    // language
+                                    li.list-inline-item.dropdown.notification-list
+                                        a.nav-link.dropdown-toggle.arrow-none.waves-effect(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' )
+                                            i.mdi.mdi-settings.noti-icon
+                                        .dropdown-menu.dropdown-menu-right.dropdown-arrow.dropdown-menu-lg
+                                            // item
+                                            .dropdown-item.noti-title.align-self-center
+                                                h5
+                                                    | View Setting
+                                            // item
+                                            a.dropdown-item(href='javascript:ALNotWorkFunction();')
+                                                i.mdi.mdi-view-list.m-r-5.text-muted
+                                                |  List style
+                                            a.dropdown-item.d-block(href='javascript:ALNotWorkFunction();')
+                                                i.mdi.mdi-view-module.m-r-5.text-muted
+                                                |  Grid Style
+                                                .float-right.mdi.mdi-check
+                                    li.list-inline-item.dropdown.notification-list
+                                        a.nav-link.dropdown-toggle.arrow-none.waves-effect(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false')
+                                            i.ti-bell.noti-icon
+                                            span.badge.badge-success.a-animate-blink.noti-icon-badge 3
+                                        .dropdown-menu.dropdown-menu-right.dropdown-arrow.dropdown-menu-lg
+                                            // item
+                                            .dropdown-item.noti-title
+                                                h5
+                                                    span.badge.badge-danger.float-right 87
+                                                    | Notification
+                                            // item
+                                            a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
+                                                .notify-icon.bg-primary
+                                                    i.mdi.mdi-cart-outline
+                                                p.notify-details
+                                                    b FunctionNotWork
+                                                    small.text-muted FunctionNotWork
+                                            // item
+                                            a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
+                                                .notify-icon.bg-success
+                                                    i.mdi.mdi-message
+                                                p.notify-details
+                                                    b FunctionNotWork
+                                                    small.text-muted FunctionNotWork
+                                            // item
+                                            a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
+                                                .notify-icon.bg-warning
+                                                    i.mdi.mdi-martini
+                                                p.notify-details
+                                                    b FunctionNotWork
+                                                    small.text-muted FunctionNotWork
+                                            // All
+                                            a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
+                                                | View All
+                                    li.list-inline-item.dropdown.notification-list
+                                        a.nav-link.dropdown-toggle.arrow-none.waves-effect.nav-user(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false')
+                                            img.rounded-circle.img-thumbnail(src='/assets/images/users/avatar-1.jpg' alt='user')
+                                        .dropdown-menu.dropdown-menu-right.profile-dropdown
+                                            // item
+                                            .dropdown-item.noti-title
+                                                h5=folderData.userInfo.userName
+                                            a.dropdown-item(href='javascript:ALNotWorkFunction();')
+                                                i.mdi.mdi-account-circle.m-r-5.text-muted
+                                                |  Profile
+                                            .dropdown-divider
+                                            a.dropdown-item(href='javascript:logout()')
+                                                i.mdi.mdi-logout.m-r-5.text-muted
+                                                |  Logout
+                                ul.list-inline.menu-left.mb-0
+                                    li.float-left
+                                        button.button-menu-mobile.open-left.waves-light.waves-effect
+                                            i.mdi.mdi-menu
+                                .clearfix
+                            //include pathBar
                     // Top Bar End
-                    include ../filePageElement/fileContent
+                    div.page-content-wrapper
+                        div#pageContent.container-fluid
+                            h1 404 error
+                            h1 can't not found:
+                                span= folderData.path
                 footer.footer
                     | &copy; 2018 Urora by Mannatthemes.
             // End Right content here
@@ -28,9 +113,6 @@ block content
         input(name="fileUpload" type="file" multiple id="fileUpload" class="product-input-data col-sm-8" style="display:none")
 
         include  ../headerAndScript/script
-
-        script.
-            var folderData = !{JSON.stringify(folderData)};
         link(href='/jquery/dist/jquery.contextMenu.css' rel='stylesheet' type='text/css')
         include ../headerAndScript/filePageScript
 

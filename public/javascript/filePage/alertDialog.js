@@ -99,9 +99,45 @@ function ALDeleteStatus(check) {
 
 }
 
+function ALOnUploadFile() {
+    alertify.closeLogOnClick(true).log(`<div id ="alertUpload" class="alert-upload row">
+                                                    <div class="spinner"></div>
+                                                    <div style="padding-left: 50px">File is Uploading</div>
+                                                </div>`)
+}
+
+function ALRestoreFolder(folderId) {
+    alertify.confirm("This Folder had been deleted, Do you want to restore Folder?", function (ev) {
+        ev.preventDefault();
+        SCRestoreFolder(folderId);
+        alertify.success("Folder had been restored");
+    }, function(ev) {
+        ev.preventDefault();
+        alertify.error("No restore Folder");
+    });
+}
+
+function ALRestoreFile(fileId) {
+    alertify.confirm("This File had been deleted, Do you want to restore file?", function (ev) {
+        ev.preventDefault();
+        SCRestoreFile(fileId);
+        alertify.success("File had been restored");
+    }, function(ev) {
+        ev.preventDefault();
+        alertify.error("No restore File");
+    });
+}
 
 
 function ALNotWorkFunction() {
     alertify.alert("Chức năng chưa được cập nhật, quý khách vui lòng sử dụng các chức năng khác");
     return false;
+}
+
+
+function ALAddToLove(check) {
+    if(check){
+        alertify.success("On Love")
+    }
+    else alertify.error("Un Love")
 }

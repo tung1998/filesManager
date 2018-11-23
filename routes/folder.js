@@ -33,16 +33,18 @@ router.post('/getFolderData', (req, res, next) => {
     connection = res.app.locals.connection;
     connection.query(`SELECT * FROM folder WHERE id ='${idFolder}'`,(err, result, field) => {
         if(err) throw err;
-        let data = {
-            localFolder: result[0]
-        }
-        // console.log(idFolder)
-        connection.query(`SELECT * FROM folder WHERE In_folder ='${idFolder}' AND onDelete = '0'`,(err, result, field) => {
-            if(err) throw err;
-            data.childrenFolder = result;
-            res.send(data);
-            res.end()
-        })
+        if(result[0].onDelete==0) {
+            let data = {
+                localFolder: result[0]
+            }
+            // console.log(idFolder)
+            connection.query(`SELECT * FROM folder WHERE In_folder ='${idFolder}' AND onDelete = '0'`, (err, result, field) => {
+                if (err) throw err;
+                data.childrenFolder = result;
+                res.send(data);
+                res.end()
+            })
+        }else res.send('0');
     })
 });
 
@@ -75,11 +77,38 @@ router.post('/deleteFolder', (req,res,next) => {
     connection = res.app.locals.connection;
     deleteFolder(req.body.id);
     //
-    connection.query(`UPDATE folder SET onDelete='2' WHERE id='${req.body.id}';`, (err, result, field) => {
-        if (err) throw err;
-    })
     res.send(true)
     res.end();
+    //
+})
+
+router.post('/restoreFolder', (req,res,next) => {
+    connection = res.app.locals.connection;
+    restoreFolder(req.body.id);
+    //
+    res.send(true)
+    res.end();
+    //
+})
+router.post('/addToLove', (req,res,next) => {
+    connection = res.app.locals.connection;
+    connection.query(`SELECT onLove FROM folder WHERE id='${req.body.id}';`, (err, result, field) => {
+        if (err) throw err;
+        if(result[0].onLove==0) {
+            connection.query(`UPDATE folder SET onLove='1' WHERE id='${req.body.id}';`, (err, result, field) => {
+                if (err) throw err;
+                res.send(true)
+                res.end();
+            })
+        }else {
+            connection.query(`UPDATE folder SET onLove='0' WHERE id='${req.body.id}';`, (err, result, field) => {
+                if (err) throw err;
+                res.send(false)
+                res.end();
+            })
+        }
+    })
+
     //
 })
 
@@ -103,7 +132,6 @@ function deleteFolder(id, lv = 0){
     connection.query(`SELECT id FROM folder WHERE In_folder='${id}';`, (err, result, field) => {
         if(err) throw err;
         result.forEach((item) => {
-            console.log(item)
             deleteFolder(item.id, lv+1)
         })
 
@@ -118,6 +146,21 @@ function deleteFolder(id, lv = 0){
         }
     })
     connection.query(`UPDATE file SET onDelete='1' WHERE In_folder='${id}';`, (err, result, field) => {
+        if(err) throw err;
+    })
+}
+
+function restoreFolder(id){
+    connection.query(`SELECT id FROM folder WHERE In_folder='${id}';`, (err, result, field) => {
+        if(err) throw err;
+        result.forEach((item) => {
+            restoreFolder(item.id)
+        })
+        connection.query(`UPDATE folder SET onDelete='0' WHERE id='${id}';`, (err, result, field) => {
+            if(err) throw err;
+        })
+    })
+    connection.query(`UPDATE file SET onDelete='0' WHERE In_folder='${id}';`, (err, result, field) => {
         if(err) throw err;
     })
 }

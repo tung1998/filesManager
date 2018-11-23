@@ -47,8 +47,8 @@ $(function() {
                     SCDeleteFolder(opt.$trigger);
                 }},
             "sep1": "---------",
-            "love": {name: "Love File", icon: "fa-heart",callback:(key,opt)=> {
-                    ALNotWorkFunction();
+            "love": {name: "Love/UnLove", icon: "fa-heart",callback:(key,opt)=> {
+                    SCAddToLoveFolder(opt.$trigger);
                 }},
             "share": {name: "Share File", icon: "fa-share-square-o",callback:(key,opt)=> {
                     ALNotWorkFunction();
@@ -89,8 +89,8 @@ $(function() {
                     SCDeleteFile(opt.$trigger);
                 }},
             "sep1": "---------",
-            "love": {name: "Love File", icon: "fa-heart",callback:(key,opt)=> {
-                    ALNotWorkFunction();
+            "love": {name: "Love/UnLove", icon: "fa-heart",callback:(key,opt)=> {
+                    SCAddToLoveFile(opt.$trigger);
                 }},
             "share": {name: "Share File", icon: "fa-share-square-o",callback:(key,opt)=> {
                     ALNotWorkFunction();

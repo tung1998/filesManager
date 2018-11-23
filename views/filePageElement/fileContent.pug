@@ -1,27 +1,27 @@
-div#FileFolder
+div#FileFolder.row
     div#folderShow.col-md-12.col-xl-12
         div.tag-content Folders
         div.card.m-b-30
             div.card-body
                 div#folderCard.row.icon-demo-content()
-                    -
-                        var list = folderData.childrenFolder
-                    each item in list
-                        a.folder-item.col-sm-6.col-md-4.col-lg-3(idFolder=item.id)
-                            //span(type="hidden")= item.id
-                            i.mdi.mdi-folder= item.FolderName
+                    // -
+                    //     var list = folderData.childrenFolder
+                    // each item in list
+                    //     a.folder-item.col-sm-6.col-md-4.col-lg-3(idFolder=item.id)
+                    //         //span(type="hidden")= item.id
+                    //         i.waves-effect.mdi.mdi-folder= item.FolderName
     div#fileShow.col-md-12.col-xl-12
         div.tag-content Files
         div.card.m-b-30
             div.card-body
                 div#fileCard.row.icon-demo-content
-                    -
-                        var list = folderData.childrenFile
-                    each item in list
-                        a.file-item.col-sm-6.col-md-4.col-lg-3(idFile=item.file_id typeFile=item.type)
-                            //img(src="https://unsplash.it/400/300?image=1082" alt="")
-                            //span(type="hidden")= item.id
-                            i.mdi.mdi-file= item.file_name
+                    // -
+                    //     var list = folderData.childrenFile
+                    // each item in list
+                    //     a.file-item.col-sm-6.col-md-4.col-lg-3(idFile=item.file_id typeFile=item.type)
+                    //         //img(src="https://unsplash.it/400/300?image=1082" alt="")
+                    //         //span(type="hidden")= item.id
+                    //         i.waves-effect.mdi.mdi-file= item.file_name
 
 
 

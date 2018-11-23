@@ -41,7 +41,11 @@ body {
 float: right;
 }
 #searchDropdown{
+    white-space: nowrap;
+    overflow: auto;
+    text-overflow: clip;
     margin-top: 15px;
+    max-height: 500px;
 }
 #file-content{
     /* Hidden by default */
@@ -118,6 +122,17 @@ float: right;
 }
 
 
+.love i{
+    color: hotpink;
+}
+
+.alert-upload{
+    font-size: 20px;
+    text-align: center;
+    background-color: #3f3f40;
+    width: 200px;
+    height: 30px;
+}
 
 /*!* *!*/
 /*.panWrapper {position:fixed; width:100%; height:100%; overflow:hidden; background-color:rgba(0,0,0,0.9); z-index:9999; left:0; top:0; display:none; cursor:move;}*/

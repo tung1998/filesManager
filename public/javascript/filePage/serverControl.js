@@ -14,8 +14,9 @@ function SCAddNewFolderToDb(ParentFolder, folderName) {
         success: function (data) {
             console.log(data);
             folderData.childrenFolder.push(data);
+            $("#folderShow").show()
             $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${data.id}">
-                                <i class="mdi mdi-folder"> ${folderName}</i> 
+                                <i class="waves-effect mdi mdi-folder"> ${folderName}</i> 
                             </a>`);
         }
     })
@@ -34,24 +35,29 @@ function SCGetDataFolder(a){
         data: JSON.stringify({id:a}),
         contentType: "application/json",
         success: function(data){
-            window.history.pushState(data, "Title", "/"+data.localFolder.path);
-            localFolder.childrenFolder=data;
-            localFolder=data.localFolder;
-            CRUpdateFolderCard(data.childrenFolder)
+            if(data==0){
+                ALRestoreFolder(a);
+            }else {
+                window.history.pushState(data, "Title", "/" + data.localFolder.path);
+                localFolder.childrenFolder = data;
+                localFolder = data.localFolder;
+                CRUpdateFolderCard(data.childrenFolder)
+                $.ajax({
+                    url:`/file/getFileData`,
+                    type:'post',
+                    data: JSON.stringify({id:a}),
+                    contentType: "application/json",
+                    success: function(data){
+                        localFolder.childrenFile=data;
+                        CRUpdateFileCard(data)
+                    }
+                });
+            }
         }
     });
 
 
-    $.ajax({
-        url:`/file/getFileData`,
-        type:'post',
-        data: JSON.stringify({id:a}),
-        contentType: "application/json",
-        success: function(data){
-            localFolder.childrenFile=data;
-            CRUpdateFileCard(data)
-        }
-    });
+
 
 }
 
@@ -140,6 +146,30 @@ function SCDeleteFolder(folder) {
     })
 }
 
+function SCRestoreFolder(folderID) {
+    $.ajax({
+        type: 'post',
+        url: '/folder/restoreFolder',
+        data: JSON.stringify({id:folderID}),
+        contentType: "application/json",
+        success: function () {
+            $(document).find(`#folderCard>a[idFolder=${folderID}]`).remove();
+        }
+    })
+}
+
+function SCRestoreFile(fileID) {
+    $.ajax({
+        type: 'post',
+        url: '/file/restoreFile',
+        data: JSON.stringify({id:fileID}),
+        contentType: "application/json",
+        success: function () {
+            $(document).find(`#fileCard>a[idFile=${fileID}]`).remove();
+        }
+    })
+}
+
 
 
 function SCDeleteFile(file) {
@@ -157,15 +187,18 @@ function SCDeleteFile(file) {
 }
 
 
-function SCGetPicturePath(file) {
+function SCGetPicturePath(id, name) {
     $.ajax({
         type: 'post',
         url: '/file/getPath',
-        data: JSON.stringify({id:file.attr("idFile")}),
+        data: JSON.stringify({id:id}),
         contentType: "application/json",
         success: function (data) {
-            console.log(data)
-            showFilePicture(file,data);
+            if(data==false) ALRestoreFile(id);
+            else {
+                console.log("2");
+                showFilePicture(name, data);
+            }
         }
     })
 }
@@ -188,14 +221,19 @@ function SCAddNewFileToDb() {
         data: fileUpload,
         contentType: false,
         processData: false,
+        beforeSend: function(){
+            ALOnUploadFile();
+        },
         success: function (data) {
-            console.log(data)
+            $("#fileShow").show()
+            // console.log(data);
             data.forEach((item)=> {
                 folderData.childrenFile.push(item);
                 $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.id}" typeFile="${item.type}">
-                                            <i class="mdi mdi-file">${item.name}</i> 
+                                            <i class="waves-effect mdi mdi-file">${item.name}</i> 
                                         </a>`);
             })
+            $(document).find("#alertUpload").html(`Upload Success`);
         }
     })
 }
@@ -203,16 +241,38 @@ function SCAddNewFileToDb() {
 
 function SCGetTrashData() {
     let data={
-        userID: folderData.localFolder.Owner_id,
+        userID: folderData.userInfo.id,
     }
     $.ajax({
         type: 'post',
-        url: '/trash/'+folderData.userInfo.userName,
+        url: '/trash',
         dataType: 'json',
         data: data,
         success: function (data) {
+            $("#errorStatus").hide();
+            $("#pageContent").show();
             localFolder.id=(-1);
-            window.history.replaceState('trash', "Title", "/trash/"+folderData.userInfo.userName);
+            window.history.replaceState('trash', "Title", "/trash");
+            CRUpdateFolderCard(data.childrenFolder);
+            CRUpdateFileCard(data.childrenFile);
+        }
+    })
+}
+
+function SCGetOnLoveData() {
+    let data={
+        userID: folderData.userInfo.id,
+    }
+    $.ajax({
+        type: 'post',
+        url: '/love',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            $("#errorStatus").hide();
+            $("#pageContent").show();
+            localFolder.id=(-2);
+            window.history.replaceState('love', "Title", "/love");
             CRUpdateFolderCard(data.childrenFolder);
             CRUpdateFileCard(data.childrenFile);
         }
@@ -247,9 +307,50 @@ function SCGetSearchPage() {
         dataType: 'json',
         data: data,
         success: function (data) {
+            $("#errorStatus").hide();
+            $("#pageContent").show();
             window.history.replaceState('trash', "Title", "/search/"+$("#Search").val());
             CRUpdateFolderCard(data.folderInfor);
             CRUpdateFileCard(data.fileInfor);
+        }
+    })
+}
+
+
+
+function SCAddToLoveFile(file) {
+    let data={
+        id:file.attr("idFile")
+    }
+    $.ajax({
+        type: 'post',
+        url: '/file/addToLove',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            ALAddToLove(data)
+            if(data){
+                file.addClass("love")
+            }else file.removeClass("love")
+        }
+    })
+}
+
+function SCAddToLoveFolder(folder) {
+    let data={
+        id:folder.attr("idFolder")
+    }
+    $.ajax({
+        type: 'post',
+        url: '/folder/addToLove',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            ALAddToLove(data)
+            if(data){
+                folder.addClass("love")
+            }else folder.removeClass("love")
+
         }
     })
 }

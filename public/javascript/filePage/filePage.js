@@ -1,5 +1,4 @@
 let localFolder = folderData.localFolder;
-
 //
 // window.onpopstate = function(e){
 //     if(e.state){
@@ -15,6 +14,13 @@ let localFolder = folderData.localFolder;
 
 $(function () {
 
+    if(window.location.pathname=="/trash"){
+        SCGetTrashData();
+    }
+    if(window.location.pathname=="/love"){
+        SCGetOnLoveData();
+    }
+
     $('#myFile > a').addClass("menu-nav-active")
 
 
@@ -26,13 +32,27 @@ $(function () {
         }
     })
 
+    $(document).on('click', '#searchDropdown>a',function(){
+        let file = $(this);
+        let type = file.attr("typeFile");
+        let id = file.attr("idFile");
+        let name = file.find('b').first().text();
+        showFile(type,id,name);
+    })
 
+
+
+    $(document).on('click', '#searchDropdown>[idFolder]',function(){
+        SCGetDataFolder($(this).attr("idFolder"));
+    })
 
     $(document).on('click', '[idFolder]>a', function (e) {
 
         let idFolder = $(this).parent().attr("idFolder");
 
         if(localFolder.id!=idFolder) {
+            $("#errorStatus").hide();
+            $("#pageContent").show();
             SCGetDataFolder(idFolder);
         }
 
@@ -59,13 +79,20 @@ $(function () {
 
     $(document).on('dblclick', '#fileCard a.file-item', function () {
         // SCGetDataFile($(this).attr('idFolder'));
-        showFile($(this));
+        let file = $(this);
+        let type = file.attr("typeFile");
+        let id = file.attr("idFile");
+        let name = file.find('i').first().text();
+        showFile(type,id,name);
     })
 
     // $('#folderCard a.folder-item').on('click' ,function () {
     //     SCGetDataFolder($(this).attr('idFolder'));
     // })
 
+
+    CRUpdateFileCard(folderData.childrenFile);
+    CRUpdateFolderCard(folderData.childrenFolder);
 
 })
 

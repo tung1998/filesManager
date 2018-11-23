@@ -17,6 +17,7 @@ const resendconfirmmailRouter = require('./routes/resendconfirmmail');
 const folderRouter = require('./routes/folder');
 const fileRouter = require('./routes/file');
 const trashRouter = require('./routes/trash');
+const loveRouter = require('./routes/love');
 const errorRouter = require('./routes/error');
 
 
@@ -55,6 +56,8 @@ connection.connect((err) => {
 
 
 
+    app.use('/trash', trashRouter);
+    app.use('/love', loveRouter);
     app.use('/users', usersRouter);
     app.use('/login', loginRouter);
     app.use('/register', registerRouter);
@@ -62,7 +65,6 @@ connection.connect((err) => {
     app.use('/recoverpw', recoverpwRouter);
     app.use('/folder', folderRouter);
     app.use('/file', fileRouter);
-    app.use('/trash', trashRouter);
     app.use('/error', errorRouter);
     app.use('/', indexRouter);
 

@@ -44,13 +44,15 @@ function loginClick() {
                     localStorage.setItem('userName', $('#login-id').val());
                     localStorage.setItem('check', $('#rememberCheck').prop('checked'));
                     localStorage.setItem('Pass', $('#login-pass').val());
-                    window.location.replace(`/${data}`);
+                    window.location.reload();
+                    // window.location.replace(`/${data}`);
                 }
                 else{
                     localStorage.setItem('userName', $('#login-id').val());
                     localStorage.setItem('check', $('#rememberCheck').prop('checked'));
                     localStorage.setItem('Pass', '');
-                    window.location.replace(`${data}`);
+                    // window.location.replace(`${data}`);
+                    window.location.reload();
                 }
 
             }

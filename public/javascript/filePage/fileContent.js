@@ -3,17 +3,16 @@ const modal = $(document).find("#file-content")
 const fileBox = $(document).find("#file")
 const captionText = $(document).find("#caption")
 
-function showFile(file){
-    let type = file.attr("typeFile")
+function showFile(type,id,name){
     // console.log(file)
-    // console.log(type);
     if(type=='1'){
-        SCGetPicturePath(file)
+        console.log("1");
+        SCGetPicturePath(id,name)
     }
 }
 
-async function showFilePicture(file,path) {
-    let name = file.find('i').first().text();
+async function showFilePicture(name,path) {
+    console.log("3")
     captionText.find('i').text(name)
     fileBox.attr("src",`/userFile/${path}/${name}`)
     modal.show();

@@ -20,9 +20,19 @@ block content
                     include filePageElement/topBar.pug
                     // Top Bar End
                     div.page-content-wrapper
-                        div#pageContent.container-fluid
-                            include filePageElement/fileContent
-                            include filePageElement/profile
+                        if !folderData.found
+                            div#errorStatus
+                                h1 404 error
+                                    h1 can't not found:
+                                        span= folderData.path
+                            div#pageContent.container-fluid(style="display:none")
+                                include filePageElement/fileContent
+                                include filePageElement/profile
+                        else
+                            div#pageContent.container-fluid
+                                include filePageElement/fileContent
+                                include filePageElement/profile
+
                 footer.footer
                     | &copy; 2018 Urora by Mannatthemes.
             // End Right content here

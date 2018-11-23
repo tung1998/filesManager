@@ -5,26 +5,26 @@ const cookie = require('cookie');
 /* GET users listing. */
 
 
-router.get('/', (req, res, next) => {
-    var cookies = cookie.parse(req.headers.cookie || '');
-    // console.log(req.headers.cookie);
-
-    console.log(cookies.name);
-    if (!cookies.name) {
-        res.render('loginPage');
-    }
-    else {
-        connection = res.app.locals.connection;
-        connection.query(`SELECT id, username FROM account WHERE cookie = "${cookies.name}" AND activate="1"`, (err, result, field) => {
-            if(err) throw err;
-            // console.log(result);
-            if (result.length){
-                res.redirect(`/${result[0].username}`);
-            }
-            else res.render('loginPage');
-        })
-    }
-});
+// router.get('/', (req, res, next) => {
+//     var cookies = cookie.parse(req.headers.cookie || '');
+//     // console.log(req.headers.cookie);
+//
+//     console.log(cookies.name);
+//     if (!cookies.name) {
+//         res.render('loginPage');
+//     }
+//     else {
+//         connection = res.app.locals.connection;
+//         connection.query(`SELECT id, username FROM account WHERE cookie = "${cookies.name}" AND activate="1"`, (err, result, field) => {
+//             if(err) throw err;
+//             // console.log(result);
+//             if (result.length){
+//                 res.redirect(`/${result[0].username}`);
+//             }
+//             else res.render('loginPage');
+//         })
+//     }
+// });
 
 
 //  api login

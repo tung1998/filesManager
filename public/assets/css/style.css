@@ -1295,7 +1295,6 @@ code {
   cursor: pointer;
 
   color: #707070;
-  margin: 10px;
 }
 
 
@@ -1312,10 +1311,10 @@ code {
   border-radius: 10px;
   line-height: 52px;
   background-color: #ffffff;
-  -webkit-transition: all 500ms ease-out;
-  -moz-transition: all 500ms ease-out;
-  -o-transition: all 500ms ease-out;
-  transition: all 500ms ease-out;
+  -webkit-transition: all 200ms ease-out;
+  -moz-transition: all 200ms ease-out;
+  -o-transition: all 200ms ease-out;
+  transition: all 200ms ease-out;
 }
 
 .icon-demo-content .col-sm-6 {
