@@ -95,8 +95,23 @@ float: right;
     /*font-weight: bold;*/
     /*transition: 0.3s;*/
 /*}*/
-
+#fileBox{
+    position: fixed;
+    z-index: 16000;
+    height: 100%;
+    width: 100%;
+}
+.txt-file{
+    overflow: auto;
+    min-height: 500px;
+}
+.modal-content>audio, .modal-content>video{
+    width: 100%;
+    margin-bottom: 50px;
+    background-color: transparent ;
+}
 .modal-content {
+    z-index: 20000;
     max-height: 80%;
     max-width: 80%;
     height: auto;

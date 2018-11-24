@@ -7,13 +7,15 @@ $(function() {
             "add": {name: "NewFolder",
                 icon: 'fa-plus',
                 callback:function () {
-                    ADAddNewFolder();   ///contentRender
+                    if (localFolder.id<0) alertify.error("Can't add folder Hear");
+                    else ADAddNewFolder();   ///contentRender
                 }},
             // "edit": {name: "Edit", icon: "edit",callback:()=> {
             //         ALNotWorkFunction();
             //     }},
             "fileUpload": {name: "FileUpload", icon: "fa-cloud-upload",callback:()=> {
-                    ALUploadFile();
+                    if (localFolder.id<0) alertify.error("Can't add file Hear");
+                    else ALUploadFile();
                 }},
             "sep1": "---------",
             "paste": {name: "Paste", icon: "paste",callback:()=> {

@@ -12,7 +12,7 @@ function SCAddNewFolderToDb(ParentFolder, folderName) {
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             folderData.childrenFolder.push(data);
             $("#folderShow").show()
             $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${data.id}">
@@ -187,7 +187,7 @@ function SCDeleteFile(file) {
 }
 
 
-function SCGetPicturePath(id, name) {
+function SCGetFilePath(type,id, name) {
     $.ajax({
         type: 'post',
         url: '/file/getPath',
@@ -196,8 +196,8 @@ function SCGetPicturePath(id, name) {
         success: function (data) {
             if(data==false) ALRestoreFile(id);
             else {
-                console.log("2");
-                showFilePicture(name, data);
+                // console.log("2");
+                showFile(type,name,data);
             }
         }
     })
@@ -213,7 +213,7 @@ function SCAddNewFileToDb() {
     }
     fileUpload.append("folderID", localFolder.id);
     fileUpload.append("OwnerID", localFolder.Owner_id);
-    console.log(fileUpload);
+    // console.log(fileUpload);
     $.ajax({
         type: 'post',
         url: '/file/fileUpload'+window.location.pathname,
@@ -232,6 +232,7 @@ function SCAddNewFileToDb() {
                 $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.id}" typeFile="${item.type}">
                                             <i class="waves-effect mdi mdi-file">${item.name}</i> 
                                         </a>`);
+                CRAddFileIcon(item.id,item.type);
             })
             $(document).find("#alertUpload").html(`Upload Success`);
         }
@@ -279,6 +280,27 @@ function SCGetOnLoveData() {
     })
 }
 
+
+function SCGetFileOpenRecent() {
+    let data={
+        userID: folderData.userInfo.id,
+    }
+    $.ajax({
+        type: 'post',
+        url: '/file/openRecent',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            $("#errorStatus").hide();
+            $("#pageContent").show();
+            localFolder.id=(-3);
+            window.history.replaceState('openRecent', "Title", "/openRecent");
+            CRUpdateFolderCard([]);
+            CRUpdateFileCard(data);
+        }
+    })
+}
+
 function SCGetDataSearch(text) {
     let data={
         Owner_id: folderData.userInfo.id,
@@ -290,7 +312,7 @@ function SCGetDataSearch(text) {
         dataType: 'json',
         data: data,
         success: function (data) {
-            console.log(data)
+            // console.log(data)
             CRUpdateSearch(data)
         }
     })
@@ -309,6 +331,7 @@ function SCGetSearchPage() {
         success: function (data) {
             $("#errorStatus").hide();
             $("#pageContent").show();
+            localFolder.id=-6;
             window.history.replaceState('trash', "Title", "/search/"+$("#Search").val());
             CRUpdateFolderCard(data.folderInfor);
             CRUpdateFileCard(data.fileInfor);

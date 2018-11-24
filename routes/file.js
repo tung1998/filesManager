@@ -92,10 +92,14 @@ router.post('/getFileData', (req, res, next) => {
 router.post('/getPath', (req, res, next) => {
     const idFile = req.body.id;
     connection = res.app.locals.connection;
+
+    connection.query(`UPDATE file SET timeOpenRecent=NOW() WHERE file_id ="${idFile}"`, (err, result, field) => {
+        if (err) throw err;
+    })
     // console.log(idFolder)
     connection.query(`SELECT file_id FROM file WHERE file_id ="${idFile}" and onDelete ="0"`,(err, result, field) => {
         if (err) throw err;
-        console.log(result)
+        // console.log(result)
         if(result.length) {
             connection.query(`SELECT path FROM folder WHERE id =(Select In_folder from file where file_id="${idFile}")`, (err, result, field) => {
                 if (err) throw err;
@@ -103,6 +107,7 @@ router.post('/getPath', (req, res, next) => {
                 res.send(result[0].path);
                 res.end()
             })
+
         }else res.send(false)
     })
 });
@@ -159,6 +164,17 @@ router.post('/deleteFile', (req,res,next) => {
     })
     res.end();
 })
+
+
+router.post('/openRecent', (req, res, next) => {
+    // console.log(req.headers.cookie);
+    let id =  req.body.userID;
+    connection.query(`SELECT * FROM file WHERE Owner_id ='${id}' AND DATEDIFF( NOW(), timeOpenRecent)<1`,(err, result, field) => {
+        if(err) throw err;
+        res.send(result);
+        res.end();
+    })
+});
 
 router.post('/restoreFile', (req,res,next) => {
     connection = res.app.locals.connection;

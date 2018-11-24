@@ -27,16 +27,38 @@ function CRUpdateFileCard(childrenFile){
     else $("#fileShow").hide();
     localFolder.childrenFile=childrenFile;
     childrenFile.forEach(function (item) {
-        if(item.onLove==1) {
-            $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3 love" idFile="${item.file_id}" typeFile="${item.type}">
-                                            <i class="waves-effect mdi mdi-file">${item.file_name}</i> 
-                                        </a>`);
-        }else {
-            $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.file_id}" typeFile="${item.type}">
-                                            <i class="waves-effect mdi mdi-file">${item.file_name}</i> 
-                                        </a>`);
-        }
+        $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.file_id}" typeFile="${item.type}">
+                                        <i class="waves-effect mdi">${item.file_name}</i> 
+                                    </a>`);
     })
+    childrenFile.forEach(function (item) {
+        if(item.onLove==1){
+            $('#fileCard').find(`[idFile="${item.file_id}"]`).addClass("love")
+        }
+        CRAddFileIcon(item.file_id,item.type)
+    })
+
+}
+
+function CRAddFileIcon(id,type) {
+    if(type==0){
+        $('#fileCard').find(`[idFile="${id}"]>i`).addClass("mdi-file")
+    }
+    else if(type==1){
+        $('#fileCard').find(`[idFile="${id}"]>i`).addClass("mdi-file-image")
+    }
+    else if(type==2){
+        $('#fileCard').find(`[idFile="${id}"]>i`).addClass("mdi-file-document")
+    }
+    else if(type==3){
+        $('#fileCard').find(`[idFile="${id}"]>i`).addClass("mdi-file-pdf")
+    }
+    else if(type==4){
+        $('#fileCard').find(`[idFile="${id}"]>i`).addClass("mdi-file-music")
+    }
+    else if(type==5){
+        $('#fileCard').find(`[idFile="${id}"]>i`).addClass("mdi-file-video")
+    }
 }
 
 

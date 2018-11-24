@@ -39,6 +39,35 @@ router.get('/verify/:code', function(req, res, next) {
 
 
 
+router.post('/recoverpw/:code', function(req, res, next) {
+    const code = req.params.code;
+    const email = req.body.email;
+    const newPass = req.body.pass;
+
+    console.log(code)
+    console.log(newPass);
+    console.log(email);
+    connection = res.app.locals.connection;
+    connection.query(`SELECT salt FROM account WHERE email="${email}"`, (err, result, field) => {
+        if(err) throw err;
+            let salt = result[0].salt;
+            if(code==md5(email+salt)){
+                connection.query(`UPDATE account SET password ="${md5(newPass+salt)}" WHERE email="${email}"`, (err, result, field) => {
+                        if (err) throw err;
+                        // console.log(result);
+                    })
+            }
+        // connection.query(`SELECT salt FROM account WHERE activate = '0' AND email="${email}"`, (err, result, field) => {
+        //     if (err) throw err;
+        //     console.log(result);
+        // })
+
+    })
+    res.redirect("../../");
+});
+
+
+
 router.post('/logout',(req,res,next) => {
     console.log('2')
     res.clearCookie("name");

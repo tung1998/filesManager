@@ -18,6 +18,7 @@ const folderRouter = require('./routes/folder');
 const fileRouter = require('./routes/file');
 const trashRouter = require('./routes/trash');
 const loveRouter = require('./routes/love');
+const shareRouter = require('./routes/share');
 const errorRouter = require('./routes/error');
 
 
@@ -65,6 +66,7 @@ connection.connect((err) => {
     app.use('/recoverpw', recoverpwRouter);
     app.use('/folder', folderRouter);
     app.use('/file', fileRouter);
+    app.use('/share', shareRouter);
     app.use('/error', errorRouter);
     app.use('/', indexRouter);
 

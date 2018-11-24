@@ -1,21 +1,40 @@
 
 const modal = $(document).find("#file-content")
-const fileBox = $(document).find("#file")
+const fileBox = $(document).find("#fileBox")
 const captionText = $(document).find("#caption")
 
-function showFile(type,id,name){
+async function showFile(type,name,path){
+    $('.modal-content').remove()
     // console.log(file)
-    if(type=='1'){
-        console.log("1");
-        SCGetPicturePath(id,name)
+    captionText.find('i').text(name)
+    if(type==1){
+        showFilePicture(name,path)
     }
+    else if(type==2){
+        showFileTxt(name,path)
+    }
+    else if(type==4){
+        showFileMp3(name,path)
+    }
+    else if(type==5){
+        showFileMp4(name,path)
+    }
+    modal.show();
 }
 
-async function showFilePicture(name,path) {
-    console.log("3")
-    captionText.find('i').text(name)
-    fileBox.attr("src",`/userFile/${path}/${name}`)
-    modal.show();
+function showFilePicture(name,path) {
+    modal.append(`<img class="modal-content" src="/userFile/${path}/${name}">`)
+}
+
+async function showFileTxt(name,path) {
+    modal.append(`<div class="modal-content txt-file"></div>`)
+    $(document).find(".modal-content").load(`/userFile/${path}/${name}`);
+}
+function showFileMp3(name,path) {
+    modal.append(`<div class="modal-content"><audio controls><source src="/userFile/${path}/${name}" type="audio/mpeg"></audio></div>`)
+}
+function showFileMp4(name,path) {
+    modal.append(`<div class="modal-content"><video controls><source src="/userFile/${path}/${name}" type="video/mp4"></video></div>`)
 }
 
 

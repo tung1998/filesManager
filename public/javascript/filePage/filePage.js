@@ -20,6 +20,9 @@ $(function () {
     if(window.location.pathname=="/love"){
         SCGetOnLoveData();
     }
+    if(window.location.pathname=="/openRecent"){
+        SCGetFileOpenRecent();
+    }
 
     $('#myFile > a').addClass("menu-nav-active")
 
@@ -37,7 +40,7 @@ $(function () {
         let type = file.attr("typeFile");
         let id = file.attr("idFile");
         let name = file.find('b').first().text();
-        showFile(type,id,name);
+        SCGetFilePath(type,id,name);
     })
 
 
@@ -83,7 +86,7 @@ $(function () {
         let type = file.attr("typeFile");
         let id = file.attr("idFile");
         let name = file.find('i').first().text();
-        showFile(type,id,name);
+        SCGetFilePath(type,id,name);
     })
 
     // $('#folderCard a.folder-item').on('click' ,function () {
