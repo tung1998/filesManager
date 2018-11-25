@@ -61,19 +61,19 @@ float: right;
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
 }
-/*#caption {*/
-    /*font-size: 30px;*/
-    /*color: #5a6268;*/
-    /*margin: auto;*/
-    /*display: block;*/
-    /*width: 80%;*/
-    /*max-width: 700px;*/
-    /*text-align: center;*/
-    /*color: #ccc;*/
-    /*padding: 10px 0;*/
-    /*height: 150px;*/
-/*}*/
-
+#caption {
+    font-size: 30px;
+    color: #5a6268;
+    margin-left: 30px;
+    display: block;
+    width: 80%;
+    color: #ccc;
+}
+#caption{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .modal-content, #caption {
 
     animation-name: zoom;

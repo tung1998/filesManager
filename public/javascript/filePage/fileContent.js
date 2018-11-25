@@ -2,8 +2,18 @@
 const modal = $(document).find("#file-content")
 const fileBox = $(document).find("#fileBox")
 const captionText = $(document).find("#caption")
+//download
+
+$(document).on("click","#download",function () {
+    let path = localFolder.path;
+    let name = $(document).find("#caption>i").text();
+    window.open("/"+path+"/"+name);
+})
+
+
 
 async function showFile(type,name,path){
+
     $('.modal-content').remove()
     // console.log(file)
     captionText.find('i').text(name)
@@ -20,6 +30,7 @@ async function showFile(type,name,path){
         showFileMp4(name,path)
     }
     modal.show();
+
 }
 
 function showFilePicture(name,path) {
@@ -36,6 +47,8 @@ function showFileMp3(name,path) {
 function showFileMp4(name,path) {
     modal.append(`<div class="modal-content"><video controls><source src="/userFile/${path}/${name}" type="video/mp4"></video></div>`)
 }
+
+
 
 
 fileBox.on("click",()=>{

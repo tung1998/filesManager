@@ -103,7 +103,7 @@ router.post('/getPath', (req, res, next) => {
         if(result.length) {
             connection.query(`SELECT path FROM folder WHERE id =(Select In_folder from file where file_id="${idFile}")`, (err, result, field) => {
                 if (err) throw err;
-                console.log(result[0].path)
+                // console.log(result[0].path)
                 res.send(result[0].path);
                 res.end()
             })
@@ -113,23 +113,6 @@ router.post('/getPath', (req, res, next) => {
 });
 
 
-
-// router.post('/getFile', (req, res, next) => {
-//     const idFile = req.body.id;
-//     connection = res.app.locals.connection;
-//     // console.log(idFolder)
-//     connection.query(`SELECT In_folder,onDelete FROM file WHERE file_id ='${idFile}'`,(err, result, field) => {
-//         if(err) throw err;
-//         if(!result[0].onDelete){
-//             connection.query(`SELECT In_folder,type,onDelete FROM file WHERE file_id ='${idFile}'`,(err, result, field) => {
-//                 if (err) throw err;
-//
-//             })
-//             res.send(result);
-//         }
-//         else res.send(result[0].onDelete)
-//     })
-// });
 
 
 router.post('/renameFile', (req, res, next) => {

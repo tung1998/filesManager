@@ -377,3 +377,26 @@ function SCAddToLoveFolder(folder) {
         }
     })
 }
+
+
+
+function SCDownloadFile(id) {
+    console.log(id);
+    let data={
+        id:id
+    }
+    $.ajax({
+        type: 'post',
+        url: '/download',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            console.log(data);
+            if(!data) alertify.success("Can not download");
+            else {
+                window.open(data.path);
+                alertify.success("on Download");
+            }
+        }
+    })
+}

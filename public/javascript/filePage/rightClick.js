@@ -98,7 +98,7 @@ $(function() {
                     ALNotWorkFunction();
                 }},
             "download": {name: "Download File", icon: "fa-download",callback:(key,opt)=> {
-                    ALNotWorkFunction();
+                    SCDownloadFile(opt.$trigger.attr("idFile"));
                 }},
             "rename": {name: "rename", icon: "fa-pencil", callback: (key,opt) => {
                     ALRenameFile(opt.$trigger);
