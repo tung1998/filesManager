@@ -35,12 +35,12 @@ $(function () {
         }
     })
 
-    $(document).on('click', '#searchDropdown>a',function(){
+    $(document).on('click', '#searchDropdown>[idFile]',function(){
         let file = $(this);
         let type = file.attr("typeFile");
         let id = file.attr("idFile");
         let name = file.find('b').first().text();
-        SCGetFilePath(type,id,name);
+        showFile(type,id,name);
     })
 
 
@@ -86,7 +86,8 @@ $(function () {
         let type = file.attr("typeFile");
         let id = file.attr("idFile");
         let name = file.find('i').first().text();
-        SCGetFilePath(type,id,name);
+        if(localFolder.id==(-1)) ALRestoreFile(id);
+        else showFile(type,id,name);
     })
 
     // $('#folderCard a.folder-item').on('click' ,function () {

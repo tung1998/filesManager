@@ -4,8 +4,7 @@ const cookie = require('cookie');
 const path = require('path')
 const fs = require('fs');
 const formidable = require('formidable');
-const mkdirp = require('mkdirp');
-const mkpath = require('mkpath');
+const md5 = require("md5");
 
 
 
@@ -13,17 +12,10 @@ const mkpath = require('mkpath');
 router.post('/fileUpload/*', (req, res, next) => {
     let fileUpload = formidable.IncomingForm(),
         files = [];
-    let localPath = req.originalUrl.substr(17);
-    let UploadPath = path.join(__dirname,"../","public","userFile",localPath);
+    let UploadPath = path.join(__dirname,"../","public","userFile");
     console.log(UploadPath);
     connection = res.app.locals.connection;
 
-    if(!fs.existsSync(UploadPath)) {
-        mkdirp.sync(UploadPath,(err)=>{
-            if (err) console.log(err);
-        })
-        // mkpath(UploadPath);
-    }
     fileUpload.uploadDir = UploadPath;
     fileUpload
         .on('file', function(field, file) {
@@ -51,17 +43,17 @@ router.post('/fileUpload/*', (req, res, next) => {
                         if (err) throw err;
                         let id=result.insertId;
                         obj.id=id;
+                        connection.query(`UPDATE file set codeName="${md5(id)}" where file_id="${id}";`, (err, result, field) => {
+                            if (err) throw err;
+                        })
                         connection.query(`SELECT type FROM file where file_id="${id}";`, (err, result, field) => {
                             if (err) throw err;
                             obj.type=result[0].type;
-
-                            fs.rename(data.path, UploadPath + "/" + data.name, (err) => {
+                            fs.rename(data.path, UploadPath + "/" + md5(id), (err) => {
                                 if (err) throw err;
-                                console.log(obj);
+                                // console.log(obj);
                                 fileData.push(obj);
-                                console.log(i);
-
-
+                                // console.log(i);
                                 if(i==length){
                                     res.send(fileData);
                                     res.end();
@@ -89,53 +81,17 @@ router.post('/getFileData', (req, res, next) => {
 
 });
 
-router.post('/getPath', (req, res, next) => {
-    const idFile = req.body.id;
-    connection = res.app.locals.connection;
-
-    connection.query(`UPDATE file SET timeOpenRecent=NOW() WHERE file_id ="${idFile}"`, (err, result, field) => {
-        if (err) throw err;
-    })
-    // console.log(idFolder)
-    connection.query(`SELECT file_id FROM file WHERE file_id ="${idFile}" and onDelete ="0"`,(err, result, field) => {
-        if (err) throw err;
-        // console.log(result)
-        if(result.length) {
-            connection.query(`SELECT path FROM folder WHERE id =(Select In_folder from file where file_id="${idFile}")`, (err, result, field) => {
-                if (err) throw err;
-                // console.log(result[0].path)
-                res.send(result[0].path);
-                res.end()
-            })
-
-        }else res.send(false)
-    })
-});
 
 
 
 
 router.post('/renameFile', (req, res, next) => {
     const data = req.body;
-    console.log(data);
-    let Path = path.join(__dirname,"../","public","userFile",data.path);
-    console.log(Path)
     connection = res.app.locals.connection;
-    connection.query(`SELECT file_name FROM file WHERE file_id='${data.id}';`, (err, result, field) => {
+    connection.query(`UPDATE file SET file_name='${data.fileName}' WHERE file_id='${data.id}';`, (err, result, field) => {
         if(err) throw err;
-        console.log(result);
-        let oldPath = path.join(Path,result[0].file_name);
-        let newPath = path.join(Path,data.fileName)
-        console.log(oldPath);
-        console.log(newPath);
-        fs.rename(oldPath,newPath, (err) => {
-            if (err) throw err;
-            connection.query(`UPDATE file SET file_name='${data.fileName}' WHERE file_id='${data.id}';`, (err, result, field) => {
-                if(err) throw err;
-                res.send(true)
-                res.end();
-            })
-        });
+        res.send(true)
+        res.end();
     })
 
 });
@@ -166,6 +122,44 @@ router.post('/restoreFile', (req,res,next) => {
     })
     res.end();
 })
+
+router.post('/deleteFile', (req,res,next) => {
+    connection = res.app.locals.connection;
+    connection.query(`UPDATE file SET onDelete='2' WHERE file_id='${req.body.id}';`, (err, result, field) => {
+        if(err) throw err;
+    })
+    res.end();
+})
+
+
+
+router.post('/getCodeName', (req,res,next) => {
+    let id =req.body.id;
+    connection = res.app.locals.connection;
+    connection.query(`UPDATE file set timeOpenRecent =NOW() WHERE file_id='${id}';`, (err, result, field) => {
+        if(err) throw err;
+        connection.query(`SELECT codeName FROM file WHERE file_id='${id}';`, (err, result, field) => {
+            if (err) throw err;
+            console.log(result[0].codeName);
+            res.send({code: result[0].codeName})
+            res.end();
+        })
+    })
+})
+router.post('/getTxtData', (req,res,next) => {
+    let id =req.body.id;
+    let Path =path.join(__dirname,"../","public","userFile",id);
+    fs.readFile(Path, 'utf8', function (err,data) {
+        if (err) {
+            return console.log(err);
+        }
+        console.log(data);
+        data=data.split("\n");
+        res.send(data);
+        res.end();
+    });
+})
+
 
 router.post('/addToLove', (req,res,next) => {
     connection = res.app.locals.connection;

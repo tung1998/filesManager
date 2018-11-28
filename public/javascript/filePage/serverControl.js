@@ -187,22 +187,6 @@ function SCDeleteFile(file) {
 }
 
 
-function SCGetFilePath(type,id, name) {
-    $.ajax({
-        type: 'post',
-        url: '/file/getPath',
-        data: JSON.stringify({id:id}),
-        contentType: "application/json",
-        success: function (data) {
-            if(data==false) ALRestoreFile(id);
-            else {
-                // console.log("2");
-                showFile(type,name,data);
-            }
-        }
-    })
-}
-
 
 function SCAddNewFileToDb() {
     // console.log($("#fileUpload").val())
@@ -381,22 +365,15 @@ function SCAddToLoveFolder(folder) {
 
 
 function SCDownloadFile(id) {
-    console.log(id);
-    let data={
-        id:id
-    }
     $.ajax({
         type: 'post',
-        url: '/download',
+        url: '/file/getCodeName',
         dataType: 'json',
-        data: data,
+        data: {id:id},
         success: function (data) {
-            console.log(data);
-            if(!data) alertify.success("Can not download");
-            else {
-                window.open(data.path);
-                alertify.success("on Download");
-            }
+            window.open(`/download/${data.code}`)
         }
     })
 }
+
+

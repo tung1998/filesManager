@@ -9,7 +9,7 @@ body {
 }
 #pageContent{
   width: 100%;
-  min-height: 1000px;
+  min-height: 500px;
 }
 #folderPathDropdown a i{
   font-size: 25px;
@@ -50,11 +50,8 @@ float: right;
 #file-content{
     /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1500; /* Sit on top */
+    z-index: 15000; /* Sit on top */
     padding-top: 3px; /* Location of the box */
-    padding-bottom: 30px;
-    left: 0;
-    top: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
@@ -63,18 +60,33 @@ float: right;
 }
 #caption {
     font-size: 30px;
-    color: #5a6268;
-    margin-left: 30px;
     display: block;
     width: 80%;
-    color: #ccc;
+}
+.small-box #caption {
+    font-size: 15px;
+}
+.small-box.file-content#file-content{
+    height: auto;!important;
+    float: right;
+    max-height: 300px;
+    max-width: 240px;
+    bottom: 0px;!important;
+}
+.small-box>.modal-content{
+    margin-top: 10px;!important;
+
+}
+.small-box>.fileshow-topbar{
+    font-size: 20px;!important;
+    margin: 0px;!important;
 }
 #caption{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.modal-content, #caption {
+.modal-content{
 
     animation-name: zoom;
     animation-duration: 0.6s;
@@ -96,12 +108,13 @@ float: right;
     /*transition: 0.3s;*/
 /*}*/
 #fileBox{
-    position: fixed;
-    z-index: 16000;
-    height: 100%;
+    background: transparent ;
+    position: absolute;
+    height: 85%;
     width: 100%;
 }
-.txt-file{
+.modal-content.txt-file{
+    background-color: whitesmoke;!important;
     overflow: auto;
     min-height: 500px;
 }
@@ -109,6 +122,15 @@ float: right;
     width: 100%;
     margin-bottom: 50px;
     background-color: transparent ;
+}
+
+.small-box audio, .small-box video{
+    width: 100%;
+    margin-bottom: 0px;!important;
+}
+.small-box>.modal-content{
+    max-height: 100%;!important;
+    max-width: 100%;!important;
 }
 .modal-content {
     z-index: 20000;
@@ -119,8 +141,9 @@ float: right;
     margin-left: auto;
     margin-right: auto;
     margin-top: 30px;
-    background-repeat:no-repeat;
+    /*background-repeat:no-repeat;*/
     background-size:cover;
+    background-color: transparent;
 }
 
 /*.close:hover,*/

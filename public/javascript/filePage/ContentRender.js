@@ -94,3 +94,6 @@ function CRRenameFolder(id, folderName) {
 function CRRenameFile(id, fileName) {
     $('#fileCard').find(`[idFile=${id}]>i`).text(fileName);
 }
+
+
+
