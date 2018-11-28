@@ -73,7 +73,7 @@ router.post('/', function(req, res, next) {
                             if(err) throw err;
                             // console.log(`SELECT id from account where username = ${username};`)
                             console.log(result);
-                            connection.query(`update account set RootID = (select id from Folder where Owner_id = "${result[0].id}") where id ="${result[0].id}";`, (err, result, field) => {
+                            connection.query(`update account set RootID = (select id from folder where Owner_id = "${result[0].id}") where id ="${result[0].id}";`, (err, result, field) => {
                                 if(err) throw err;
                             });
                         });

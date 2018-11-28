@@ -50,12 +50,12 @@ router.post('/', (req, res, next) => {
     let id =  req.body.userID;
     console.log(id)
     // console.log(cookies.name);
-    connection.query(`SELECT * FROM folder WHERE Owner_id ='${id}' AND onLove = '1'`,(err, result, field) => {
+    connection.query(`SELECT * FROM folder WHERE Owner_id ='${id}' AND onLove = '1' AND onDelete = '0'`,(err, result, field) => {
         if(err) throw err;
         let data= {
             childrenFolder : result
         }
-        connection.query(`SELECT * FROM file WHERE Owner_id ='${id}' AND onLove = '1'`,(err, result, field) => {
+        connection.query(`SELECT * FROM file WHERE Owner_id ='${id}' AND onLove = '1' AND onDelete = '0'`,(err, result, field) => {
             if(err) throw err;
             data.childrenFile = result;
             res.send(data);

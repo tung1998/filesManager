@@ -58,6 +58,9 @@ float: right;
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
 }
+.txt-file>p{
+    margin: 10px;
+}
 #caption {
     font-size: 30px;
     display: block;
