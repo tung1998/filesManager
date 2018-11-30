@@ -188,12 +188,32 @@ router.get('/:user', (req, res, next) => {
     }
 
 });
+
+// function getTreeData(id,tree){
+//     connection.query(`SELECT * FROM folder WHERE id ='${id}' AND onDelete="0"`,(err, result, field) => {
+//         if(err) throw err;
+//         tree=result;
+//         connection.query(`SELECT id FROM folder WHERE Owner_id ='${id}' AND onDelete="0"`,(err, result, field) => {
+//             if (err) throw err;
+//             tree.childrenFolder=result;
+//             for (let i = 0; i<tree.childrenFolder.length;i++){
+//                 getTreeData(re.childrenFolder[i].id,tree.childrenFolder[i])
+//             }
+//         })
+//
+//     })
+//     return tree;
+// }
+
 //
 // router.get('/verify/:code', (req, res, next) => {
 //     res.render('filePage');
 // });
 
 module.exports = router;
+
+
+
 
 //
 // Object.prototype.isEmpty = function() {

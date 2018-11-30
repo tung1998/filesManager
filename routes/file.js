@@ -153,7 +153,7 @@ router.post('/getTxtData', (req,res,next) => {
         if (err) {
             return console.log(err);
         }
-        console.log(data);
+        // console.log(data);
         data=data.split("\n");
         res.send(data);
         res.end();
