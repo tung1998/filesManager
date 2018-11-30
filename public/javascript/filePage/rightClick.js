@@ -36,6 +36,11 @@ $(function() {
     $.contextMenu({
         selector: '.folder-item',
         items: {
+            "show": {name: "Show Folder", icon: "fa-eye", callback: (key,opt) => {
+                    let id = opt.$trigger.attr("idFolder")
+                    SCGetDataFolder(id);
+                }},
+            "sep1": "---------",
             "cut": {name: "Cut", icon: "cut",callback:()=> {
                     ALNotWorkFunction();
                 }},
@@ -48,7 +53,7 @@ $(function() {
             "delete": {name: "Add to trash", icon: "delete",callback:(key,opt)=> {
                     SCDeleteFolder(opt.$trigger);
                 }},
-            "sep1": "---------",
+            "sep2": "---------",
             "love": {name: "Love/UnLove", icon: "fa-heart",callback:(key,opt)=> {
                     SCAddToLoveFolder(opt.$trigger);
                 }},
@@ -78,6 +83,14 @@ $(function() {
     $.contextMenu({
         selector: '.file-item',
         items: {
+            "show": {name: "Show File", icon: "fa-eye", callback: (key,opt) => {
+                    let file = opt.$trigger;
+                    let type = file.attr("typeFile")
+                    let id = file.attr("idFile")
+                    let name = file.find('i').first().text();
+                    showFile(type,id,name);
+                }},
+            "sep1": "---------",
             "cut": {name: "Cut", icon: "cut",callback:()=> {
                     ALNotWorkFunction();
                 }},
@@ -90,7 +103,7 @@ $(function() {
             "delete": {name: "Add to trash", icon: "delete",callback:(key,opt)=> {
                     SCDeleteFile(opt.$trigger);
                 }},
-            "sep1": "---------",
+            "sep2": "---------",
             "love": {name: "Love/UnLove", icon: "fa-heart",callback:(key,opt)=> {
                     SCAddToLoveFile(opt.$trigger);
                 }},

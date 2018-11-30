@@ -30,6 +30,15 @@ $(function () {
     $(document).on('click',function(){
         if($("#Search").is(":focus")&&$("#Search").val().length>=3){
             $('#searchDropdown').addClass("show")
+            searchData()
+        }else {
+            $('#searchDropdown').removeClass("show");
+        }
+    })
+    $(document).on('dblclick',function(){
+        if($("#Search").is(":focus")&&$("#Search").val().length>=3){
+            $('#searchDropdown').addClass("show")
+            searchData()
         }else {
             $('#searchDropdown').removeClass("show");
         }

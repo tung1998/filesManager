@@ -287,6 +287,7 @@ function SCGetFileOpenRecent() {
 
 function SCGetDataSearch(text) {
     let data={
+        localFolder:localFolder.id,
         Owner_id: folderData.userInfo.id,
         text:text
     }
@@ -304,6 +305,7 @@ function SCGetDataSearch(text) {
 
 function SCGetSearchPage() {
     let data={
+        localFolder:localFolder.id,
         Owner_id: folderData.userInfo.id,
         text:$("#Search").val()
     }
@@ -315,8 +317,6 @@ function SCGetSearchPage() {
         success: function (data) {
             $("#errorStatus").hide();
             $("#pageContent").show();
-            localFolder.id=-6;
-            window.history.replaceState('trash', "Title", "/search/"+$("#Search").val());
             CRUpdateFolderCard(data.folderInfor);
             CRUpdateFileCard(data.fileInfor);
         }

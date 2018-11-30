@@ -31,13 +31,14 @@ router.get('/', (req, res, next) => {
 
 router.post('/search',(req,res,next)=>{
     let text = req.body.text;
-    let id = req.body.Owner_id
+    let id = req.body.Owner_id;
+    let localID =req.body.localFolder;
     connection = res.app.locals.connection;
     let data={};
-    connection.query(`SELECT * FROM folder WHERE FolderName COLLATE UTF8_GENERAL_CI LIKE '%${text}%' and Owner_id ="${id}" and onDelete="0" limit 20 `, (err, result, field) => {
+    connection.query(`SELECT * FROM folder WHERE FolderName COLLATE UTF8_GENERAL_CI LIKE '%${text}%' and Owner_id ="${id}" and In_folder ="${localID}" and onDelete="0" limit 20 `, (err, result, field) => {
         if (err) throw err;
         data.folderInfor = result;
-        connection.query(`SELECT * FROM file WHERE file_name COLLATE UTF8_GENERAL_CI LIKE '%${text}%'and Owner_id ="${id}" and onDelete="0" limit 20`, (err, result, field) => {
+        connection.query(`SELECT * FROM file WHERE file_name COLLATE UTF8_GENERAL_CI LIKE '%${text}%'and Owner_id ="${id}" and In_folder ="${localID}" and onDelete="0" limit 20`, (err, result, field) => {
             if (err) throw err;
             data.fileInfor = result;
             res.send(data);
