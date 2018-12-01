@@ -1,27 +1,19 @@
 div.row
     .col-sm-11
         .page-title-box
-            //#folderPath.btn-group
-                ul.list-inline.hide-phone.p-0.m-0
-                    li.list-inline-item
-                        button.btn.btn-path(type='button') local
-                        i.mdi.mdi-chevron-right
-                    li.list-inline-item(idFolder=da)
+            #folderPath.btn-group
+                ul#1.list-inline.hide-phone.p-0.m-0
+                ul#2.list-inline.hide-phone.p-0.m-0
+                    li#lastPath.list-inline-item
                         .dropdown.mo-mb-2
                             button.btn.btn-path.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
-                                | My Folder
+                                |
                                 .ripple-container
                             div#folderPathDropdown.dropdown-menu(x-placement='bottom-start' style='position: absolute; top: 36px; left: 0px; will-change: top, left;')
-                                a.dropdown-item.waves-effect(href='javascript:addNewFolder()')
+                                a.dropdown-item.waves-effect(href='javascript:ADAddNewFolder()')
                                     i.mdi.mdi-folder-plus
                                     | ADD New Folder
-                                a.dropdown-item(href='#')
-                                    i.mdi.mdi-folder-plus
-                                    | ADD New Folder
-                                a.dropdown-item(href='#')
-                                    i.mdi.mdi-folder-plus
-                                    | ADD New Folder
-    ul.list-inline.float-right.mb-0
+    //ul.list-inline.float-right.mb-0
         li.dropdown.notification-list(data-toggle="tooltip" data-placement="bottom" title="" data-original-title="messenger")
             a.nav-link.dropdown-toggle.arrow-none.waves-effect(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false')
                 i.ti-layout-list-thumb-alt.noti-icon

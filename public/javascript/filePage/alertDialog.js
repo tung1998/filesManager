@@ -1,30 +1,34 @@
 function ADAddNewFolder() {
-    //add
-    alertify
-        .placeholder("NewFolder")
-        .prompt("CreateNewFolder", function (folderName, ev) {
-            ev.preventDefault();
-            if(folderName) {
+    if (localFolder.id<0) alertify.error("Can't add folder Hear");
+    else {
+        alertify
+            .placeholder("NewFolder")
+            .prompt("CreateNewFolder", function (folderName, ev) {
+                ev.preventDefault();
+                if (folderName) {
 
-                //make new folder
-                if(checkFolderName(folderName)) {
-                    alertify.success("Add New Folder: " + folderName)
-                    SCAddNewFolderToDb(localFolder, folderName);
-                }
-                else {
-                    alertify.error('Folder already exists')
+                    //make new folder
+                    if (checkFolderName(folderName)) {
+                        alertify.success("Add New Folder: " + folderName)
+                        SCAddNewFolderToDb(localFolder, folderName);
+                    }
+                    else {
+                        alertify.error('Folder already exists')
+                        ADAddNewFolder();
+                    }
+
+                } else {
+                    alertify.error('Please insert FolderName')
                     ADAddNewFolder();
                 }
+            }, function (ev) {
+                ev.preventDefault();
 
-            }else {
-                alertify.error('Please insert FolderName')
-                ADAddNewFolder();
-            }
-        }, function(ev) {
-            ev.preventDefault();
-
-        });
+            });
+    }
 }
+
+
 
 function ALRenameFolder(folder) {
     alertify
@@ -128,6 +132,21 @@ function ALRestoreFile(fileId) {
     });
 }
 
+function ADShareFolder(idFolder) {
+    alertify
+        .placeholder("Email of username")
+        .prompt("Share To:", function (shareUser, ev) {
+            ev.preventDefault();
+            if (shareUser) {
+                SCShareFolder(idFolder,shareUser);
+            } else {
+                alertify.error('Please insert Email or UserName')
+            }
+        }, function (ev) {
+            ev.preventDefault();
+
+        });
+}
 
 function ALNotWorkFunction() {
     alertify.alert("Chức năng chưa được cập nhật, quý khách vui lòng sử dụng các chức năng khác");

@@ -29,16 +29,18 @@ router.post('/updateTree', (req, res, next) => {
 });
 
 router.post('/getFolderData', (req, res, next) => {
-    const idFolder = req.body.id;
+    let idFolder = req.body.id;
+    let path = req.body.path;
+    console.log(path,idFolder);
     connection = res.app.locals.connection;
-    connection.query(`SELECT * FROM folder WHERE id ='${idFolder}'`,(err, result, field) => {
+    connection.query(`SELECT * FROM folder WHERE id ='${idFolder}' OR path ='${path}'`,(err, result, field) => {
         if(err) throw err;
         if(result[0].onDelete==0) {
             let data = {
                 localFolder: result[0]
             }
             // console.log(idFolder)
-            connection.query(`SELECT * FROM folder WHERE In_folder ='${idFolder}' AND onDelete = '0'`, (err, result, field) => {
+            connection.query(`SELECT * FROM folder WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`, (err, result, field) => {
                 if (err) throw err;
                 data.childrenFolder = result;
                 res.send(data);

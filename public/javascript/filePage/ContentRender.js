@@ -30,13 +30,17 @@ function CRUpdateFileCard(childrenFile){
         $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.file_id}" typeFile="${item.type}">
                                         <i class="waves-effect mdi">${item.file_name}</i> 
                                     </a>`);
-    })
-    childrenFile.forEach(function (item) {
         if(item.onLove==1){
             $('#fileCard').find(`[idFile="${item.file_id}"]`).addClass("love")
         }
         CRAddFileIcon(item.file_id,item.type)
     })
+    // childrenFile.forEach(function (item) {
+    //     if(item.onLove==1){
+    //         $('#fileCard').find(`[idFile="${item.file_id}"]`).addClass("love")
+    //     }
+    //     CRAddFileIcon(item.file_id,item.type)
+    // })
 
 }
 
@@ -88,6 +92,38 @@ function CRUpdateSearch(data){
 }
 
 
+function CRUpdatePathBar(path) {
+    $('#folderPath>#1').empty();
+    let folder =path.split("/");
+    for (let i=folder.length-1;i>=0;i--){
+        if(i!=0) {
+            if (i == folder.length - 1) {
+                $('#lastPath button').text(`${folder[i]}`)
+            }
+            else {
+                path = path.slice(0, path.length - folder[i + 1].length - 1);
+                $('#folderPath>#1').prepend(`<li class="list-inline-item" pathFolder="${path}">
+                                            <button class="btn btn-path" type="button">${folder[i]}
+                                            <div class="ripple-container"></div></button>
+                                            <i class="mdi mdi-chevron-right"></i></li>`)
+            }
+        }else {
+            if (i == folder.length - 1) {
+                $('#lastPath button').text(`My Folder`)
+            }
+            else {
+                path = path.slice(0, path.length - folder[i + 1].length - 1);
+                $('#folderPath>#1').prepend(`<li class="list-inline-item" pathFolder="${path}">
+                                            <button class="btn btn-path" type="button">My Folder
+                                            <div class="ripple-container"></div></button>
+                                            <i class="mdi mdi-chevron-right"></i></li>`)
+            }
+        }
+    }
+}
+
+
+
 function CRRenameFolder(id, folderName) {
     $('#folderCard').find(`[idFolder=${id}]>i`).text(folderName);
 }
@@ -97,3 +133,32 @@ function CRRenameFile(id, fileName) {
 
 
 
+async function CRGetSearchPage() {
+    $('#folderCard').empty();
+    $('#fileCard').empty();
+    let text = $('#Search').val().toUpperCase();
+    localFolder.childrenFile.forEach((item) => {
+        if (item.file_name.toUpperCase().includes(text)) {
+            $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.file_id}" typeFile="${item.type}">
+                                        <i class="waves-effect mdi">${item.file_name}</i> 
+                                    </a>`);
+            if(item.onLove==1){
+                $('#fileCard').find(`[idFile="${item.file_id}"]`).addClass("love")
+            }
+            CRAddFileIcon(item.file_id,item.type)
+        }
+    })
+    localFolder.childrenFolder.forEach((item) => {
+        if (item.FolderName.toUpperCase().includes(text)) {
+            if(item.onLove==1) {
+                $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3 love" idFolder="${item.id}">
+                                            <i class="waves-effect mdi mdi-folder">${item.FolderName}</i> 
+                                        </a>`);
+            }else {
+                $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${item.id}">
+                                            <i class="waves-effect mdi mdi-folder">${item.FolderName}</i> 
+                                        </a>`);
+            }
+        }
+    })
+}

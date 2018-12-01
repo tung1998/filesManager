@@ -2,88 +2,87 @@
 // Top Bar Start
 div.topbar
     nav.navbar-custom
-        div
-            #searchForm.dropdown.notification-list.list-inline-item.nav-pro-img
-                div.dropdown.list-inline-item.hide-phone.app-search
-                    div(role='search')
-                        .form-group.pt-1
-                            input#Search.form-control(type='text' placeholder='Search..' onkeyup="searchData()")
-                            a(href='javascript:SCGetSearchPage();')
-                                i.fa.fa-search
-                #searchDropdown.dropdown-menu.dropdown-arrow.dropdown-menu-lg(x-placement='bottom-start' style='position: absolute; top: 36px; left: 0px; will-change: top, left;')
-                    //a.dropdown-item(href='#') Action
-                    //a.dropdown-item(href='#') Another action
+        #searchForm.dropdown.notification-list.list-inline-item.nav-pro-img
+            div.dropdown.list-inline-item.hide-phone.app-search
+                div(role='search')
+                    .form-group.pt-1
+                        input#Search.form-control(type='text' placeholder='Search..' onkeyup="SCGetSearchPage()")
+                        a(href='javascript:SCGetSearchPage();')
+                            i.fa.fa-search
+            #searchDropdown.dropdown-menu.dropdown-arrow.dropdown-menu-lg(x-placement='bottom-start' style='position: absolute; top: 36px; left: 0px; will-change: top, left;')
+                //a.dropdown-item(href='#') Action
+                //a.dropdown-item(href='#') Another action
+                .dropdown-divider
+                //a.dropdown-item(href='#') Separated link
+        ul.list-inline.float-right.mb-0.mr-3
+            // language
+            li.list-inline-item.dropdown.notification-list
+                a.nav-link.dropdown-toggle.arrow-none.waves-effect(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' )
+                    i.mdi.mdi-settings.noti-icon
+                .dropdown-menu.dropdown-menu-right.dropdown-arrow.dropdown-menu-lg
+                    // item
+                    .dropdown-item.noti-title.align-self-center
+                        h5
+                            | View Setting
+                    // item
+                    a.dropdown-item(href='javascript:ALNotWorkFunction();')
+                        i.mdi.mdi-view-list.m-r-5.text-muted
+                        |  List style
+                    a.dropdown-item.d-block(href='javascript:ALNotWorkFunction();')
+                        i.mdi.mdi-view-module.m-r-5.text-muted
+                        |  Grid Style
+                        .float-right.mdi.mdi-check
+            //li.list-inline-item.dropdown.notification-list
+            //    a.nav-link.dropdown-toggle.arrow-none.waves-effect(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false')
+            //        i.ti-bell.noti-icon
+            //        span.badge.badge-success.a-animate-blink.noti-icon-badge 3
+            //    .dropdown-menu.dropdown-menu-right.dropdown-arrow.dropdown-menu-lg
+            //        // item
+            //        .dropdown-item.noti-title
+            //            h5
+            //                span.badge.badge-danger.float-right 87
+            //                | Notification
+            //        // item
+            //        a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
+            //            .notify-icon.bg-primary
+            //                i.mdi.mdi-cart-outline
+            //            p.notify-details
+            //                b FunctionNotWork
+            //                small.text-muted FunctionNotWork
+            //        // item
+            //        a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
+            //            .notify-icon.bg-success
+            //                i.mdi.mdi-message
+            //            p.notify-details
+            //                b FunctionNotWork
+            //                small.text-muted FunctionNotWork
+            //        // item
+            //        a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
+            //            .notify-icon.bg-warning
+            //                i.mdi.mdi-martini
+            //            p.notify-details
+            //                b FunctionNotWork
+            //                small.text-muted FunctionNotWork
+            //        // All
+            //        a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
+            //            | View All
+            li.list-inline-item.dropdown.notification-list
+                a.nav-link.dropdown-toggle.arrow-none.waves-effect.nav-user(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false')
+                    img.rounded-circle.img-thumbnail(src='/assets/images/users/avatar-1.jpg' alt='user')
+                .dropdown-menu.dropdown-menu-right.profile-dropdown
+                    // item
+                    .dropdown-item.noti-title
+                        h5=folderData.userInfo.userName
+                    a.dropdown-item(href='javascript:ALNotWorkFunction();')
+                        i.mdi.mdi-account-circle.m-r-5.text-muted
+                        |  Profile
                     .dropdown-divider
-                    //a.dropdown-item(href='#') Separated link
-            ul.list-inline.float-right.mb-0.mr-3
-                // language
-                li.list-inline-item.dropdown.notification-list
-                    a.nav-link.dropdown-toggle.arrow-none.waves-effect(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' )
-                        i.mdi.mdi-settings.noti-icon
-                    .dropdown-menu.dropdown-menu-right.dropdown-arrow.dropdown-menu-lg
-                        // item
-                        .dropdown-item.noti-title.align-self-center
-                            h5
-                                | View Setting
-                        // item
-                        a.dropdown-item(href='javascript:ALNotWorkFunction();')
-                            i.mdi.mdi-view-list.m-r-5.text-muted
-                            |  List style
-                        a.dropdown-item.d-block(href='javascript:ALNotWorkFunction();')
-                            i.mdi.mdi-view-module.m-r-5.text-muted
-                            |  Grid Style
-                            .float-right.mdi.mdi-check
-                //li.list-inline-item.dropdown.notification-list
-                //    a.nav-link.dropdown-toggle.arrow-none.waves-effect(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false')
-                //        i.ti-bell.noti-icon
-                //        span.badge.badge-success.a-animate-blink.noti-icon-badge 3
-                //    .dropdown-menu.dropdown-menu-right.dropdown-arrow.dropdown-menu-lg
-                //        // item
-                //        .dropdown-item.noti-title
-                //            h5
-                //                span.badge.badge-danger.float-right 87
-                //                | Notification
-                //        // item
-                //        a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
-                //            .notify-icon.bg-primary
-                //                i.mdi.mdi-cart-outline
-                //            p.notify-details
-                //                b FunctionNotWork
-                //                small.text-muted FunctionNotWork
-                //        // item
-                //        a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
-                //            .notify-icon.bg-success
-                //                i.mdi.mdi-message
-                //            p.notify-details
-                //                b FunctionNotWork
-                //                small.text-muted FunctionNotWork
-                //        // item
-                //        a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
-                //            .notify-icon.bg-warning
-                //                i.mdi.mdi-martini
-                //            p.notify-details
-                //                b FunctionNotWork
-                //                small.text-muted FunctionNotWork
-                //        // All
-                //        a.dropdown-item.notify-item(href='javascript:ALNotWorkFunction();')
-                //            | View All
-                li.list-inline-item.dropdown.notification-list
-                    a.nav-link.dropdown-toggle.arrow-none.waves-effect.nav-user(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false')
-                        img.rounded-circle.img-thumbnail(src='/assets/images/users/avatar-1.jpg' alt='user')
-                    .dropdown-menu.dropdown-menu-right.profile-dropdown
-                        // item
-                        .dropdown-item.noti-title
-                            h5=folderData.userInfo.userName
-                        a.dropdown-item(href='javascript:ALNotWorkFunction();')
-                            i.mdi.mdi-account-circle.m-r-5.text-muted
-                            |  Profile
-                        .dropdown-divider
-                        a.dropdown-item(href='javascript:logout()')
-                            i.mdi.mdi-logout.m-r-5.text-muted
-                            |  Logout
-            ul.list-inline.menu-left.mb-0
-                li.float-left
-                    button.button-menu-mobile.open-left.waves-light.waves-effect
-                        i.mdi.mdi-menu
-            .clearfix
+                    a.dropdown-item(href='javascript:logout()')
+                        i.mdi.mdi-logout.m-r-5.text-muted
+                        |  Logout
+        ul.list-inline.menu-left.mb-0
+            li.float-left
+                button.button-menu-mobile.open-left.waves-light.waves-effect
+                    i.mdi.mdi-menu
+        .clearfix
         //include pathBar

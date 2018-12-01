@@ -13,7 +13,7 @@ router.post('/fileUpload/*', (req, res, next) => {
     let fileUpload = formidable.IncomingForm(),
         files = [];
     let UploadPath = path.join(__dirname,"../","public","userFile");
-    console.log(UploadPath);
+    // console.log(UploadPath);
     connection = res.app.locals.connection;
 
     fileUpload.uploadDir = UploadPath;

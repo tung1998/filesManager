@@ -25,27 +25,29 @@ function SCAddNewFolderToDb(ParentFolder, folderName) {
 
 
 
-function SCGetDataFolder(a){
+function SCGetDataFolder(id,path){
     $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
-    $(document).find(`#sidebar-menu li[idFolder=${a}]>a`).addClass("menu-nav-active");
+
 
     $.ajax({
         url:`/folder/getFolderData`,
         type:'post',
-        data: JSON.stringify({id:a}),
+        data: JSON.stringify({id:id,path:path}),
         contentType: "application/json",
         success: function(data){
             if(data==0){
-                ALRestoreFolder(a);
+                ALRestoreFolder(id);
             }else {
                 window.history.pushState(data, "Title", "/" + data.localFolder.path);
                 localFolder.childrenFolder = data;
                 localFolder = data.localFolder;
+                $(document).find(`#sidebar-menu li[idFolder=${data.localFolder.id}]>a`).addClass("menu-nav-active");
+                CRUpdatePathBar(localFolder.path)
                 CRUpdateFolderCard(data.childrenFolder)
                 $.ajax({
                     url:`/file/getFileData`,
                     type:'post',
-                    data: JSON.stringify({id:a}),
+                    data: JSON.stringify({id:data.localFolder.id}),
                     contentType: "application/json",
                     success: function(data){
                         localFolder.childrenFile=data;
@@ -236,8 +238,24 @@ function SCGetTrashData() {
         success: function (data) {
             $("#errorStatus").hide();
             $("#pageContent").show();
+            CRUpdatePathBar(`${localFolder.FolderName}/trash`)
             localFolder.id=(-1);
             window.history.replaceState('trash', "Title", "/trash");
+            CRUpdateFolderCard(data.childrenFolder);
+            CRUpdateFileCard(data.childrenFile);
+        }
+    })
+}
+function SCGetShareWithMeData() {
+    $.ajax({
+        type: 'post',
+        url: '/share/getShare',
+        success: function (data) {
+            $("#errorStatus").hide();
+            $("#pageContent").show();
+            CRUpdatePathBar(`${localFolder.FolderName}/shareWithMe`)
+            localFolder.id=(-1);
+            window.history.replaceState('shareWithMe', "Title", "/shareWithMe");
             CRUpdateFolderCard(data.childrenFolder);
             CRUpdateFileCard(data.childrenFile);
         }
@@ -257,6 +275,7 @@ function SCGetOnLoveData() {
             $("#errorStatus").hide();
             $("#pageContent").show();
             localFolder.id=(-2);
+            CRUpdatePathBar(`${localFolder.FolderName}/love`)
             window.history.replaceState('love', "Title", "/love");
             CRUpdateFolderCard(data.childrenFolder);
             CRUpdateFileCard(data.childrenFile);
@@ -278,6 +297,7 @@ function SCGetFileOpenRecent() {
             $("#errorStatus").hide();
             $("#pageContent").show();
             localFolder.id=(-3);
+            CRUpdatePathBar(`${localFolder.FolderName}/openRecent`);
             window.history.replaceState('openRecent', "Title", "/openRecent");
             CRUpdateFolderCard([]);
             CRUpdateFileCard(data);
@@ -303,26 +323,46 @@ function SCGetDataSearch(text) {
     })
 }
 
-function SCGetSearchPage() {
+
+
+
+async function SCGetSearchPage() {
+    CRGetSearchPage()
+    // let data={
+    //     localFolder:localFolder.id,
+    //     Owner_id: folderData.userInfo.id,
+    //     text:$("#Search").val()
+    // }
+    // $.ajax({
+    //     type: 'post',
+    //     url: '/search',
+    //     dataType: 'json',
+    //     data: data,
+    //     success: function (data) {
+    //         $("#errorStatus").hide();
+    //         $("#pageContent").show();
+    //         CRUpdateFolderCard(data.folderInfor);
+    //         CRUpdateFileCard(data.fileInfor);
+    //     }
+    // })
+}
+function SCShareFolder(idFolder,shareUser) {
     let data={
-        localFolder:localFolder.id,
-        Owner_id: folderData.userInfo.id,
-        text:$("#Search").val()
+        idFolder:idFolder,
+        shareUser:shareUser
     }
     $.ajax({
         type: 'post',
-        url: '/search',
+        url: '/share/shareFolder',
         dataType: 'json',
         data: data,
         success: function (data) {
-            $("#errorStatus").hide();
-            $("#pageContent").show();
-            CRUpdateFolderCard(data.folderInfor);
-            CRUpdateFileCard(data.fileInfor);
+            if(data.status==2) alertify.success(`Folder Share to: ${shareUser}`);
+            else if(data.status==4) alertify.error("Wrong Username or Email")
+            else alertify.error("Can not share")
         }
     })
 }
-
 
 
 function SCAddToLoveFile(file) {

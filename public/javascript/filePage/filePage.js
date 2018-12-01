@@ -23,24 +23,27 @@ $(function () {
     if(window.location.pathname=="/openRecent"){
         SCGetFileOpenRecent();
     }
+    if(window.location.pathname=="/shareWithMe"){
+        SCGetShareWithMeData();
+    }
 
     $('#myFile > a').addClass("menu-nav-active")
 
 
     $(document).on('click',function(){
         if($("#Search").is(":focus")&&$("#Search").val().length>=3){
-            $('#searchDropdown').addClass("show")
-            searchData()
+            // $('#searchDropdown').addClass("show");
+            SCGetSearchPage();
         }else {
-            $('#searchDropdown').removeClass("show");
+            // $('#searchDropdown').removeClass("show");
         }
     })
     $(document).on('dblclick',function(){
         if($("#Search").is(":focus")&&$("#Search").val().length>=3){
-            $('#searchDropdown').addClass("show")
-            searchData()
+            // $('#searchDropdown').addClass("show")
+            SCGetSearchPage();
         }else {
-            $('#searchDropdown').removeClass("show");
+            // $('#searchDropdown').removeClass("show");
         }
     })
 
@@ -77,7 +80,11 @@ $(function () {
 
 
     $(document).on('dblclick', '#folderCard a.folder-item', function () {
-        SCGetDataFolder($(this).attr('idFolder'));
+        SCGetDataFolder($(this).attr('idFolder'),"");
+    })
+
+    $(document).on('click', '#folderPath>ul#1>li', function () {
+        SCGetDataFolder("",$(this).attr("pathFolder"));
     })
 
 
@@ -103,7 +110,7 @@ $(function () {
     //     SCGetDataFolder($(this).attr('idFolder'));
     // })
 
-
+    CRUpdatePathBar(localFolder.path)
     CRUpdateFileCard(folderData.childrenFile);
     CRUpdateFolderCard(folderData.childrenFolder);
 

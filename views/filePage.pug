@@ -26,10 +26,12 @@ block content
                                     h1 can't not found:
                                         span= folderData.path
                             div#pageContent.container-fluid(style="display:none")
+                                include filePageElement/pathBar
                                 include filePageElement/fileContent
                                 include filePageElement/profile
                         else
                             div#pageContent.container-fluid
+                                include filePageElement/pathBar
                                 include filePageElement/fileContent
                                 include filePageElement/profile
 

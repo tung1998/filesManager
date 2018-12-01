@@ -2,13 +2,12 @@
 //ground right Click
 $(function() {
     $.contextMenu({
-        selector: '#pageContent',
+        selector: '#FileFolder',
         items: {
             "add": {name: "NewFolder",
                 icon: 'fa-plus',
                 callback:function () {
-                    if (localFolder.id<0) alertify.error("Can't add folder Hear");
-                    else ADAddNewFolder();   ///contentRender
+                    ADAddNewFolder();   ///contentRender
                 }},
             // "edit": {name: "Edit", icon: "edit",callback:()=> {
             //         ALNotWorkFunction();
@@ -57,8 +56,9 @@ $(function() {
             "love": {name: "Love/UnLove", icon: "fa-heart",callback:(key,opt)=> {
                     SCAddToLoveFolder(opt.$trigger);
                 }},
-            "share": {name: "Share File", icon: "fa-share-square-o",callback:(key,opt)=> {
-                    ALNotWorkFunction();
+            "share": {name: "Share Folder", icon: "fa-share-square-o",callback:(key,opt)=> {
+                    let idFolder = opt.$trigger.attr("idFolder")
+                    ADShareFolder(idFolder);
                 }},
             "download": {name: "Download File", icon: "fa-download",callback:(key,opt)=> {
                     ALNotWorkFunction();
