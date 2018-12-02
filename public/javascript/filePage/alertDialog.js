@@ -148,6 +148,22 @@ function ADShareFolder(idFolder) {
         });
 }
 
+function ADShareFile(idFile) {
+    alertify
+        .placeholder("Email of username")
+        .prompt("Share To:", function (shareUser, ev) {
+            ev.preventDefault();
+            if (shareUser) {
+                SCShareFile(idFile,shareUser);
+            } else {
+                alertify.error('Please insert Email or UserName')
+            }
+        }, function (ev) {
+            ev.preventDefault();
+
+        });
+}
+
 function ALNotWorkFunction() {
     alertify.alert("Chức năng chưa được cập nhật, quý khách vui lòng sử dụng các chức năng khác");
     return false;

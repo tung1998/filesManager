@@ -108,7 +108,8 @@ $(function() {
                     SCAddToLoveFile(opt.$trigger);
                 }},
             "share": {name: "Share File", icon: "fa-share-square-o",callback:(key,opt)=> {
-                    ALNotWorkFunction();
+                    let idFile = opt.$trigger.attr("idFile")
+                    ADShareFile(idFile);
                 }},
             "download": {name: "Download File", icon: "fa-download",callback:(key,opt)=> {
                     SCDownloadFile(opt.$trigger.attr("idFile"));

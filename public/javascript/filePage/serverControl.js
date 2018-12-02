@@ -409,7 +409,24 @@ function SCShareFolder(idFolder,shareUser) {
         }
     })
 }
-
+function SCShareFile(idFile,shareUser) {
+    let data={
+        idFile:idFile,
+        shareUser:shareUser
+    }
+    $.ajax({
+        type: 'post',
+        url: '/share/shareFile',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            console.log(data)
+            if(data.status==2) alertify.success(`Folder Share to: ${shareUser}`);
+            else if(data.status==4) alertify.error("Wrong Username or Email")
+            else alertify.error("Can not share")
+        }
+    })
+}
 
 function SCAddToLoveFile(file) {
     let data={
