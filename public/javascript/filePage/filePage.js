@@ -80,7 +80,8 @@ $(function () {
 
 
     $(document).on('dblclick', '#folderCard a.folder-item', function () {
-        SCGetDataFolder($(this).attr('idFolder'),"");
+        if(localFolder.id==(-7))SCGetShareWithMeFolderData($(this).attr('idFolder'),"")
+        else SCGetDataFolder($(this).attr('idFolder'),"");
     })
 
     $(document).on('click', '#folderPath>ul#1>li', function () {

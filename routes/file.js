@@ -10,7 +10,7 @@ const md5 = require("md5");
 
 
 router.post('/fileUpload/*', (req, res, next) => {
-    let cookies = cookie.parse(req.headers.cookie || '');
+
     let fileUpload = formidable.IncomingForm(),
         files = [];
     let UploadPath = path.join(__dirname,"../","public","userFile");

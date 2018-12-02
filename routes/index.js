@@ -6,21 +6,15 @@ const path =require("path");
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-    var cookies = cookie.parse(req.headers.cookie || '');
-    // console.log(req.headers.cookie);
-    console.log(cookies.name);
+    let cookies = cookie.parse(req.headers.cookie || '');
     if (!cookies.name) {
         res.render('loginPage');
     }
     else {
         connection = res.app.locals.connection;
-        connection.query(`SELECT id, username, activate FROM account WHERE cookie = "${cookies.name}"`, (err, result, field) => {
+        connection.query(`SELECT id, username FROM account WHERE cookie = "${cookies.name}"AND activate="1"`, (err, result, field) => {
             // console.log(result);
-            if (result.length) {
-                if (result[0].activate) {
-                    res.redirect(`/${result[0].username}`);
-                }
-            }
+            if (result.length) res.redirect(`/${result[0].username}`);
             else res.render('loginPage');
         })
     }
@@ -29,27 +23,27 @@ router.get('/', (req, res, next) => {
 
 
 
-router.post('/search',(req,res,next)=>{
-    let text = req.body.text;
-    let id = req.body.Owner_id;
-    let localID =req.body.localFolder;
-    connection = res.app.locals.connection;
-    let data={};
-    connection.query(`SELECT * FROM folder WHERE FolderName COLLATE UTF8_GENERAL_CI LIKE '%${text}%' and Owner_id ="${id}" and In_folder ="${localID}" and onDelete="0" limit 20 `, (err, result, field) => {
-        if (err) throw err;
-        data.folderInfor = result;
-        connection.query(`SELECT * FROM file WHERE file_name COLLATE UTF8_GENERAL_CI LIKE '%${text}%'and Owner_id ="${id}" and In_folder ="${localID}" and onDelete="0" limit 20`, (err, result, field) => {
-            if (err) throw err;
-            data.fileInfor = result;
-            res.send(data);
-            res.end();
-        })
-    })
-})
+// router.post('/search',(req,res,next)=>{
+//     let text = req.body.text;
+//     let id = req.body.Owner_id;
+//     let localID =req.body.localFolder;
+//     connection = res.app.locals.connection;
+//     let data={};
+//     connection.query(`SELECT * FROM folder WHERE FolderName COLLATE UTF8_GENERAL_CI LIKE '%${text}%' and Owner_id ="${id}" and In_folder ="${localID}" and onDelete="0" limit 20 `, (err, result, field) => {
+//         if (err) throw err;
+//         data.folderInfor = result;
+//         connection.query(`SELECT * FROM file WHERE file_name COLLATE UTF8_GENERAL_CI LIKE '%${text}%'and Owner_id ="${id}" and In_folder ="${localID}" and onDelete="0" limit 20`, (err, result, field) => {
+//             if (err) throw err;
+//             data.fileInfor = result;
+//             res.send(data);
+//             res.end();
+//         })
+//     })
+// })
 
-router.get('/verify/:code', (req, res, next) => {
-    res.render('filePage');
-});
+// router.get('/verify/:code', (req, res, next) => {
+//     res.render('filePage');
+// });
 
 router.get('/:user/*', (req, res, next) => {
     let user = req.params.user;
@@ -63,7 +57,7 @@ router.get('/:user/*', (req, res, next) => {
     }
     else {
         connection = res.app.locals.connection;
-        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+        connection.query(`SELECT id, RootID, username FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
             if(err) throw err;
             let data = {
                 userInfo: result[0],
@@ -71,7 +65,7 @@ router.get('/:user/*', (req, res, next) => {
             }
             if (result.length){
                 data.found = true;
-                connection.query(`SELECT * FROM folder WHERE path ='${Path}' AND Owner_id="${result[0].id}" AND onDelete='0'`,(err, result, field) => {
+                connection.query(`SELECT * FROM folder WHERE (path ='${Path}' AND Owner_id="${result[0].id}" AND onDelete='0')`,(err, result, field) => {
                     if(err) throw err;
                     if(result.length) {
                         data.localFolder = result[0];
@@ -118,6 +112,45 @@ router.get('/:user/*', (req, res, next) => {
                                 }
                             })
 
+                        }else if(user=="shareWithMe") {
+                            Path = Path.substr(12);
+                            console.log(Path);
+                            connection.query(`SELECT * FROM folder WHERE path ='${Path}' AND onDelete = '0'`, (err, result, field) => {
+                                if (err) throw err;
+                                if(result.length) {
+                                    connection.query(`SELECT * FROM folder_share WHERE id ='${result[0].id}' AND user_id = '${data.userInfo.id}'`, (err, result, field) => {
+                                        if (err) throw err;
+                                        if(result.length) {
+                                            data.localFolder = result[0]
+                                            connection.query(`SELECT * FROM folder WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`, (err, result, field) => {
+                                                if (err) throw err;
+                                                data.childrenFolder = result;
+                                                connection.query(`SELECT * FROM file WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`, (err, result, field) => {
+                                                    if (err) throw err;
+                                                    data.childrenFile = result;
+                                                    res.render("filePage", {folderData: data})
+                                                    res.end()
+                                                })
+                                            })
+                                        }else {
+                                            data.found = false;
+                                            data.localFolder = {};
+                                            data.childrenFolder = [];
+                                            data.childrenFile = [];
+                                            res.render("filePage", {folderData: data})
+                                        }
+                                    })
+
+
+                                }else {
+                                    data.found = false;
+                                    data.localFolder = {};
+                                    data.childrenFolder = [];
+                                    data.childrenFile = [];
+                                    res.render("filePage", {folderData: data})
+                                }
+                            })
+
                         }else {
                             data.found = false;
                             data.localFolder = {};
@@ -146,7 +179,7 @@ router.get('/:user', (req, res, next) => {
     }
     else {
         connection = res.app.locals.connection;
-        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+        connection.query(`SELECT id, RootID, username FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
             if(err) throw err;
             let data = {
                 userInfo: result[0],
@@ -221,3 +254,30 @@ module.exports = router;
 //     }
 //     return true;
 // }
+// function checkCookie(req,res,next) {
+//     let cookies = cookie.parse(req.headers.cookie || '');
+//     // console.log(req.headers.cookie);
+//     console.log(cookies.name);
+//     if (!cookies.name) {
+//         res.render('loginPage');
+//     }
+//     else {
+//         connection = res.app.locals.connection;
+//         connection.query(`SELECT id, RootID, username FROM account WHERE cookie = "${cookies.name}" `, (err, result, field) => {
+//             // console.log(result);
+//             if (result.length) {
+//                 req.body.user=result[0];
+//                 next();
+//             }
+//             else {
+//                 if(req.method=='GET') res.render('loginPage');
+//                 else res.send({status:0})
+//             }
+//         })
+//     }
+// }
+
+
+function f() {
+
+}

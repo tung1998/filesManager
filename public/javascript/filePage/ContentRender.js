@@ -94,7 +94,10 @@ function CRUpdateSearch(data){
 
 function CRUpdatePathBar(path) {
     $('#folderPath>#1').empty();
-    let folder =path.split("/");
+    let folder=[];
+    if (path!=undefined&&path.includes("/"))
+        folder =path.split("/");
+    else folder.push(path);
     for (let i=folder.length-1;i>=0;i--){
         if(i!=0) {
             if (i == folder.length - 1) {

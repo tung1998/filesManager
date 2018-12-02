@@ -56,8 +56,6 @@ connection.connect((err) => {
         return;
     }
 
-
-
     app.use('/trash', trashRouter);
     app.use('/love', loveRouter);
     app.use('/users', usersRouter);

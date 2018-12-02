@@ -29,25 +29,38 @@ router.post('/updateTree', (req, res, next) => {
 });
 
 router.post('/getFolderData', (req, res, next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
     let idFolder = req.body.id;
     let path = req.body.path;
-    console.log(path,idFolder);
+    // console.log(path,idFolder);
     connection = res.app.locals.connection;
-    connection.query(`SELECT * FROM folder WHERE id ='${idFolder}' OR path ='${path}'`,(err, result, field) => {
-        if(err) throw err;
-        if(result[0].onDelete==0) {
-            let data = {
-                localFolder: result[0]
-            }
-            // console.log(idFolder)
-            connection.query(`SELECT * FROM folder WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`, (err, result, field) => {
-                if (err) throw err;
-                data.childrenFolder = result;
-                res.send(data);
-                res.end()
-            })
-        }else res.send('0');
-    })
+    if (!cookies.name) {
+        res.send({status:0})
+    }
+    else {
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) {
+                connection.query(`SELECT * FROM folder WHERE id ='${idFolder}' AND Owner_id="${result[0].id}" OR path ='${path}' `, (err, result, field) => {
+                    if (err) throw err;
+                    if (result.length){
+                        if (result[0].onDelete == 0) {
+                            let data = {
+                                localFolder: result[0]
+                            }
+                            // console.log(idFolder)
+                            connection.query(`SELECT * FROM folder WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`, (err, result, field) => {
+                                if (err) throw err;
+                                data.childrenFolder = result;
+                                res.send(data);
+                                res.end()
+                            })
+                        } else res.send('0');
+                    }else res.send('1')
+                })
+            }else res.send("0");
+        })
+    }
 });
 
 
