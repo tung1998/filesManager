@@ -58,7 +58,7 @@ function ALRenameFolder(folder) {
 
 function ALRenameFile(file) {
     alertify
-        .defaultValue(file.children().first().text())
+        .defaultValue(file.find('i').first().text())
         .prompt("Rename file", function (fileName, ev) {
             ev.preventDefault();
             if(fileName) {
@@ -76,7 +76,7 @@ function ALRenameFile(file) {
 
             }else {
                 alertify.error('Please insert FolderName')
-                ALRenameFile(folder);
+                ALRenameFile(file);
             }
         }, function(ev) {
             ev.preventDefault();

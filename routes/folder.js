@@ -52,13 +52,13 @@ router.post('/getFolderData', (req, res, next) => {
 
 
 
-router.post('/trash', (req, res, next) => {
-    connection = res.app.locals.connection;
-    connection.query(`SELECT * FROM folder WHERE onDelete ='1'`,(err, result, field) => {
-        res.send(result);
-        res.end()
-    })
-});
+// router.post('/trash', (req, res, next) => {
+//     connection = res.app.locals.connection;
+//     connection.query(`SELECT * FROM folder WHERE onDelete ='1'`,(err, result, field) => {
+//         res.send(result);
+//         res.end()
+//     })
+// });
 
 
 

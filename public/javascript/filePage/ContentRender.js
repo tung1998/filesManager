@@ -4,7 +4,7 @@ function CRUpdateFolderCard(childrenFolder){
     $('#folderCard').empty();
     if(childrenFolder.length) $("#folderShow").show();
     else $("#folderShow").hide();
-    localFolder.childrenFolder=childrenFolder;
+    folderData.childrenFolder=childrenFolder;
     childrenFolder.forEach(function (item) {
         if(item.onLove==1) {
             $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3 love" idFolder="${item.id}">
@@ -25,7 +25,7 @@ function CRUpdateFileCard(childrenFile){
 
     if(childrenFile.length) $("#fileShow").show();
     else $("#fileShow").hide();
-    localFolder.childrenFile=childrenFile;
+    folderData.childrenFile=childrenFile;
     childrenFile.forEach(function (item) {
         $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.file_id}" typeFile="${item.type}">
                                         <i class="waves-effect mdi">${item.file_name}</i> 

@@ -10,62 +10,70 @@ const md5 = require("md5");
 
 
 router.post('/fileUpload/*', (req, res, next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
     let fileUpload = formidable.IncomingForm(),
         files = [];
     let UploadPath = path.join(__dirname,"../","public","userFile");
     // console.log(UploadPath);
     connection = res.app.locals.connection;
-
-    fileUpload.uploadDir = UploadPath;
-    fileUpload
-        .on('file', function(field, file) {
-            files.push([field, file]);
-        })
-    // console.log(files)
-    let fileData=[];
-    fileUpload.parse(req,(err, field, file)=>{
-        if(err) throw err;
-        let i=0;
-        let length =files.length
-        console.log(length);
-        for(let i=0;i<length;i++){
-            let data = file["fileUpload" + i];
-            // console.log(data);
-            connection.query(`SELECT file_id FROM file WHERE file_name ='${data.name}' AND In_folder='${field.OwnerID}'`,(err, result) => {
-                if (err) throw err;
-                let obj={
-                    name:data.name
-                }
-                i++;
-                console.log(obj);
-                if(result.length==0) {
-                    connection.query(`INSERT INTO file (file_name, In_folder, Owner_id, timeUpload) VALUES ('${data.name}', '${field.folderID}','${field.OwnerID}', NOW());`, (err, result, field) => {
-                        if (err) throw err;
-                        let id=result.insertId;
-                        obj.id=id;
-                        connection.query(`UPDATE file set codeName="${md5(id)}" where file_id="${id}";`, (err, result, field) => {
-                            if (err) throw err;
-                        })
-                        connection.query(`SELECT type FROM file where file_id="${id}";`, (err, result, field) => {
-                            if (err) throw err;
-                            obj.type=result[0].type;
-                            fs.rename(data.path, UploadPath + "/" + md5(id), (err) => {
-                                if (err) throw err;
-                                // console.log(obj);
-                                fileData.push(obj);
-                                // console.log(i);
-                                if(i==length){
-                                    res.send(fileData);
-                                    res.end();
-                                }
-                            });
-
-                        })
+    if (!cookies.name) {
+        res.send({status:0})
+    }
+    else {
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+            if (err) throw err;
+            if(result.length){
+                let idUser=result[0].id;
+                fileUpload.uploadDir = UploadPath;
+                fileUpload
+                    .on('file', function(field, file) {
+                        files.push([field, file]);
                     })
-                }
-            })
-        }
-    })
+                // console.log(files)
+                let uploadData={
+                    status:1,
+                    fileUpload:[]
+                };
+                fileUpload.parse(req,(err, field, file)=>{
+                    if(err) throw err;
+                    let length =files.length
+                    // console.log(length);
+                    for(let i=0;i<length;i++){
+                        let data = file["fileUpload" + i];
+                        // console.log(data);
+                        let fileName = data.name;
+                        connection.query(`INSERT INTO file (file_name, In_folder, Owner_id, timeUpload) VALUES ('${fileName}', '${field.folderID}','${idUser}', NOW());`, (err, result, field) => {
+                            if (err) throw err;
+                            let id=result.insertId;
+                            let obj={
+                                id:id,
+                                file_name:data.name
+                            };
+                            connection.query(`UPDATE file set codeName="${md5(id)}" where file_id="${id}";`, (err, result, field) => {
+                                if (err) throw err;
+                            })
+                            connection.query(`SELECT type FROM file where file_id="${id}";`, (err, result, field) => {
+                                if (err) throw err;
+                                obj.type=result[0].type;
+                                fs.rename(data.path, UploadPath + "/" + md5(id), (err) => {
+                                    if (err) throw err;
+                                    // console.log(obj);
+                                    uploadData.fileUpload.push(obj);
+                                    // console.log(i);
+                                    if(i+1==length){
+                                        res.send(uploadData);
+                                        res.end();
+                                    }
+                                });
+
+                            })
+                        })
+                    }
+                })
+            }else res.send({status: 0})
+
+        })
+    }
 });
 
 
@@ -182,4 +190,17 @@ router.post('/addToLove', (req,res,next) => {
 
     //
 })
+
+function checkInforCookie(cookie){
+    if(cookie){
+        connection.query(`SELECT * FROM account  WHERE cookie='${cookie}' AND activate = "1";`, (err, result, field) => {
+            if (err) throw err;
+            if(result.length) return result;
+        })
+    }else return false;
+}
+
+
+
+
 module.exports = router;

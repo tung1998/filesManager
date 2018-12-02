@@ -159,13 +159,13 @@ function profile() {
 
 function checkFolderName(folderName) {
     for(let i=0; i<folderData.childrenFolder.length; i++){
-        if (folderData.childrenFolder[i].FolderName === folderName) return false;
+        if (folderData.childrenFolder[i].FolderName == folderName) return false;
     }
     return true;
 }
 function checkFileName(fileName) {
     for(let i=0; i<folderData.childrenFile.length; i++){
-        if (folderData.childrenFile[i].file_name === fileName) return false;
+        if (folderData.childrenFile[i].file_name == fileName) return false;
     }
     return true;
 }

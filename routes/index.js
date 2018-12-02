@@ -15,7 +15,7 @@ router.get('/', (req, res, next) => {
     else {
         connection = res.app.locals.connection;
         connection.query(`SELECT id, username, activate FROM account WHERE cookie = "${cookies.name}"`, (err, result, field) => {
-            console.log(result);
+            // console.log(result);
             if (result.length) {
                 if (result[0].activate) {
                     res.redirect(`/${result[0].username}`);
@@ -82,7 +82,7 @@ router.get('/:user/*', (req, res, next) => {
                             connection.query(`SELECT * FROM file WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`, (err, result, field) => {
                                 if (err) throw err;
                                 data.childrenFile = result;
-                                console.log(result)
+                                // console.log(result)
                                 res.render('filePage', {folderData: data});
                                 res.end();
                             })
@@ -139,12 +139,9 @@ router.get('/:user/*', (req, res, next) => {
 
 
 router.get('/:user', (req, res, next) => {
-    var Path = req.originalUrl.substr(1);
-    var cookies = cookie.parse(req.headers.cookie || '');
-    // console.log(req.headers.cookie);
-    // console.log(cookies.name);
+    let Path = req.originalUrl.substr(1);
+    let cookies = cookie.parse(req.headers.cookie || '');
     if (!cookies.name) {
-        // res.redirect('/login');
         res.render('loginPage');
     }
     else {

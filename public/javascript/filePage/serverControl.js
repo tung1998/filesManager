@@ -39,7 +39,6 @@ function SCGetDataFolder(id,path){
                 ALRestoreFolder(id);
             }else {
                 window.history.pushState(data, "Title", "/" + data.localFolder.path);
-                localFolder.childrenFolder = data;
                 localFolder = data.localFolder;
                 $(document).find(`#sidebar-menu li[idFolder=${data.localFolder.id}]>a`).addClass("menu-nav-active");
                 CRUpdatePathBar(localFolder.path)
@@ -50,7 +49,6 @@ function SCGetDataFolder(id,path){
                     data: JSON.stringify({id:data.localFolder.id}),
                     contentType: "application/json",
                     success: function(data){
-                        localFolder.childrenFile=data;
                         CRUpdateFileCard(data)
                     }
                 });
@@ -198,7 +196,7 @@ function SCAddNewFileToDb() {
         fileUpload.append("fileUpload"+x, $(document).find('#fileUpload').get(0).files[x]);
     }
     fileUpload.append("folderID", localFolder.id);
-    fileUpload.append("OwnerID", localFolder.Owner_id);
+    // fileUpload.append("OwnerID", localFolder.Owner_id);
     // console.log(fileUpload);
     $.ajax({
         type: 'post',
@@ -211,16 +209,39 @@ function SCAddNewFileToDb() {
             ALOnUploadFile();
         },
         success: function (data) {
-            $("#fileShow").show()
-            // console.log(data);
-            data.forEach((item)=> {
-                folderData.childrenFile.push(item);
-                $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.id}" typeFile="${item.type}">
-                                            <i class="waves-effect mdi mdi-file">${item.name}</i> 
+            if(data.status==0) alertify.error("Can not upload")
+            else {
+                $("#fileShow").show()
+                // console.log(data);
+                data.fileUpload.forEach((item)=> {
+                    $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.id}" typeFile="${item.type}">
+                                            <i class="waves-effect mdi mdi-file">${item.file_name}</i> 
                                         </a>`);
-                CRAddFileIcon(item.id,item.type);
-            })
-            $(document).find("#alertUpload").html(`Upload Success`);
+                    CRAddFileIcon(item.id,item.type);
+                    let name = item.file_name;
+                    let x=0;
+                    // console.log(name);
+                    while (true){
+                        // console.log("12312321")
+                        if (checkFileName(item.file_name)){
+                            // console.log(item.file_name);
+                            folderData.childrenFile.push(item);
+                            if (x>0){
+
+                                SCRenameFile(item.id,item.file_name);
+                                break;
+                            }
+                            else{
+                                break;
+                            }
+                        }else {
+                            x++;
+                            item.file_name=name+"("+x+")";
+                        }
+                    } 
+                })
+                $(document).find("#alertUpload").html(`Upload Success`);
+            }
         }
     })
 }
