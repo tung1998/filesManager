@@ -13,6 +13,9 @@ function CRUpdateFolderCard(childrenFolder){
                                     <td class="col-4 list-view-path">${item.path}</td>
                                     <td class="col-1 list-view-size">${item.size}</td>
                                     <td class="col-2 list-view-time">${item.time_create}</td></tr>`)
+            if(item.onLove==1){
+                $('#list-row').find(`[idFolder="${item.id}"] td`).first().addClass("love")
+            }
         })
     }
 
@@ -52,6 +55,9 @@ function CRUpdateFileCard(childrenFile){
                                     <td class="col-1 list-view-size">${item.size}</td>
                                     <td class="col-2 list-view-time">${item.timeUpload}</td></tr>`)
             CRAddFileIconListStyle(item.file_id,item.type);
+            if(item.onLove==1){
+                $('#list-row').find(`[idFile="${item.file_id}"] td`).first().addClass("love")
+            }
         })
     }else {
         if(childrenFile.length) $("#fileShow").show();
@@ -208,6 +214,10 @@ async function CRGetSearchPage() {
                                     <td class="col-4 list-view-path">${localFolder.path}/${item.file_name}</td>
                                     <td class="col-1 list-view-size">${item.size}</td>
                                     <td class="col-2 list-view-time">${item.timeUpload}</td></tr>`)
+                CRAddFileIconListStyle(item.file_id,item.type);
+                if(item.onLove==1){
+                    $('#list-row').find(`[idFile="${item.file_id}"] td`).first().addClass("love")
+                }
             }
 
         })
@@ -219,6 +229,9 @@ async function CRGetSearchPage() {
                                     <td class="col-4 list-view-path">${item.path}</td>
                                     <td class="col-1 list-view-size">${item.size}</td>
                                     <td class="col-2 list-view-time">${item.time_create}</td></tr>`)
+                if(item.onLove==1){
+                    $('#list-row').find(`[idFolder="${item.id}"] td`).first().addClass("love")
+                }
             }
         })
     }else {
@@ -228,7 +241,7 @@ async function CRGetSearchPage() {
                                         <i class="waves-effect mdi">${item.file_name}</i> 
                                     </a>`);
                 if(item.onLove==1){
-                    $('#fileCard').find(`[idFile="${item.file_id}"]`).addClass("love")
+                    $('#fileCard').find(`[idFile="${item.file_id}"] i`).addClass("love")
                 }
                 CRAddFileIcon(item.file_id,item.type)
             }
