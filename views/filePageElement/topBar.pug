@@ -25,13 +25,14 @@ div.topbar
                         h5
                             | View Setting
                     // item
-                    a.dropdown-item(href='javascript:ALNotWorkFunction();')
+                    a#setListView.dropdown-item.d-block(href='javascript:setListView();')
                         i.mdi.mdi-view-list.m-r-5.text-muted
-                        |  List style
-                    a.dropdown-item.d-block(href='javascript:ALNotWorkFunction();')
+                        b  List style
+                        div.float-right.mdi
+                    a#setGridView.dropdown-item.d-block(href='javascript:setGridView();')
                         i.mdi.mdi-view-module.m-r-5.text-muted
-                        |  Grid Style
-                        .float-right.mdi.mdi-check
+                        b  Grid Style
+                        div.float-right.mdi
             //li.list-inline-item.dropdown.notification-list
             //    a.nav-link.dropdown-toggle.arrow-none.waves-effect(data-toggle='dropdown' href='#' role='button' aria-haspopup='false' aria-expanded='false')
             //        i.ti-bell.noti-icon

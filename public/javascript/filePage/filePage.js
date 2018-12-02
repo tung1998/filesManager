@@ -13,6 +13,11 @@ let localFolder = folderData.localFolder;
 
 
 $(function () {
+    if(localStorage.getItem('view')==1){
+        $('#setListView>div.float-right').addClass('mdi-check')
+    }else {
+        $('#setGridView>div.float-right').addClass('mdi-check')
+    }
 
     if(window.location.pathname=="/trash"){
         SCGetTrashData();
@@ -107,6 +112,25 @@ $(function () {
         else showFile(type,id,name);
     })
 
+
+    $(document).on('dblclick', '#list-row tr.file-item', function () {
+        // SCGetDataFile($(this).attr('idFolder'));
+        let file = $(this);
+        let type = file.attr("typeFile");
+        let id = file.attr("idFile");
+        let name = file.find('td.list-view-name').first().text();
+        if(localFolder.id==(-1)) ALRestoreFile(id);
+        else showFile(type,id,name);
+    })
+
+    $(document).on('dblclick', '#list-row tr.folder-item', function () {
+        // SCGetDataFile($(this).attr('idFolder'));
+        let file = $(this);
+        let id = file.attr("idFolder");
+        if(localFolder.id==(-1)) ALRestoreFolder(id);
+        else SCGetDataFolder(id);
+    })
+
     // $('#folderCard a.folder-item').on('click' ,function () {
     //     SCGetDataFolder($(this).attr('idFolder'));
     // })
@@ -150,8 +174,24 @@ function searchData() {
         SCGetDataSearch(text);
     }else $('#searchDropdown').removeClass("show");
 }
+function setGridView() {
+    localStorage.setItem('view','0');
+    $('#list-row').empty();
+    $('#setGridView>div.float-right').addClass('mdi-check')
+    $('#setListView>div.float-right').removeClass('mdi-check')
 
+    CRUpdateFolderCard(folderData.childrenFolder);
+    CRUpdateFileCard(folderData.childrenFile);
 
+}
+function setListView() {
+    localStorage.setItem('view','1');
+    $('#list-row').empty();
+    $('#setGridView>div.float-right').removeClass('mdi-check')
+    $('#setListView>div.float-right').addClass('mdi-check')
+    CRUpdateFolderCard(folderData.childrenFolder);
+    CRUpdateFileCard(folderData.childrenFile);
+}
 function profile() {
 
 }

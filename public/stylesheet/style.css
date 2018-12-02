@@ -151,6 +151,21 @@ float: right;
     background-color: transparent;
 }
 
+
+
+
+#list-row tr td{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#list-row tr{
+    cursor: pointer;
+}
+#list-row tr td.mdi{
+    font-size: 25px;
+}
 /*.close:hover,*/
 /*.close:focus {*/
     /*color: #bbb;*/

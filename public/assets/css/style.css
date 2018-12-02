@@ -1833,7 +1833,7 @@ code {
   Alertify
 ===================*/
 .alertify, .alertify-logs {
-  z-index: 9999;
+  z-index: 99999;
 }
 
 .alertify input {

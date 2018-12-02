@@ -38,6 +38,7 @@ function SCGetDataFolder(id,path){
             if(data==0){
                 ALRestoreFolder(id);
             }else {
+                $('#list-row').empty();
                 window.history.pushState(data, "Title", "/" + data.localFolder.path);
                 localFolder = data.localFolder;
                 $(document).find(`#sidebar-menu li[idFolder=${data.localFolder.id}]>a`).addClass("menu-nav-active");
@@ -257,9 +258,10 @@ function SCGetTrashData() {
         dataType: 'json',
         data: data,
         success: function (data) {
+            $('#list-row').empty();
             $("#errorStatus").hide();
             $("#pageContent").show();
-            CRUpdatePathBar(`${folderData.userInfo.username}/trash`)
+            CRUpdatePathBar(`${folderData.userInfo.username}/Trash`)
             localFolder.id=(-1);
             window.history.replaceState('trash', "Title", "/trash");
             CRUpdateFolderCard(data.childrenFolder);
@@ -272,9 +274,10 @@ function SCGetShareWithMeData() {
         type: 'post',
         url: '/share/getShare',
         success: function (data) {
+            $('#list-row').empty();
             $("#errorStatus").hide();
             $("#pageContent").show();
-            CRUpdatePathBar(`${folderData.userInfo.username}/shareWithMe`)
+            CRUpdatePathBar(`${folderData.userInfo.username}/Share With Me`)
             localFolder.id=(-7);
             window.history.replaceState('shareWithMe', "Title", "/shareWithMe");
             CRUpdateFolderCard(data.childrenFolder);
@@ -296,9 +299,10 @@ function SCGetShareWithMeFolderData(id,path) {
         success: function(data){
             if(data=='0') alertify.error("Can not upload")
             else {
+                $('#list-row').empty();
                 $("#errorStatus").hide();
                 $("#pageContent").show();
-                CRUpdatePathBar(`${folderData.userInfo.username}/shareWithMe/${data.localFolder.path}`)
+                CRUpdatePathBar(`${folderData.userInfo.username}/Share With Me/${data.localFolder.path}`)
                 window.history.replaceState('shareWithMe', "Title", `/shareWithMe/${data.localFolder.path}`);
                 CRUpdateFolderCard(data.childrenFolder);
                 CRUpdateFileCard(data.childrenFile);
@@ -318,10 +322,11 @@ function SCGetOnLoveData() {
         dataType: 'json',
         data: data,
         success: function (data) {
+            $('#list-row').empty();
             $("#errorStatus").hide();
             $("#pageContent").show();
             localFolder.id=(-2);
-            CRUpdatePathBar(`${folderData.userInfo.username}/love`)
+            CRUpdatePathBar(`${folderData.userInfo.username}/Love`)
             window.history.replaceState('love', "Title", "/love");
             CRUpdateFolderCard(data.childrenFolder);
             CRUpdateFileCard(data.childrenFile);
@@ -340,10 +345,11 @@ function SCGetFileOpenRecent() {
         dataType: 'json',
         data: data,
         success: function (data) {
+            $('#list-row').empty();
             $("#errorStatus").hide();
             $("#pageContent").show();
             localFolder.id=(-3);
-            CRUpdatePathBar(`${folderData.userInfo.username}/openRecent`);
+            CRUpdatePathBar(`${folderData.userInfo.username}/Open Recent`);
             window.history.replaceState('openRecent', "Title", "/openRecent");
             CRUpdateFolderCard([]);
             CRUpdateFileCard(data);

@@ -1,5 +1,15 @@
 div#FileFolder
-    div.row
+    div#listShow.card.m-b-30
+        table.table.table-hover
+            thead
+                tr.d-flex.col-md-12.row.waves-effect
+                    th.col-md-1 #
+                    th.col-md-4 Name
+                    th.col-md-4 Path
+                    th.col-md-1 Size
+                    th.col-md-2 Time Create
+            tbody#list-row
+    div#gridShow.row
         div#folderShow.col-md-12.col-xl-12
             //div.tag-content Folders
             div.card.m-b-30

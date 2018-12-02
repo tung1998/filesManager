@@ -4,12 +4,18 @@ const fileBox = $(document).find("#fileBox")
 const captionText = $(document).find("#caption")
 //download
 var codeName;
+var idFileOnShow;
+var nameFileOnShow;
 
 
 
 $(document).on("click","#download",function () {
-    let name = $(document).find("#caption>i").text();
+    // let name = $(document).find("#caption>i").text();
     window.open("/download/"+codeName);
+})
+
+$(document).on("click","#share",function () {
+    ADShareFile(idFileOnShow);
 })
 
 $(document).on("click","#close",function () {
@@ -25,6 +31,9 @@ $(document).on("click","#size",function () {
 
 
 async function showFile(type,id,name){
+
+    idFileOnShow=id;
+    nameFileOnShow=name
     $.ajax({
         type: 'post',
         url: '/file/getCodeName',
