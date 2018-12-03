@@ -64,8 +64,6 @@ function ALRenameFile(id,name) {
 
                 //make new folder
                 if(checkFileName(fileName)) {
-                    alertify.success(" Success change: " + fileName)
-                    console.log(id)
                     SCRenameFile(id, fileName)
                 }
                 else {

@@ -87,14 +87,27 @@ router.post('/fileUpload/*', (req, res, next) => {
 
 
 router.post('/getFileData', (req, res, next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
     const idFolder = req.body.id;
     connection = res.app.locals.connection;
         // console.log(idFolder)
-    connection.query(`SELECT * FROM file WHERE In_folder ='${idFolder}' AND onDelete = '0'`,(err, result, field) => {
-        if(err) throw err;
-        res.send(result);
-        res.end()
-    })
+    if (!cookies.name) {
+        // console.log("1234")
+        res.send({status:0})
+    }
+    else {
+        // console.log("123");
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+            if (err) throw err;
+            if(result.length) {
+                connection.query(`SELECT * FROM file WHERE In_folder ='${idFolder}' AND Owner_id="${result[0].id}" AND onDelete = '0'`, (err, result, field) => {
+                    if (err) throw err;
+                    res.send(result);
+                    res.end()
+                })
+            }else res.send({status:0})
+        })
+    }
 
 });
 
@@ -103,49 +116,134 @@ router.post('/getFileData', (req, res, next) => {
 
 
 router.post('/renameFile', (req, res, next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
     const data = req.body;
     connection = res.app.locals.connection;
-    connection.query(`UPDATE file SET file_name='${data.fileName}' WHERE file_id='${data.id}';`, (err, result, field) => {
-        if(err) throw err;
-        res.send(true)
-        res.end();
-    })
-
+    if (!cookies.name) {
+        // console.log("1234")
+        res.send({status:0})
+    }
+    else {
+        // console.log("123");
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) {
+                connection.query(`SELECT * FROM file WHERE file_id = "${req.body.id}" AND Owner_id="${result[0].id}"`, (err, result, field) => {
+                    if (err) throw err;
+                    if (result.length) {
+                        connection.query(`UPDATE file SET file_name='${data.fileName}' WHERE file_id='${data.id}';`, (err, result, field) => {
+                            if (err) throw err;
+                            res.send({status: 1})
+                            res.end();
+                        })
+                    }else res.send({status:0})
+                })
+            }else res.send({status:0})
+        })
+    }
 });
 
 router.post('/deleteFile', (req,res,next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
     connection = res.app.locals.connection;
-    connection.query(`UPDATE file SET onDelete='2' WHERE file_id='${req.body.id}';`, (err, result, field) => {
-        if(err) throw err;
-    })
-    res.end();
+    if (!cookies.name) {
+        // console.log("1234")
+        res.send({status:0})
+    }
+    else {
+        // console.log("123");
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) {
+                connection.query(`SELECT * FROM file WHERE file_id = "${req.body.id}" AND Owner_id="${result[0].id}"`, (err, result, field) => {
+                    if (err) throw err;
+                    if(result.length){
+                        connection.query(`UPDATE file SET onDelete='2' WHERE file_id='${req.body.id}';`, (err, result, field) => {
+                            if (err) throw err;
+                            res.send({status:1})
+                        })
+                    }else res.send({status:0})
+                })
+            }else res.send({status:0})
+        })
+    }
 })
 
 
 router.post('/openRecent', (req, res, next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
     // console.log(req.headers.cookie);
-    let id =  req.body.userID;
-    connection.query(`SELECT * FROM file WHERE Owner_id ='${id}' AND DATEDIFF( NOW(), timeOpenRecent)<1`,(err, result, field) => {
-        if(err) throw err;
-        res.send(result);
-        res.end();
-    })
+    if (!cookies.name) {
+        // console.log("1234")
+        res.send({status:0})
+    }
+    else {
+        // console.log("123");
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) {
+                connection.query(`SELECT * FROM file WHERE Owner_id ='${result[0].id}' AND DATEDIFF( NOW(), timeOpenRecent)<1`, (err, result, field) => {
+                    if (err) throw err;
+                    res.send(result);
+                    res.end();
+                })
+            }else res.send({status:0})
+        })
+    }
 });
 
 router.post('/restoreFile', (req,res,next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
     connection = res.app.locals.connection;
-    connection.query(`UPDATE file SET onDelete='0' WHERE file_id='${req.body.id}';`, (err, result, field) => {
-        if(err) throw err;
-    })
-    res.end();
+    if (!cookies.name) {
+        // console.log("1234")
+        res.send({status:0})
+    }
+    else {
+        // console.log("123");
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) {
+                connection.query(`SELECT * FROM file WHERE  file_id='${req.body.id}' AND Owner_id="${result[0].id}"`, (err, result, field) => {
+                    if (err) throw err;
+                    if (result.length) {
+                        connection.query(`UPDATE file SET onDelete='0' WHERE file_id='${req.body.id}';`, (err, result, field) => {
+                            if (err) throw err;
+                        })
+                        res.send({status: 1})
+                        res.end();
+                    }else res.send({status:0});
+                })
+            }else res.send({status:0});
+        })
+    }
 })
 
 router.post('/deleteFile', (req,res,next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
     connection = res.app.locals.connection;
-    connection.query(`UPDATE file SET onDelete='2' WHERE file_id='${req.body.id}';`, (err, result, field) => {
-        if(err) throw err;
-    })
-    res.end();
+    if (!cookies.name) {
+        // console.log("1234")
+        res.send({status:0})
+    }
+    else {
+        // console.log("123");
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) {
+                connection.query(`SELECT * FROM file WHERE file_id='${req.body.id}' AND Owner_id ='${result[0].id}'`, (err, result, field) => {
+                    if (err) throw err;
+                    if (result.length) {
+                        connection.query(`UPDATE file SET onDelete='2' WHERE file_id='${req.body.id}' ;`, (err, result, field) => {
+                            if (err) throw err;
+                        })
+                        res.send({status:1})
+                        res.end();
+                    }else res.send({status:0})
+                })
+            }else res.send({status:0})
+        })
+    }
 })
 
 
@@ -180,10 +278,10 @@ router.post('/getCodeName', (req,res,next) => {
                                 if(result.length){
                                     res.send({code: file.codeName})
                                     res.end();
-                                }else res.send('0')
+                                }else res.send({status:0})
                             })
                         }
-                    }else res.send("0");
+                    }else res.send({status:0})
                 })
 
             }
@@ -191,41 +289,95 @@ router.post('/getCodeName', (req,res,next) => {
     }
 })
 router.post('/getTxtData', (req,res,next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
     let id =req.body.id;
-    let Path =path.join(__dirname,"../","public","userFile",id);
-    fs.readFile(Path, 'utf8', function (err,data) {
-        if (err) {
-            return console.log(err);
-        }
-        // console.log(data);
-        data=data.split("\n");
-        res.send(data);
-        res.end();
-    });
+    let Path = path.join(__dirname, "../", "public", "userFile", id);
+    if (!cookies.name) {
+        // console.log("1234")
+        res.send({status:0})
+    }
+    else {
+        // console.log("123");
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) {
+                console.log(id);
+                let user = result[0];
+                connection.query(`SELECT * FROM file WHERE codeName='${id}';`, (err, result, field) => {
+                    if (err) throw err;
+                    let file = result[0];
+                    if (result.length) {
+                        if (file.Owner_id == user.id) {
+                            fs.readFile(Path, 'utf8', function (err, data) {
+                                if (err) {
+                                    return console.log(err);
+                                }
+                                // console.log(data);
+                                data = data.split("\n");
+                                res.send(data);
+                                res.end();
+                            });
+                        }else {
+                            connection.query(`SELECT * FROM file_share WHERE file_id='${file.file_id}' AND user_id='${user.id}';`, (err, result, field) => {
+                                if (err) throw err;
+                                if(result.length){
+                                    fs.readFile(Path, 'utf8', function (err, data) {
+                                        if (err) {
+                                            return console.log(err);
+                                        }
+                                        // console.log(data);
+                                        data = data.split("\n");
+                                        res.send(data);
+                                        res.end();
+                                    });
+                                }else res.send({status:0})
+                            })
+                        }
+                    }
+                })
+            }else res.send({status:0});
+        })
+    }
 })
 
 
 router.post('/addToLove', (req,res,next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
     connection = res.app.locals.connection;
-    connection.query(`SELECT onLove FROM file WHERE file_id='${req.body.id}';`, (err, result, field) => {
-        if (err) throw err;
-        if(result[0].onLove==0) {
-            connection.query(`UPDATE file SET onLove='1' WHERE file_id='${req.body.id}';`, (err, result, field) => {
-                if (err) throw err;
-                res.send(true)
-                res.end();
-            })
-        }else {
-            connection.query(`UPDATE file SET onLove='0' WHERE file_id='${req.body.id}';`, (err, result, field) => {
-                if (err) throw err;
-                res.send(false)
-                res.end();
-            })
-        }
-    })
-
+    if (!cookies.name) {
+        // console.log("1234")
+        res.send({status:0})
+    }
+    else {
+        // console.log("123");
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) {
+                connection.query(`SELECT onLove FROM file WHERE file_id='${req.body.id}' AND Owner_id='${result[0].id}';`, (err, result, field) => {
+                    if (err) throw err;
+                    if(result.length){
+                        if (result[0].onLove == 0) {
+                            connection.query(`UPDATE file SET onLove='1' WHERE file_id='${req.body.id}';`, (err, result, field) => {
+                                if (err) throw err;
+                                res.send(true)
+                                res.end();
+                            })
+                        } else {
+                            connection.query(`UPDATE file SET onLove='0' WHERE file_id='${req.body.id}';`, (err, result, field) => {
+                                if (err) throw err;
+                                res.send(false)
+                                res.end();
+                            })
+                        }
+                    }else res.send({status:0})
+                })
+            }else res.send({status:0})
+        })
+    }
     //
 })
+
+
 
 async function updatesize(id,size){
     console.log(id,size)

@@ -127,13 +127,17 @@ function SCRenameFile(id, fileName){
         url: '/file/renameFile',
         data: JSON.stringify(data),
         contentType: "application/json",
-        success: function () {
-            CRRenameFile(id,fileName)
-            folderData.childrenFile.forEach(function (item) {
-                if(item.file_id==id){
-                    item.file_name = fileName;
-                }
-            })
+        success: function (data) {
+            console.log(data);
+            if(data.status){
+                CRRenameFile(id,fileName)
+                folderData.childrenFile.forEach(function (item) {
+                    if(item.file_id==id){
+                        item.file_name = fileName;
+                    }
+                })
+            }
+            else alertify.error("Can not rename file")
         }
     })
 }
@@ -146,11 +150,14 @@ function SCDeleteFolder(folder) {
         url: '/folder/deleteFolder',
         data: JSON.stringify({id:id}),
         contentType: "application/json",
-        success: function () {
-            ALDeleteStatus(true);
-            $(document).find(folder).remove();
-            // $('#list-row').find(`[idFolder=${id}]`).remove();
-            $(document).find(`#myFolder [idFolder*='${folder.attr('idFolder')}']`).remove();
+        success: function (data) {
+            if(data.status){
+                ALDeleteStatus(true);
+                $(document).find(folder).remove();
+                // $('#list-row').find(`[idFolder=${id}]`).remove();
+                $(document).find(`#myFolder [idFolder*='${folder.attr('idFolder')}']`).remove();
+            }else alertify.error("Can not delete folder")
+
         }
     })
 }
@@ -161,9 +168,12 @@ function SCRestoreFolder(folderID) {
         url: '/folder/restoreFolder',
         data: JSON.stringify({id:folderID}),
         contentType: "application/json",
-        success: function () {
-            $('#list-row').find(`[idFolder=${folderID}]`).remove();
-            $(document).find(`#folderCard>a[idFolder=${folderID}]`).remove();
+        success: function (data) {
+            if(data.status==0) alertify.error("Can not restore folder")
+            else {
+                $('#list-row').find(`[idFolder=${folderID}]`).remove();
+                $(document).find(`#folderCard>a[idFolder=${folderID}]`).remove();
+            }
         }
     })
 }
@@ -174,9 +184,12 @@ function SCRestoreFile(fileID) {
         url: '/file/restoreFile',
         data: JSON.stringify({id:fileID}),
         contentType: "application/json",
-        success: function () {
-            $('#list-row').find(`[idFile=${fileID}]`).remove();
-            $(document).find(`#fileCard>a[idFile=${fileID}]`).remove();
+        success: function (data) {
+            if(data.status==0) alertify.error("Can not restore file")
+            else {
+                $('#list-row').find(`[idFile=${fileID}]`).remove();
+                $(document).find(`#fileCard>a[idFile=${fileID}]`).remove();
+            }
         }
     })
 }
@@ -190,9 +203,12 @@ function SCDeleteFile(file) {
         url: '/file/deleteFile',
         data: JSON.stringify({id:id}),
         contentType: "application/json",
-        success: function () {
-            ALDeleteStatus(true);
-            $(document).find(file).remove();
+        success: function (data) {
+            if(data.status){
+                ALDeleteStatus(true);
+                $(document).find(file).remove();
+            }alertify.error("Can not delete file")
+
         }
     })
 }
@@ -495,8 +511,16 @@ function SCAddToLoveFile(file) {
         success: function (data) {
             ALAddToLove(data)
             if(data){
+                folderData.childrenFile.forEach((item)=>{
+                    if(item.file_id==file.attr('idFile')) item.onLove=1;
+                })
                 file.addClass("love")
-            }else file.removeClass("love")
+            }else {
+                folderData.childrenFile.forEach((item)=>{
+                    if(item.file_id==file.attr('idFile')) item.onLove=0;
+                })
+                file.removeClass("love")
+            }
         }
     })
 }
@@ -513,8 +537,16 @@ function SCAddToLoveFolder(folder) {
         success: function (data) {
             ALAddToLove(data)
             if(data){
+                folderData.childrenFolder.forEach((item)=>{
+                    if(item.id==folder.attr('idFolder')) item.onLove=1;
+                })
                 folder.addClass("love")
-            }else folder.removeClass("love")
+            }else {
+                folderData.childrenFolder.forEach((item)=>{
+                    if(item.id==folder.attr('idFolder')) item.onLove=0;
+                })
+                folder.removeClass("love")
+            }
 
         }
     })
