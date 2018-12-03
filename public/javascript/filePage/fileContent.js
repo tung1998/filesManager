@@ -41,6 +41,7 @@ async function showFile(type,id,name){
         data: {id:id},
         success: function (data) {
             codeName = data.code;
+            console.log(codeName);
             $('.modal-content').remove()
             // console.log(file)
             captionText.find('i').text(name)

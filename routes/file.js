@@ -44,24 +44,24 @@ router.post('/fileUpload/*', (req, res, next) => {
                         let data = file["fileUpload" + i];
                         // console.log(data);
                         let fileName = data.name;
+                        let idFile=[];
                         updatesize(field.folderID,data.size);
-                        connection.query(`INSERT INTO file (file_name, In_folder, Owner_id, timeUpload, size) VALUES ('${fileName}', '${field.folderID}','${idUser}', NOW(),'${data.size}');`, (err, result, field) => {
+                        connection.query(`INSERT INTO file (file_name, In_folder, Owner_id, timeUpload, size) VALUES ('${fileName}', '${field.folderID}','${idUser}', NOW(),'${data.size}');`, (err, result) => {
                             if (err) throw err;
                             let id=result.insertId;
                             let date =new Date();
-
+                            idFile.push(id);
                             let obj={
                                 file_id:id,
                                 file_name:data.name,
                                 size:data.size,
                                 timeUpload:`${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
                             };
-
                             connection.query(`UPDATE file set codeName="${md5(id)}" where file_id="${id}";`, (err, result, field) => {
                                 if (err) throw err;
                             })
 
-                            connection.query(`SELECT type FROM file where file_id="${id}";`, (err, result, field) => {
+                            connection.query(`SELECT type FROM file where file_id="${id}";`, (err, result) => {
                                 if (err) throw err;
                                 obj.type=result[0].type;
                                 fs.rename(data.path, UploadPath + "/" + md5(id), (err) => {
@@ -70,6 +70,7 @@ router.post('/fileUpload/*', (req, res, next) => {
                                     uploadData.fileUpload.push(obj);
                                     // console.log(i);
                                     if(i+1==length){
+                                        shareWhileUpload(field.folderID,idUser,idFile);
                                         res.send(uploadData);
                                         res.end();
                                     }
@@ -262,6 +263,7 @@ router.post('/getCodeName', (req,res,next) => {
             if (err) throw err;
             let user = result[0];
             if (result.length) {
+
                 connection.query(`SELECT * FROM file WHERE file_id='${id}';`, (err, result, field) => {
                     if (err) throw err;
                     let file = result[0];
@@ -301,7 +303,6 @@ router.post('/getTxtData', (req,res,next) => {
         connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
             if (err) throw err;
             if (result.length) {
-                console.log(id);
                 let user = result[0];
                 connection.query(`SELECT * FROM file WHERE codeName='${id}';`, (err, result, field) => {
                     if (err) throw err;
@@ -377,7 +378,21 @@ router.post('/addToLove', (req,res,next) => {
     //
 })
 
-
+function shareWhileUpload(idFolder,idUser,idFile){
+    connection.query(`SELECT user_id FROM folder_share WHERE id='${idFolder}';`, (err, result, field) => {
+        if (err) throw err;
+        if(result.length){
+            let shareID = result;
+            idFile.forEach((file)=> {
+                shareID.forEach((user)=>{
+                    connection.query(`INSERT INTO file_share SET file_id='${file}',user_id='${user.user_id}' ;`, (err, result, field) => {
+                        if (err) throw err;
+                    })
+                })
+            })
+        }
+    })
+}
 
 async function updatesize(id,size){
     console.log(id,size)
@@ -392,6 +407,5 @@ async function updatesize(id,size){
         }else return
     })
 }
-
 
 module.exports = router;
