@@ -54,7 +54,10 @@ $(function() {
                 }},
             "sep2": "---------",
             "love": {name: "Love/UnLove", icon: "fa-heart",callback:(key,opt)=> {
-                    SCAddToLoveFolder(opt.$trigger);
+                    if (localFolder.id==-7) alertify.error("Can't add to love folder");
+                    else {
+                        SCAddToLoveFolder(opt.$trigger);
+                    }
                 }},
             "share": {name: "Share Folder", icon: "fa-share-square-o",callback:(key,opt)=> {
                     let idFolder = opt.$trigger.attr("idFolder")
@@ -110,7 +113,10 @@ $(function() {
                 }},
             "sep2": "---------",
             "love": {name: "Love/UnLove", icon: "fa-heart",callback:(key,opt)=> {
-                    SCAddToLoveFile(opt.$trigger);
+                    if (localFolder.id==-7) alertify.error("Can't add to love file");
+                    else {
+                        SCAddToLoveFile(opt.$trigger);
+                    }
                 }},
             "share": {name: "Share File", icon: "fa-share-square-o",callback:(key,opt)=> {
                     let idFile = opt.$trigger.attr("idFile")

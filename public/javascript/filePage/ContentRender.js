@@ -15,7 +15,7 @@ function CRUpdateFolderCard(childrenFolder){
                                     <td class="col-1 list-view-size">${CRSize(item.id,item.size)}</td>
                                     <td class="col-2 list-view-time">${item.time_create}</td></tr>`)
 
-            if(item.onLove==1){
+            if(item.onLove==1&&localFolder.id!=-7){
                 $('#list-row').find(`tr[idFolder="${item.id}"]`).first().addClass("love")
             }
         })
@@ -28,7 +28,7 @@ function CRUpdateFolderCard(childrenFolder){
         else $("#folderShow").hide();
 
         childrenFolder.forEach(function (item) {
-            if(item.onLove==1) {
+            if(item.onLove==1&&localFolder.id!=-7) {
                 $('#folderCard').prepend(`<a class="folder-item col-sm-6 col-md-4 col-lg-3 love " idFolder="${item.id}">
                                             <i class="waves-effect mdi mdi-folder">${item.FolderName}</i> 
                                         </a>`);
@@ -57,7 +57,7 @@ function CRUpdateFileCard(childrenFile){
                                     <td class="col-4 list-view-path">${localFolder.path}/${item.file_name}</td>
                                     <td class="col-1 list-view-size">${CRSize(item.file_id,item.size)}</td>
                                     <td class="col-2 list-view-time">${item.timeUpload}</td></tr>`)
-            if(item.onLove==1){
+            if(item.onLove==1&&localFolder.id!=-7){
                 $('#list-row').find(`tr[idFile="${item.file_id}"]`).first().addClass("love")
             }
         })
@@ -70,7 +70,7 @@ function CRUpdateFileCard(childrenFile){
             $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.file_id}" typeFile="${item.type}">
                                         <i class="waves-effect mdi ${CRAddFileIcon(item.file_id,item.type)}">${item.file_name}</i> 
                                     </a>`);
-            if(item.onLove==1){
+            if(item.onLove==1&&localFolder.id!=-7){
                 $('#fileCard').find(`[idFile="${item.file_id}"]`).addClass("love")
             }
         })
@@ -177,7 +177,7 @@ async function CRGetSearchPage() {
                                     <td class="col-4 list-view-path">${localFolder.path}/${item.file_name}</td>
                                     <td class="col-1 list-view-size">${CRSize(item.file_id,item.size)}</td>
                                     <td class="col-2 list-view-time">${item.timeUpload}</td></tr>`)
-                if(item.onLove==1){
+                if(item.onLove==1&&localFolder.id!=-7){
                     $('#list-row').find(`[idFile="${item.file_id}"] td`).first().addClass("love")
                 }
             }
@@ -191,7 +191,7 @@ async function CRGetSearchPage() {
                                     <td class="col-4 list-view-path">${item.path}</td>
                                     <td class="col-1 list-view-size">${CRSize(item.id,item.size)}</td>
                                     <td class="col-2 list-view-time">${item.time_create}</td></tr>`)
-                if(item.onLove==1){
+                if(item.onLove==1&&localFolder.id!=-7){
                     $('#list-row').find(`[idFolder="${item.id}"] td`).first().addClass("love")
                 }
             }
@@ -202,14 +202,14 @@ async function CRGetSearchPage() {
                 $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.file_id}" typeFile="${item.type}">
                                         <i class="waves-effect mdi ${CRAddFileIcon(item.file_id,item.type)}>${item.file_name}</i> 
                                     </a>`);
-                if(item.onLove==1){
+                if(item.onLove==1&&localFolder.id!=-7){
                     $('#fileCard').find(`[idFile="${item.file_id}"] i`).addClass("love")
                 }
             }
         })
         folderData.childrenFolder.forEach((item) => {
             if (item.FolderName.toUpperCase().includes(text)) {
-                if(item.onLove==1) {
+                if(item.onLove==1&&localFolder.id!=-7) {
                     $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3 love" idFolder="${item.id}">
                                             <i class="waves-effect mdi mdi-folder">${item.FolderName}</i> 
                                         </a>`);

@@ -1,5 +1,5 @@
 function ADAddNewFolder() {
-    if (localFolder.id<0) alertify.error("Can't add folder Hear");
+    if (localFolder.id<0) alertify.error("Can't add folder at Hear");
     else {
         alertify
             .placeholder("NewFolder")
@@ -31,64 +31,73 @@ function ADAddNewFolder() {
 
 
 function ALRenameFolder(id,name) {
-    alertify
-        .defaultValue(name)
-        .prompt("Rename folder", function (folderName, ev) {
-            ev.preventDefault();
-            if(folderName) {
-                //make new folder
-                if(checkFolderName(folderName)) {
-                    alertify.success(" Success change: " + folderName)
-                    SCRenameFolder(id, folderName)
-                }
-                else {
-                    alertify.error('Folder already exists')
-                    ALRenameFolder(id,name);
-                }
+    if (localFolder.id==-7) alertify.error("Can't rename this folder");
+    else {
+        alertify
+            .defaultValue(name)
+            .prompt("Rename folder", function (folderName, ev) {
+                ev.preventDefault();
+                if (folderName) {
+                    //make new folder
+                    if (checkFolderName(folderName)) {
+                        alertify.success(" Success change: " + folderName)
+                        SCRenameFolder(id, folderName)
+                    }
+                    else {
+                        alertify.error('Folder already exists')
+                        ALRenameFolder(id, name);
+                    }
 
-            }else {
-                alertify.error('Please insert FolderName')
-                ALRenameFolder(id,name);
-            }
-        }, function(ev) {
-            ev.preventDefault();
+                } else {
+                    alertify.error('Please insert FolderName')
+                    ALRenameFolder(id, name);
+                }
+            }, function (ev) {
+                ev.preventDefault();
         });
+    }
 }
 
 function ALRenameFile(id,name) {
-    alertify
-        .defaultValue(name)
-        .prompt("Rename file", function (fileName, ev) {
-            ev.preventDefault();
-            if(fileName) {
+    if (localFolder.id==-7) alertify.error("Can't rename this file");
+    else {
+        alertify
+            .defaultValue(name)
+            .prompt("Rename file", function (fileName, ev) {
+                ev.preventDefault();
+                if (fileName) {
 
-                //make new folder
-                if(checkFileName(fileName)) {
-                    SCRenameFile(id, fileName)
-                }
-                else {
-                    alertify.error('Folder already exists')
-                    ALRenameFile(id,name);
-                }
+                    //make new folder
+                    if (checkFileName(fileName)) {
+                        SCRenameFile(id, fileName)
+                    }
+                    else {
+                        alertify.error('Folder already exists')
+                        ALRenameFile(id, name);
+                    }
 
-            }else {
-                alertify.error('Please insert FolderName')
-                ALRenameFile(id,name);
-            }
-        }, function(ev) {
-            ev.preventDefault();
-        });
+                } else {
+                    alertify.error('Please insert FolderName')
+                    ALRenameFile(id, name);
+                }
+            }, function (ev) {
+                ev.preventDefault();
+            });
+    }
 }
 
 function ALUploadFile() {
-    $("#fileUpload").trigger("click");
-    $("#fileUpload").change(()=>{
-        console.log($("#fileUpload").val())
-        if($("#fileUpload").val()!=''){
-            SCAddNewFileToDb();
-            $("#fileUpload").val('');
-        }
-    })
+    if (localFolder.id<0) alertify.error("Can't upload file hear");
+    else {
+        $("#fileUpload").trigger("click");
+        $("#fileUpload").change(() => {
+            console.log($("#fileUpload").val())
+            if ($("#fileUpload").val() != '') {
+                SCAddNewFileToDb();
+                $("#fileUpload").val('');
+            }
+        })
+    }
 }
 
 
@@ -132,35 +141,41 @@ function ALRestoreFile(fileId) {
 }
 
 function ADShareFolder(idFolder) {
-    alertify
-        .placeholder("Email of username")
-        .prompt("Share To:", function (shareUser, ev) {
-            ev.preventDefault();
-            if (shareUser) {
-                SCShareFolder(idFolder,shareUser);
-            } else {
-                alertify.error('Please insert Email or UserName')
-            }
-        }, function (ev) {
-            ev.preventDefault();
+    if (localFolder.id==-7) alertify.error("Can't share this folder");
+    else {
+        alertify
+            .placeholder("Email of username")
+            .prompt("Share To:", function (shareUser, ev) {
+                ev.preventDefault();
+                if (shareUser) {
+                    SCShareFolder(idFolder, shareUser);
+                } else {
+                    alertify.error('Please insert Email or UserName')
+                }
+            }, function (ev) {
+                ev.preventDefault();
 
-        });
+            });
+    }
 }
 
 function ADShareFile(idFile) {
-    alertify
-        .placeholder("Email of username")
-        .prompt("Share To:", function (shareUser, ev) {
-            ev.preventDefault();
-            if (shareUser) {
-                SCShareFile(idFile,shareUser);
-            } else {
-                alertify.error('Please insert Email or UserName')
-            }
-        }, function (ev) {
-            ev.preventDefault();
+    if (localFolder.id==-7) alertify.error("Can't share this file");
+    else {
+        alertify
+            .placeholder("Email of username")
+            .prompt("Share To:", function (shareUser, ev) {
+                ev.preventDefault();
+                if (shareUser) {
+                    SCShareFile(idFile, shareUser);
+                } else {
+                    alertify.error('Please insert Email or UserName')
+                }
+            }, function (ev) {
+                ev.preventDefault();
 
-        });
+            });
+    }
 }
 
 function ALNotWorkFunction() {

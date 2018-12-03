@@ -509,18 +509,22 @@ function SCAddToLoveFile(file) {
         dataType: 'json',
         data: data,
         success: function (data) {
-            ALAddToLove(data)
-            if(data){
-                folderData.childrenFile.forEach((item)=>{
-                    if(item.file_id==file.attr('idFile')) item.onLove=1;
-                })
-                file.addClass("love")
-            }else {
-                folderData.childrenFile.forEach((item)=>{
-                    if(item.file_id==file.attr('idFile')) item.onLove=0;
-                })
-                file.removeClass("love")
+            if(data.status==0) alertify.error("Can not add to love")
+            else {
+                ALAddToLove(data)
+                if(data){
+                    folderData.childrenFile.forEach((item)=>{
+                        if(item.file_id==file.attr('idFile')) item.onLove=1;
+                    })
+                    file.addClass("love")
+                }else {
+                    folderData.childrenFile.forEach((item)=>{
+                        if(item.file_id==file.attr('idFile')) item.onLove=0;
+                    })
+                    file.removeClass("love")
+                }
             }
+
         }
     })
 }
