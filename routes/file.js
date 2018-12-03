@@ -10,16 +10,18 @@ const md5 = require("md5");
 
 
 router.post('/fileUpload/*', (req, res, next) => {
-
+    let cookies = cookie.parse(req.headers.cookie || '');
     let fileUpload = formidable.IncomingForm(),
         files = [];
     let UploadPath = path.join(__dirname,"../","public","userFile");
     // console.log(UploadPath);
     connection = res.app.locals.connection;
     if (!cookies.name) {
+        // console.log("1234")
         res.send({status:0})
     }
     else {
+        // console.log("123");
         connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
             if (err) throw err;
             if(result.length){
@@ -40,18 +42,25 @@ router.post('/fileUpload/*', (req, res, next) => {
                     // console.log(length);
                     for(let i=0;i<length;i++){
                         let data = file["fileUpload" + i];
-                        console.log(data);
+                        // console.log(data);
                         let fileName = data.name;
-                        connection.query(`INSERT INTO file (file_name, In_folder, Owner_id, timeUpload) VALUES ('${fileName}', '${field.folderID}','${idUser}', NOW());`, (err, result, field) => {
+                        updatesize(field.folderID,data.size);
+                        connection.query(`INSERT INTO file (file_name, In_folder, Owner_id, timeUpload, size) VALUES ('${fileName}', '${field.folderID}','${idUser}', NOW(),'${data.size}');`, (err, result, field) => {
                             if (err) throw err;
                             let id=result.insertId;
+                            let date =new Date();
+
                             let obj={
-                                id:id,
-                                file_name:data.name
+                                file_id:id,
+                                file_name:data.name,
+                                size:data.size,
+                                timeUpload:`${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
                             };
+
                             connection.query(`UPDATE file set codeName="${md5(id)}" where file_id="${id}";`, (err, result, field) => {
                                 if (err) throw err;
                             })
+
                             connection.query(`SELECT type FROM file where file_id="${id}";`, (err, result, field) => {
                                 if (err) throw err;
                                 obj.type=result[0].type;
@@ -191,16 +200,19 @@ router.post('/addToLove', (req,res,next) => {
     //
 })
 
-function checkInforCookie(cookie){
-    if(cookie){
-        connection.query(`SELECT * FROM account  WHERE cookie='${cookie}' AND activate = "1";`, (err, result, field) => {
-            if (err) throw err;
-            if(result.length) return result;
-        })
-    }else return false;
+async function updatesize(id,size){
+    console.log(id,size)
+    connection.query(`UPDATE folder SET size=size+'${size}' WHERE id='${id}';`, (err, result, field) => {
+        if (err) throw err;
+    })
+    connection.query(`SELECT In_folder FROM folder WHERE id='${id}';`, (err, result, field) => {
+        if (err) throw err;
+        console.log(result[0].In_folder)
+        if(result[0].In_folder){
+            updatesize(result[0].In_folder,size)
+        }else return
+    })
 }
-
-
 
 
 module.exports = router;

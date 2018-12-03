@@ -60,11 +60,16 @@ $(function() {
                     let idFolder = opt.$trigger.attr("idFolder")
                     ADShareFolder(idFolder);
                 }},
-            "download": {name: "Download File", icon: "fa-download",callback:(key,opt)=> {
-                    ALNotWorkFunction();
-                }},
             "rename": {name: "rename", icon: "fa-pencil", callback: (key,opt) => {
-                    ALRenameFolder(opt.$trigger);
+                    let file = opt.$trigger;
+                    let id =file.attr('idFolder');
+                    if(localStorage.getItem('view')==1){
+                        let name = file.find('.list-view-name').first().text();
+                        ALRenameFile(id,name);
+                    }else {
+                        let name = file.find('i').first().text()
+                        ALRenameFile(id,name);
+                    }
                     // console.log(opt.$trigger)
                 }}
         }
@@ -115,9 +120,19 @@ $(function() {
                     SCDownloadFile(opt.$trigger.attr("idFile"));
                 }},
             "rename": {name: "rename", icon: "fa-pencil", callback: (key,opt) => {
-                    ALRenameFile(opt.$trigger);
+                    let file = opt.$trigger;
+                    let id =file.attr('idFile');
+                    if(localStorage.getItem('view')==1){
+                        let name = file.find('.list-view-name').first().text();
+                        ALRenameFile(id,name);
+                    }else {
+                        let name = file.find('i').first().text()
+                        ALRenameFile(id,name);
+                    }
+
+
                     // console.log(opt.$trigger)
-                }}
+            }}
         }
     });
 

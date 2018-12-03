@@ -19,7 +19,7 @@ function SCAddNewFolderToDb(ParentFolder, folderName) {
                                     <td class="col-1 mdi mdi-folder"></td>
                                     <td class="col-4 list-view-name">${data.FolderName}</td>
                                     <td class="col-4 list-view-path">${data.path}</td>
-                                    <td class="col-1 list-view-size">${data.size}</td>
+                                    <td class="col-1 list-view-size">${CRSize(data.id,data.size)}</td>
                                     <td class="col-2 list-view-time">${data.time_create}</td></tr>`)
             }else {
                 // $("#folderShow").show()
@@ -130,7 +130,7 @@ function SCRenameFile(id, fileName){
         success: function () {
             CRRenameFile(id,fileName)
             folderData.childrenFile.forEach(function (item) {
-                if(item.id==id){
+                if(item.file_id==id){
                     item.file_name = fileName;
                 }
             })
@@ -220,15 +220,24 @@ function SCAddNewFileToDb() {
             ALOnUploadFile();
         },
         success: function (data) {
+            // console.log(data);
             if(data.status==0) alertify.error("Can not upload")
             else {
                 $("#fileShow").show()
                 // console.log(data);
                 data.fileUpload.forEach((item)=> {
-                    $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.id}" typeFile="${item.type}">
-                                            <i class="waves-effect mdi mdi-file">${item.file_name}</i> 
-                                        </a>`);
-                    CRAddFileIcon(item.id,item.type);
+                    if (localStorage.getItem('view') == 1) {
+                        $('#list-row').append(`<tr class="d-flex row file-item col-md-12 waves-effect" idFile="${item.file_id}" typeFile="${item.type}">
+                                    <td class="col-1 mdi ${CRAddFileIcon(item.file_id,item.type)}"></td>
+                                    <td class="col-4 list-view-name">${item.file_name}</td>
+                                    <td class="col-4 list-view-path">${localFolder.path}/${item.file_name}</td>
+                                    <td class="col-1 list-view-size">${item.size}</td>
+                                    <td class="col-2 list-view-time">${item.timeUpload}</td></tr>`)
+                    } else{
+                        $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.file_id}" typeFile="${item.type}">
+                                                    <i class="waves-effect mdi ${CRAddFileIcon(item.file_id,item.type)}">${item.file_name}</i> 
+                                                </a>`);
+                    }
                     let name = item.file_name;
                     let x=0;
                     // console.log(name);
@@ -238,8 +247,7 @@ function SCAddNewFileToDb() {
                             // console.log(item.file_name);
                             folderData.childrenFile.push(item);
                             if (x>0){
-
-                                SCRenameFile(item.id,item.file_name);
+                                SCRenameFile(item.file_id,item.file_name);
                                 break;
                             }
                             else{
@@ -249,7 +257,7 @@ function SCAddNewFileToDb() {
                             x++;
                             item.file_name=name+"("+x+")";
                         }
-                    } 
+                    }
                 })
                 $(document).find("#alertUpload").html(`Upload Success`);
             }
@@ -317,7 +325,8 @@ function SCGetShareWithMeFolderData(id,path) {
                 data: JSON.stringify({id:id,path:path}),
                 contentType: "application/json",
                 success: function(data){
-                    if(data=='0') alertify.error("Can not upload")
+                    console.log(data);
+                    if(data=='0'||data=='1'||data=='2'||data=='3') alertify.error("Can not access")
                     else {
                         $('#list-row').empty();
                         $("#errorStatus").hide();
@@ -526,3 +535,6 @@ function SCDownloadFile(id) {
 }
 
 
+function checkNameFileUpload(id,name) {
+
+}

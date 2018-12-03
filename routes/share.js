@@ -109,17 +109,20 @@ router.post("/getFolderData",(req,res,next)=>{
     else {
         connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
             if (err) throw err;
+            let user =result[0];
             if (result.length) {
                 connection.query(`SELECT * FROM folder WHERE id ='${idFolder}' OR path ='${path}' `, (err, result, field) => {
                     if (err) throw err;
                     if (result.length){
+                        console.log(idFolder,path)
                         if (result[0].onDelete == 0) {
                             let data = {
                                 localFolder: result[0]
                             }
                             // console.log(idFolder)
-                            connection.query(`SELECT * FROM folder_share WHERE id ='${idFolder}' OR user_id ='${data.localFolder.id}' `, (err, result, field) => {
+                            connection.query(`SELECT * FROM folder_share WHERE id ='${data.localFolder.id}' AND user_id ='${user.id}' `, (err, result, field) => {
                                 if (err) throw err;
+                                console.log(idFolder,user.id)
                                 if (result.length) {
                                     connection.query(`SELECT * FROM folder WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`, (err, result, field) => {
                                         if (err) throw err;
@@ -127,13 +130,14 @@ router.post("/getFolderData",(req,res,next)=>{
                                         connection.query(`SELECT * FROM file WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`, (err, result, field) => {
                                             if (err) throw err;
                                             data.childrenFile = result;
+                                            data.localFolder.id=-7;
                                             res.send(data);
                                             res.end()
                                         })
                                     })
-                                }else (res.send('1'))
+                                }else (res.send('3'))
                             })
-                        } else res.send('0');
+                        } else res.send('2');
                     }else res.send('1')
                 })
             }else res.send("0");

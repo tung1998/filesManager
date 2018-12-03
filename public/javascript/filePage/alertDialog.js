@@ -30,35 +30,34 @@ function ADAddNewFolder() {
 
 
 
-function ALRenameFolder(folder) {
+function ALRenameFolder(id,name) {
     alertify
-        .defaultValue(folder.children().first().text())
+        .defaultValue(name)
         .prompt("Rename folder", function (folderName, ev) {
             ev.preventDefault();
             if(folderName) {
-
                 //make new folder
                 if(checkFolderName(folderName)) {
                     alertify.success(" Success change: " + folderName)
-                    SCRenameFolder(folder.attr("idFolder"), folderName)
+                    SCRenameFolder(id, folderName)
                 }
                 else {
                     alertify.error('Folder already exists')
-                    ALRenameFolder();
+                    ALRenameFolder(id,name);
                 }
 
             }else {
                 alertify.error('Please insert FolderName')
-                ALRenameFolder(folder);
+                ALRenameFolder(id,name);
             }
         }, function(ev) {
             ev.preventDefault();
         });
 }
 
-function ALRenameFile(file) {
+function ALRenameFile(id,name) {
     alertify
-        .defaultValue(file.find('i').first().text())
+        .defaultValue(name)
         .prompt("Rename file", function (fileName, ev) {
             ev.preventDefault();
             if(fileName) {
@@ -66,17 +65,17 @@ function ALRenameFile(file) {
                 //make new folder
                 if(checkFileName(fileName)) {
                     alertify.success(" Success change: " + fileName)
-                    console.log(file.attr("idFile"))
-                    SCRenameFile(file.attr("idFile"), fileName)
+                    console.log(id)
+                    SCRenameFile(id, fileName)
                 }
                 else {
                     alertify.error('Folder already exists')
-                    ALRenameFile();
+                    ALRenameFile(id,name);
                 }
 
             }else {
                 alertify.error('Please insert FolderName')
-                ALRenameFile(file);
+                ALRenameFile(id,name);
             }
         }, function(ev) {
             ev.preventDefault();
@@ -86,9 +85,11 @@ function ALRenameFile(file) {
 function ALUploadFile() {
     $("#fileUpload").trigger("click");
     $("#fileUpload").change(()=>{
-        SCAddNewFileToDb();
-
-        $("#fileUpload").val(null);
+        console.log($("#fileUpload").val())
+        if($("#fileUpload").val()!=''){
+            SCAddNewFileToDb();
+            $("#fileUpload").val('');
+        }
     })
 }
 
