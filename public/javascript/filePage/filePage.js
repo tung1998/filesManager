@@ -85,12 +85,19 @@ $(function () {
 
 
     $(document).on('dblclick', '#folderCard a.folder-item', function () {
-        if(localFolder.id==(-7))SCGetShareWithMeFolderData($(this).attr('idFolder'),"")
-        else SCGetDataFolder($(this).attr('idFolder'),"");
+        if(localFolder.id==-7) SCGetShareWithMeFolderData($(this).attr('idFolder'),"")
+        else {
+            SCGetDataFolder($(this).attr('idFolder'),"");
+        }
+
     })
 
     $(document).on('click', '#folderPath>ul#1>li', function () {
-        SCGetDataFolder("",$(this).attr("pathFolder"));
+        let path=$(this).attr("pathFolder");
+        if(localFolder.id==-7) SCGetShareWithMeFolderData("",path)
+        else {
+            SCGetDataFolder("",path);
+        }
     })
 
 
@@ -128,7 +135,10 @@ $(function () {
         let file = $(this);
         let id = file.attr("idFolder");
         if(localFolder.id==(-1)) ALRestoreFolder(id);
-        else SCGetDataFolder(id);
+        else if(localFolder.id==-7) SCGetShareWithMeFolderData(id,"")
+        else {
+            SCGetDataFolder(id,"");
+        }
     })
 
     // $('#folderCard a.folder-item').on('click' ,function () {

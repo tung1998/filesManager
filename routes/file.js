@@ -40,7 +40,7 @@ router.post('/fileUpload/*', (req, res, next) => {
                     // console.log(length);
                     for(let i=0;i<length;i++){
                         let data = file["fileUpload" + i];
-                        // console.log(data);
+                        console.log(data);
                         let fileName = data.name;
                         connection.query(`INSERT INTO file (file_name, In_folder, Owner_id, timeUpload) VALUES ('${fileName}', '${field.folderID}','${idUser}', NOW());`, (err, result, field) => {
                             if (err) throw err;

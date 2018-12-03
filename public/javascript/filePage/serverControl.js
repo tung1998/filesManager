@@ -14,10 +14,19 @@ function SCAddNewFolderToDb(ParentFolder, folderName) {
         success: function (data) {
             // console.log(data);
             folderData.childrenFolder.push(data);
-            $("#folderShow").show()
-            $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${data.id}">
+            if(localStorage.getItem('view')==1){
+                $('#list-row').prepend(`<tr class="d-flex row folder-item col-lg-12 waves-effect" idFolder="${data.id}">
+                                    <td class="col-1 mdi mdi-folder"></td>
+                                    <td class="col-4 list-view-name">${data.FolderName}</td>
+                                    <td class="col-4 list-view-path">${data.path}</td>
+                                    <td class="col-1 list-view-size">${data.size}</td>
+                                    <td class="col-2 list-view-time">${data.time_create}</td></tr>`)
+            }else {
+                // $("#folderShow").show()
+                $('#folderCard').prepend(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${data.id}">
                                 <i class="waves-effect mdi mdi-folder"> ${folderName}</i> 
                             </a>`);
+            }
         }
     })
 }
@@ -26,8 +35,8 @@ function SCAddNewFolderToDb(ParentFolder, folderName) {
 
 
 function SCGetDataFolder(id,path){
-    $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
 
+    $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
 
     $.ajax({
         url:`/folder/getFolderData`,
@@ -56,8 +65,6 @@ function SCGetDataFolder(id,path){
             }
         }
     });
-
-
 
 
 }
@@ -109,10 +116,10 @@ function SCRenameFolder(id, folderName){
 }
 
 
-function SCRenameFile(id, folderName){
+function SCRenameFile(id, fileName){
     let data = {
         id: id,
-        fileName: folderName,
+        fileName: fileName,
         path: localFolder.path
     }
     $.ajax({
@@ -121,10 +128,10 @@ function SCRenameFile(id, folderName){
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function () {
-            CRRenameFile(id,folderName)
+            CRRenameFile(id,fileName)
             folderData.childrenFile.forEach(function (item) {
                 if(item.id==id){
-                    item.file_name = folderName;
+                    item.file_name = fileName;
                 }
             })
         }
@@ -142,6 +149,7 @@ function SCDeleteFolder(folder) {
         success: function () {
             ALDeleteStatus(true);
             $(document).find(folder).remove();
+            // $('#list-row').find(`[idFolder=${id}]`).remove();
             $(document).find(`#myFolder [idFolder*='${folder.attr('idFolder')}']`).remove();
         }
     })
@@ -154,6 +162,7 @@ function SCRestoreFolder(folderID) {
         data: JSON.stringify({id:folderID}),
         contentType: "application/json",
         success: function () {
+            $('#list-row').find(`[idFolder=${folderID}]`).remove();
             $(document).find(`#folderCard>a[idFolder=${folderID}]`).remove();
         }
     })
@@ -166,6 +175,7 @@ function SCRestoreFile(fileID) {
         data: JSON.stringify({id:fileID}),
         contentType: "application/json",
         success: function () {
+            $('#list-row').find(`[idFile=${fileID}]`).remove();
             $(document).find(`#fileCard>a[idFile=${fileID}]`).remove();
         }
     })
@@ -289,27 +299,57 @@ function SCGetShareWithMeData() {
 
 function SCGetShareWithMeFolderData(id,path) {
     $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
-
-
-    $.ajax({
-        url:`/share/getFolderData`,
-        type:'post',
-        data: JSON.stringify({id:id,path:path}),
-        contentType: "application/json",
-        success: function(data){
-            if(data=='0') alertify.error("Can not upload")
-            else {
-                $('#list-row').empty();
-                $("#errorStatus").hide();
-                $("#pageContent").show();
-                CRUpdatePathBar(`${folderData.userInfo.username}/Share With Me/${data.localFolder.path}`)
-                window.history.replaceState('shareWithMe', "Title", `/shareWithMe/${data.localFolder.path}`);
-                CRUpdateFolderCard(data.childrenFolder);
-                CRUpdateFileCard(data.childrenFile);
-            }
+    if(id==""){
+        if(path==folderData.userInfo.username) {
+            console.log(id,path)
+            SCGetDataFolder(folderData.userInfo.RootID,"");
         }
-    });
-
+        else if(path==folderData.userInfo.username+'/Share With Me') {
+            console.log(path);
+            SCGetShareWithMeData();
+        }
+        else{
+            console.log(path);
+            path=path.substr(folderData.userInfo.username.length+15)
+            $.ajax({
+                url:`/share/getFolderData`,
+                type:'post',
+                data: JSON.stringify({id:id,path:path}),
+                contentType: "application/json",
+                success: function(data){
+                    if(data=='0') alertify.error("Can not upload")
+                    else {
+                        $('#list-row').empty();
+                        $("#errorStatus").hide();
+                        $("#pageContent").show();
+                        CRUpdatePathBar(`${folderData.userInfo.username}/Share With Me/${data.localFolder.path}`)
+                        window.history.replaceState('shareWithMe', "Title", `/shareWithMe/${data.localFolder.path}`);
+                        CRUpdateFolderCard(data.childrenFolder);
+                        CRUpdateFileCard(data.childrenFile);
+                    }
+                }
+            });
+        }
+    }else {
+        $.ajax({
+            url:`/share/getFolderData`,
+            type:'post',
+            data: JSON.stringify({id:id,path:path}),
+            contentType: "application/json",
+            success: function(data){
+                if(data=='0') alertify.error("Can not upload")
+                else {
+                    $('#list-row').empty();
+                    $("#errorStatus").hide();
+                    $("#pageContent").show();
+                    CRUpdatePathBar(`${folderData.userInfo.username}/Share With Me/${data.localFolder.path}`)
+                    window.history.replaceState('shareWithMe', "Title", `/shareWithMe/${data.localFolder.path}`);
+                    CRUpdateFolderCard(data.childrenFolder);
+                    CRUpdateFileCard(data.childrenFile);
+                }
+            }
+        });
+    }
 }
 
 function SCGetOnLoveData() {

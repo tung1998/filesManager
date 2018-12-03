@@ -12,6 +12,9 @@ router.post('/addNewFolder', (req, res, next) => {
     connection.query(`INSERT INTO folder (FolderName, In_folder, path, Owner_id, time_create) VALUES ('${data.FolderName}', '${data.In_folder}', '${data.path}','${data.Owner_id}', NOW());`, (err, result, field) => {
         if(err) throw err;
         data.id = result.insertId;
+        data.size=0;
+        let date =new Date();
+        data.time_create=`${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
         res.send(data);
         res.end();
     })

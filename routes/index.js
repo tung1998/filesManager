@@ -121,13 +121,15 @@ router.get('/:user/*', (req, res, next) => {
                                     connection.query(`SELECT * FROM folder_share WHERE id ='${result[0].id}' AND user_id = '${data.userInfo.id}'`, (err, result, field) => {
                                         if (err) throw err;
                                         if(result.length) {
-                                            data.localFolder = result[0]
+                                            data.localFolder = result[0];
+                                            data.localFolder.path=`${data.userInfo.username}/Share With Me/${Path}`
                                             connection.query(`SELECT * FROM folder WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`, (err, result, field) => {
                                                 if (err) throw err;
                                                 data.childrenFolder = result;
                                                 connection.query(`SELECT * FROM file WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`, (err, result, field) => {
                                                     if (err) throw err;
                                                     data.childrenFile = result;
+                                                    data.localFolder.id=-7;
                                                     res.render("filePage", {folderData: data})
                                                     res.end()
                                                 })

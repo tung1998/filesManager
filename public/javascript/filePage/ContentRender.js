@@ -1,5 +1,6 @@
 
 function CRUpdateFolderCard(childrenFolder){
+    childrenFolder.sort(compareValues('FolderName','desc'))
     // $('#list-row').empty();
     $('#folderCard').empty();
     folderData.childrenFolder=childrenFolder;
@@ -27,11 +28,11 @@ function CRUpdateFolderCard(childrenFolder){
 
         childrenFolder.forEach(function (item) {
             if(item.onLove==1) {
-                $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3 love " idFolder="${item.id}">
+                $('#folderCard').prepend(`<a class="folder-item col-sm-6 col-md-4 col-lg-3 love " idFolder="${item.id}">
                                             <i class="waves-effect mdi mdi-folder">${item.FolderName}</i> 
                                         </a>`);
             }else {
-                $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${item.id}">
+                $('#folderCard').prepend(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${item.id}">
                                             <i class="waves-effect mdi mdi-folder">${item.FolderName}</i> 
                                         </a>`);
             }
@@ -42,6 +43,7 @@ function CRUpdateFolderCard(childrenFolder){
 
 
 function CRUpdateFileCard(childrenFile){
+    childrenFile.sort(compareValues('file_name'))
     $('#fileCard').empty();
     folderData.childrenFile=childrenFile;
     if(localStorage.getItem('view')==1){
@@ -190,10 +192,19 @@ function CRUpdatePathBar(path) {
 
 
 function CRRenameFolder(id, folderName) {
-    $('#folderCard').find(`[idFolder=${id}]>i`).text(folderName);
+    if(localStorage.getItem('view')==1){
+        $('#list-row').find(`[idFolder=${id}]>.list-view-name`).text(folderName)
+    }else {
+        $('#folderCard').find(`[idFolder=${id}]>i`).text(folderName);
+    }
+
 }
 function CRRenameFile(id, fileName) {
-    $('#fileCard').find(`[idFile=${id}]>i`).text(fileName);
+    if(localStorage.getItem('view')==1){
+        $('#list-row').find(`[idFile=${id}]>.list-view-name`).text(fileName)
+    }else {
+        $('#fileCard').find(`[idFile=${id}]>i`).text(fileName);
+    }
 }
 
 
@@ -261,4 +272,29 @@ async function CRGetSearchPage() {
         })
     }
 
+}
+
+
+function compareValues(key, order='asc') {
+    return function(a, b) {
+        if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+            // không tồn tại tính chất trên cả hai object
+            return 0;
+        }
+
+        const varA = (typeof a[key] === 'string') ?
+            a[key].toUpperCase() : a[key];
+        const varB = (typeof b[key] === 'string') ?
+            b[key].toUpperCase() : b[key];
+
+        let comparison = 0;
+        if (varA > varB) {
+            comparison = 1;
+        } else if (varA < varB) {
+            comparison = -1;
+        }
+        return (
+            (order == 'desc') ? (comparison * -1) : comparison
+        );
+    };
 }
