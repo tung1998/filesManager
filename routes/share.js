@@ -183,7 +183,7 @@ router.post("/getShare",(req,res,next)=>{
 
 
 
-function shareFolder(idFolder,idUser,level =0){
+function shareFolder(idFolder,idUser,level=0){
     connection.query(`SELECT * FROM folder_share where  id='${idFolder}' AND user_id='${idUser}'`, (err, result, field) => {
         if (err) throw err;
         if (result.length==0){

@@ -15,7 +15,7 @@ router.get('/:name', (req, res, next) => {
         res.render('loginPage');
     }
     else {
-        console.log(name);
+
         connection = res.app.locals.connection;
         connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
             if(err) throw err;
@@ -27,13 +27,15 @@ router.get('/:name', (req, res, next) => {
                 data.found = true;
                 connection.query(`SELECT * FROM file WHERE codeName ='${name}'`,(err, result, field) => {
                     if(err) throw err;
+
                     if(result.length) {
                         if(result[0].Owner_id == data.userInfo.id){
                             res.render("pdfPage",{name:name})
                         }
                         else {
-                            connection.query(`SELECT * FROM file_share WHERE file_id ='${result[0].id}' AND user_id="${data.userInfo.id}"`,(err, result, field) => {
+                            connection.query(`SELECT * FROM file_share WHERE file_id ='${result[0].file_id}' AND user_id="${data.userInfo.id}"`,(err, result, field) => {
                                 if (err) throw err;
+                                console.log();
                                 if (result.length) {
                                     res.render("pdfPage",{name:name})
                                 }else {

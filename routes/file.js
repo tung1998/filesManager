@@ -151,17 +151,44 @@ router.post('/deleteFile', (req,res,next) => {
 
 
 router.post('/getCodeName', (req,res,next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
     let id =req.body.id;
     connection = res.app.locals.connection;
-    connection.query(`UPDATE file set timeOpenRecent =NOW() WHERE file_id='${id}';`, (err, result, field) => {
-        if(err) throw err;
-        connection.query(`SELECT codeName FROM file WHERE file_id='${id}';`, (err, result, field) => {
+    if (!cookies.name) {
+        // console.log("1234")
+        res.send({status:0})
+    }
+    else {
+        // console.log("123");
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
             if (err) throw err;
-            console.log(result[0].codeName);
-            res.send({code: result[0].codeName})
-            res.end();
+            let user = result[0];
+            if (result.length) {
+                connection.query(`SELECT * FROM file WHERE file_id='${id}';`, (err, result, field) => {
+                    if (err) throw err;
+                    let file = result[0];
+                    if(result.length) {
+                        if (file.Owner_id==user.id) {
+                            connection.query(`UPDATE file set timeOpenRecent =NOW() WHERE file_id='${id}';`, (err, result, field) => {
+                                if (err) throw err;
+                            })
+                            res.send({code: file.codeName})
+                            res.end();
+                        } else {
+                            connection.query(`SELECT * FROM file_share WHERE file_id='${id}' AND user_id='${user.id}';`, (err, result, field) => {
+                                if (err) throw err;
+                                if(result.length){
+                                    res.send({code: file.codeName})
+                                    res.end();
+                                }else res.send('0')
+                            })
+                        }
+                    }else res.send("0");
+                })
+
+            }
         })
-    })
+    }
 })
 router.post('/getTxtData', (req,res,next) => {
     let id =req.body.id;
