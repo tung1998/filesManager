@@ -283,6 +283,8 @@ function SCAddNewFileToDb() {
 
 
 function SCGetTrashData() {
+    $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
+    $(document).find(`#trash>a`).addClass("menu-nav-active");
     let data={
         userID: folderData.userInfo.id,
     }
@@ -304,6 +306,8 @@ function SCGetTrashData() {
     })
 }
 function SCGetShareWithMeData() {
+    $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
+    $(document).find(`#fileShare>a`).addClass("menu-nav-active");
     $.ajax({
         type: 'post',
         url: '/share/getShare',
@@ -322,7 +326,6 @@ function SCGetShareWithMeData() {
 
 
 function SCGetShareWithMeFolderData(id,path) {
-    $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
     if(id==""){
         if(path==folderData.userInfo.username) {
             console.log(id,path)
@@ -335,49 +338,57 @@ function SCGetShareWithMeFolderData(id,path) {
         else{
             console.log(path);
             path=path.substr(folderData.userInfo.username.length+15)
-            $.ajax({
-                url:`/share/getFolderData`,
-                type:'post',
-                data: JSON.stringify({id:id,path:path}),
-                contentType: "application/json",
-                success: function(data){
-                    console.log(data);
-                    if(data=='0'||data=='1'||data=='2'||data=='3') alertify.error("Can not access")
-                    else {
-                        $('#list-row').empty();
-                        $("#errorStatus").hide();
-                        $("#pageContent").show();
-                        CRUpdatePathBar(`${folderData.userInfo.username}/Share With Me/${data.localFolder.path}`)
-                        window.history.replaceState('shareWithMe', "Title", `/shareWithMe/${data.localFolder.path}`);
-                        CRUpdateFolderCard(data.childrenFolder);
-                        CRUpdateFileCard(data.childrenFile);
-                    }
-                }
-            });
+            shareFolderData(id,path)
         }
     }else {
-        $.ajax({
-            url:`/share/getFolderData`,
-            type:'post',
-            data: JSON.stringify({id:id,path:path}),
-            contentType: "application/json",
-            success: function(data){
-                if(data=='0') alertify.error("Can not upload")
-                else {
-                    $('#list-row').empty();
-                    $("#errorStatus").hide();
-                    $("#pageContent").show();
-                    CRUpdatePathBar(`${folderData.userInfo.username}/Share With Me/${data.localFolder.path}`)
-                    window.history.replaceState('shareWithMe', "Title", `/shareWithMe/${data.localFolder.path}`);
-                    CRUpdateFolderCard(data.childrenFolder);
-                    CRUpdateFileCard(data.childrenFile);
-                }
-            }
-        });
+        shareFolderData(id,path)
     }
 }
 
+function shareFolderData(id,path) {
+    $.ajax({
+        url:`/share/getFolderData`,
+        type:'post',
+        data: JSON.stringify({id:id,path:path}),
+        contentType: "application/json",
+        success: function(data){
+            console.log(data);
+            if(data=='0'||data=='1'||data=='2'||data=='3') alertify.error("Can not access")
+            else {
+                $('#list-row').empty();
+                $("#errorStatus").hide();
+                $("#pageContent").show();
+                CRUpdatePathBar(`${folderData.userInfo.username}/Share With Me/${data.localFolder.path}`)
+                window.history.replaceState('shareWithMe', "Title", `/shareWithMe/${data.localFolder.path}`);
+                CRUpdateFolderCard(data.childrenFolder);
+                CRUpdateFileCard(data.childrenFile);
+            }
+        }
+    });
+    // $.ajax({
+    //     url:`/share/getFolderData`,
+    //     type:'post',
+    //     data: JSON.stringify({id:id,path:path}),
+    //     contentType: "application/json",
+    //     success: function(data){
+    //         if(data=='0') alertify.error("Can not upload")
+    //         else {
+    //             $('#list-row').empty();
+    //             $("#errorStatus").hide();
+    //             $("#pageContent").show();
+    //             CRUpdatePathBar(`${folderData.userInfo.username}/Share With Me/${data.localFolder.path}`)
+    //             window.history.replaceState('shareWithMe', "Title", `/shareWithMe/${data.localFolder.path}`);
+    //             CRUpdateFolderCard(data.childrenFolder);
+    //             CRUpdateFileCard(data.childrenFile);
+    //         }
+    //     }
+    // });
+}
+
+
 function SCGetOnLoveData() {
+    $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
+    $(document).find(`#fileInLove>a`).addClass("menu-nav-active");
     let data={
         userID: folderData.userInfo.id,
     }
@@ -401,6 +412,8 @@ function SCGetOnLoveData() {
 
 
 function SCGetFileOpenRecent() {
+    $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
+    $(document).find(`#fileOpenRecent>a`).addClass("menu-nav-active");
     let data={
         userID: folderData.userInfo.id,
     }
@@ -422,23 +435,23 @@ function SCGetFileOpenRecent() {
     })
 }
 
-function SCGetDataSearch(text) {
-    let data={
-        localFolder:localFolder.id,
-        Owner_id: folderData.userInfo.id,
-        text:text
-    }
-    $.ajax({
-        type: 'post',
-        url: '/search',
-        dataType: 'json',
-        data: data,
-        success: function (data) {
-            // console.log(data)
-            CRUpdateSearch(data)
-        }
-    })
-}
+// function SCGetDataSearch(text) {
+//     let data={
+//         localFolder:localFolder.id,
+//         Owner_id: folderData.userInfo.id,
+//         text:text
+//     }
+//     $.ajax({
+//         type: 'post',
+//         url: '/search',
+//         dataType: 'json',
+//         data: data,
+//         success: function (data) {
+//             // console.log(data)
+//             CRUpdateSearch(data)
+//         }
+//     })
+// }
 
 
 
