@@ -3,6 +3,7 @@ function ADAddNewFolder() {
     else {
         alertify
             .placeholder("NewFolder")
+            .defaultValue('')
             .prompt("CreateNewFolder", function (folderName, ev) {
                 ev.preventDefault();
                 if (folderName) {
@@ -35,6 +36,7 @@ function ALRenameFolder(id,name) {
     else {
         alertify
             .defaultValue(name)
+            .placeholder("File Name")
             .prompt("Rename folder", function (folderName, ev) {
                 ev.preventDefault();
                 if (folderName) {
@@ -63,6 +65,7 @@ function ALRenameFile(id,name) {
     else {
         alertify
             .defaultValue(name)
+            .placeholder("File Name")
             .prompt("Rename file", function (fileName, ev) {
                 ev.preventDefault();
                 if (fileName) {
@@ -100,16 +103,16 @@ function ALUploadFile() {
     }
 }
 
-
-function ALDeleteStatus(check) {
-    if(check) {
-        alertify.success("Success Delete")
-    }
-    else {
-        alertify.error('ERROR')
-    }
-
-}
+//
+// function ALDeleteStatus(check) {
+//     if(check) {
+//         alertify.success("Success Delete")
+//     }
+//     else {
+//         alertify.error('ERROR')
+//     }
+//
+// }
 
 function ALOnUploadFile() {
     alertify.closeLogOnClick(true).log(`<div id ="alertUpload" class="alert-upload row">
@@ -141,10 +144,11 @@ function ALRestoreFile(fileId) {
 }
 
 function ADShareFolder(idFolder) {
-    if (localFolder.id==-7) alertify.error("Can't share this folder");
+    if (localFolder.id==-7||localFolder.id==-1) alertify.error("Can't share this folder");
     else {
         alertify
             .placeholder("Email of username")
+            .defaultValue('')
             .prompt("Share To:", function (shareUser, ev) {
                 ev.preventDefault();
                 if (shareUser) {
@@ -160,10 +164,11 @@ function ADShareFolder(idFolder) {
 }
 
 function ADShareFile(idFile) {
-    if (localFolder.id==-7) alertify.error("Can't share this file");
+    if (localFolder.id==-7||localFolder.id==-1) alertify.error("Can't share this folder");
     else {
         alertify
             .placeholder("Email of username")
+            .defaultValue('')
             .prompt("Share To:", function (shareUser, ev) {
                 ev.preventDefault();
                 if (shareUser) {

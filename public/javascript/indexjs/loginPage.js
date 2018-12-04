@@ -11,11 +11,10 @@ $(document).ready( () => {
 
 
 function loginClick() {
-    var data = {
+    let data = {
         id    :   $('#login-id').val(),
         pass  :   $('#login-pass').val(),
     }
-    console.log(data);
     $.ajax({
         type : 'post',
         url : '/login',

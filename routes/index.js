@@ -163,7 +163,6 @@ router.get('/:user/*', (req, res, next) => {
                     }
                 })
             }
-            // else res.redirect('/login');
             else res.render('userPage/loginPage');
         })
 
@@ -245,39 +244,6 @@ router.get('/:user', (req, res, next) => {
 
 module.exports = router;
 
-
-
-
-//
-// Object.prototype.isEmpty = function() {
-//     for(var key in this) {
-//         if(this.hasOwnProperty(key))
-//             return false;
-//     }
-//     return true;
-// }
-// function checkCookie(req,res,next) {
-//     let cookies = cookie.parse(req.headers.cookie || '');
-//     // console.log(req.headers.cookie);
-//     console.log(cookies.name);
-//     if (!cookies.name) {
-//         res.render('loginPage');
-//     }
-//     else {
-//         connection = res.app.locals.connection;
-//         connection.query(`SELECT id, RootID, username FROM account WHERE cookie = "${cookies.name}" `, (err, result, field) => {
-//             // console.log(result);
-//             if (result.length) {
-//                 req.body.user=result[0];
-//                 next();
-//             }
-//             else {
-//                 if(req.method=='GET') res.render('loginPage');
-//                 else res.send({status:0})
-//             }
-//         })
-//     }
-// }
 
 
 function f() {

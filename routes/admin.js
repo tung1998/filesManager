@@ -1,19 +1,85 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const cookie = require('cookie');
+const md5 = require('md5');
 
 
-router.get('/login', (req, res, next) => {
-    res.render("adminPage/login")
+router.get('/', (req, res, next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
+    if (!cookies.admin) {
+        res.render('adminPage/loginPage');
+    }
+    else {
+        connection = res.app.locals.connection;
+        connection.query(`SELECT * FROM admin WHERE cookie = "${cookies.admin}"`, (err, result, field) => {
+            // console.log(result);
+            if (result.length) res.redirect(`/admin/${result[0].username}`);
+            else res.render('adminPae/loginPage');
+        })
+    }
+
 });
 
 
-router.get('/:adminName',(req, res, next) => {
-    // let name = req.params.adminName;
-    // console.log(adminName);
-    res.render("adminPage/adminPage")
+router.get('/*',(req, res, next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
+    if (!cookies.admin) {
+        res.render('adminPage/loginPage');
+    }
+    else {
+        connection = res.app.locals.connection;
+        connection.query(`SELECT * FROM admin WHERE cookie = "${cookies.admin}"`, (err, result, field) => {
+            if(err) throw err;
+            if (result.length){
+                res.render('adminPage/adminPage',{userName:result[0].username})
+            }
+            else res.render('adminPage/loginPage');
+        })
+
+    }
+
 });
 
+
+router.post('/addNewAdmin', function(req, res, next) {
+    const data = req.body;
+})
+
+
+
+router.post('/login', function(req, res, next) {
+    const data = req.body;
+    const loginID = data.id;
+
+    connection = res.app.locals.connection;
+    connection.query(`SELECT * FROM admin WHERE  userName = '${loginID}'`, (err, result, field) => {
+        if(err) throw err;
+        // console.log(pass);
+        // console.log(result[0].password);
+        if (result.length==0) res.send('0');
+        else {
+            const pass = md5(data.pass+result[0].salt);
+            console.log(pass,result[0].password)
+            if (pass == result[0].password) {
+                res.setHeader('Set-Cookie', cookie.serialize('admin', result[0].cookie, {
+                    httpOnly: true,
+                    path:'/',
+                    maxAge: 60 * 60 * 24 * 7 // 1 week
+                }));
+                res.send('2');
+            }
+            else res.send('3')
+        }
+    })
+});
+
+
+
+router.post('/logout',(req,res,next) => {
+    console.log('admnlogout')
+    res.clearCookie("admin");
+    res.send('success');
+})
 
 
 

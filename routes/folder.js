@@ -8,16 +8,29 @@ const cookie = require('cookie');
 router.post('/addNewFolder', (req, res, next) => {
     let data = req.body;
     // console.log(data);
+    let cookies = cookie.parse(req.headers.cookie || '');
     connection = res.app.locals.connection;
-    connection.query(`INSERT INTO folder (FolderName, In_folder, path, Owner_id, time_create) VALUES ('${data.FolderName}', '${data.In_folder}', '${data.path}','${data.Owner_id}', NOW());`, (err, result, field) => {
-        if(err) throw err;
-        data.id = result.insertId;
-        data.size=0;
-        let date =new Date();
-        data.time_create=`${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-        res.send(data);
-        res.end();
-    })
+    if (!cookies.name) {
+        // console.log("1234")
+        res.send({status:0})
+    }
+    else {
+        // console.log("123");
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) {
+                connection.query(`INSERT INTO folder (FolderName, In_folder, path, Owner_id, time_create) VALUES ('${data.FolderName}', '${data.In_folder}', '${data.path}','${result[0].id}', NOW());`, (err, result, field) => {
+                    if (err) throw err;
+                    data.id = result.insertId;
+                    data.size = 0;
+                    let date = new Date();
+                    data.time_create = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+                    res.send(data);
+                    res.end();
+                })
+            }else res.send({status:0});
+        })
+    }
 });
 
 
@@ -68,35 +81,50 @@ router.post('/getFolderData', (req, res, next) => {
 
 
 
-// router.post('/trash', (req, res, next) => {
-//     connection = res.app.locals.connection;
-//     connection.query(`SELECT * FROM folder WHERE onDelete ='1'`,(err, result, field) => {
-//         res.send(result);
-//         res.end()
-//     })
-// });
-
-
 
 
 router.post('/renameFolder', (req, res, next) => {
     const data = req.body;
-    console.log(data);
+    let cookies = cookie.parse(req.headers.cookie || '');
     connection = res.app.locals.connection;
-    connection.query(`UPDATE folder SET FolderName='${data.FolderName}' WHERE id='${data.id}';`, (err, result, field) => {
-        if(err) throw err;
-    })
-    renameFolder(data,data.path);
-    res.send(true)
-    res.end();
+    if (!cookies.name) {
+        // console.log("1234")
+        res.send({status:0})
+    }
+    else {
+        // console.log("123");
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) {
+                connection.query(`UPDATE folder SET FolderName='${data.FolderName}' WHERE id='${data.id}';`, (err, result, field) => {
+                    if (err) throw err;
+                })
+                renameFolder(data, data.path);
+                res.send({status:1});
+                res.end();
+            }else res.send({status:0});
+        })
+    }
 });
 
 router.post('/deleteFolder', (req,res,next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
     connection = res.app.locals.connection;
-    deleteFolder(req.body.id);
-    //
-    res.send(true)
-    res.end();
+    if (!cookies.name) {
+        // console.log("1234")
+        res.send({status:0})
+    }
+    else {
+        // console.log("123");
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) {
+                deleteFolder(req.body.id);
+                res.send({status:1})
+                res.end();
+            }else res.send({status:0});
+        })
+    }
     //
 })
 

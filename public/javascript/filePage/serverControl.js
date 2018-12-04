@@ -12,21 +12,24 @@ function SCAddNewFolderToDb(ParentFolder, folderName) {
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function (data) {
-            // console.log(data);
-            folderData.childrenFolder.push(data);
-            if(localStorage.getItem('view')==1){
-                $('#list-row').prepend(`<tr class="d-flex row folder-item col-lg-12 waves-effect" idFolder="${data.id}">
+            if(data.status!=0){
+                folderData.childrenFolder.push(data);
+                if(localStorage.getItem('view')==1){
+                    $('#list-row').prepend(`<tr class="d-flex row folder-item col-lg-12 waves-effect" idFolder="${data.id}">
                                     <td class="col-1 mdi mdi-folder"></td>
                                     <td class="col-4 list-view-name">${data.FolderName}</td>
                                     <td class="col-4 list-view-path">${data.path}</td>
                                     <td class="col-1 list-view-size">${CRSize(data.id,data.size)}</td>
                                     <td class="col-2 list-view-time">${data.time_create}</td></tr>`)
-            }else {
-                // $("#folderShow").show()
-                $('#folderCard').prepend(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${data.id}">
+                }else {
+                    // $("#folderShow").show()
+                    $('#folderCard').prepend(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${data.id}">
                                 <i class="waves-effect mdi mdi-folder"> ${folderName}</i> 
                             </a>`);
-            }
+                }
+            }else alertify.error('Can not create folder')
+            // console.log(data);
+
         }
     })
 }
@@ -103,14 +106,17 @@ function SCRenameFolder(id, folderName){
         url: '/folder/renameFolder',
         data: JSON.stringify(data),
         contentType: "application/json",
-        success: function () {
-            TRRenameFolder(id,folderName)
-            CRRenameFolder(id,folderName)
-            folderData.childrenFolder.forEach(function (item) {
-                if(item.id==id){
-                    item.FolderName = folderName;
-                }
-            })
+        success: function (data) {
+            if(data.status){
+                TRRenameFolder(id,folderName)
+                CRRenameFolder(id,folderName)
+                folderData.childrenFolder.forEach(function (item) {
+                    if(item.id==id){
+                        item.FolderName = folderName;
+                    }
+                })
+            }else alertify.error('Can not rename folder')
+
         }
     })
 }
@@ -144,22 +150,25 @@ function SCRenameFile(id, fileName){
 
 
 function SCDeleteFolder(folder) {
-    let id = folder.attr("idFolder");
-    $.ajax({
-        type: 'post',
-        url: '/folder/deleteFolder',
-        data: JSON.stringify({id:id}),
-        contentType: "application/json",
-        success: function (data) {
-            if(data.status){
-                ALDeleteStatus(true);
-                $(document).find(folder).remove();
-                // $('#list-row').find(`[idFolder=${id}]`).remove();
-                $(document).find(`#myFolder [idFolder*='${folder.attr('idFolder')}']`).remove();
-            }else alertify.error("Can not delete folder")
+    if (localFolder.id==-7||localFolder.id==-1) alertify.error("Can't delete this folder");
+    else {
+        let id = folder.attr("idFolder");
+        $.ajax({
+            type: 'post',
+            url: '/folder/deleteFolder',
+            data: JSON.stringify({id: id}),
+            contentType: "application/json",
+            success: function (data) {
+                if (data.status != 0) {
+                    alertify.success('Delete Success')
+                    $(document).find(folder).remove();
+                    // $('#list-row').find(`[idFolder=${id}]`).remove();
+                    $(document).find(`#myFolder [idFolder*='${folder.attr('idFolder')}']`).remove();
+                } else alertify.error("Can not delete folder")
 
-        }
-    })
+            }
+        })
+    }
 }
 
 function SCRestoreFolder(folderID) {
@@ -197,20 +206,23 @@ function SCRestoreFile(fileID) {
 
 
 function SCDeleteFile(file) {
-    let id = file.attr("idFile");
-    $.ajax({
-        type: 'post',
-        url: '/file/deleteFile',
-        data: JSON.stringify({id:id}),
-        contentType: "application/json",
-        success: function (data) {
-            if(data.status){
-                ALDeleteStatus(true);
-                $(document).find(file).remove();
-            }alertify.error("Can not delete file")
+    if (localFolder.id==-7||localFolder.id==-1) alertify.error("Can't delete this file");
+    else {
+        let id = file.attr("idFile");
+        $.ajax({
+            type: 'post',
+            url: '/file/deleteFile',
+            data: JSON.stringify({id: id}),
+            contentType: "application/json",
+            success: function (data) {
+                if (data.status != 0) {
+                    alertify.success('Delete Success')
+                    $(document).find(file).remove();
+                } else alertify.error("Can not delete file")
 
-        }
-    })
+            }
+        })
+    }
 }
 
 
