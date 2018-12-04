@@ -12,7 +12,7 @@ router.get('/:name', (req, res, next) => {
     // console.log(cookies.name);
     if (!cookies.name) {
         // res.redirect('/login');
-        res.render('loginPage');
+        res.render('userPage/loginPage');
     }
     else {
 
@@ -59,19 +59,11 @@ router.get('/:name', (req, res, next) => {
                 })
             }
             // else res.redirect('/login');
-            else res.render('loginPage');
+            else res.render('userPage/loginPage');
         })
 
     }
 
 });
-
-//
-//
-// router.get('/', (req, res, next) => {
-//     let path="D:\\data\\filesManager\\public\\userFile\\tung16021221\\mp3\\CHẠY NGAY ĐI (ONIONN REMIX)- RUN NOW (ONIONN REMIX) - SƠN TÙNG M-TP - Official Music Video.mp3";
-//     res.download(path);
-// })
-//
 
 module.exports = router;

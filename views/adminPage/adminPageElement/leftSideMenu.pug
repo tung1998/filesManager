@@ -1,0 +1,24 @@
+div.left.side-menu
+    button.button-menu-mobile.button-menu-mobile-topbar.open-left.waves-effect(type='button' onclick="")
+        i.mdi.mdi-close
+    // LOGO
+    div.topbar-left
+        div.text-center
+            a.logo(href='/')
+                img.logo-large(src='/images/logoText.png' alt='' height="100")
+    div#sidebar-main.sidebar-inner.slimscrollleft
+        div#sidebar-menu
+            ul
+                li#userManage.has_sub
+                    a.waves-effect
+                        i.mdi.mdi-account
+                        span  User Manage
+                li#fileManage.has_sub
+                    a.waves-effect(href='javascript:SCGetShareWithMeData();')
+                        i.mdi.mdi-file
+                        span  File Manage
+                li#adminManage.has_sub
+                    a.waves-effect(href='javascript:SCGetShareWithMeData();')
+                        i.mdi.mdi-account-key
+                        span  Admin Manage
+        div.clearfix

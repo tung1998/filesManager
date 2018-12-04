@@ -34,7 +34,7 @@ router.get('/verify/:code', function(req, res, next) {
             }
         }
     })
-    res.redirect("../../login");
+    res.redirect("../../");
 });
 
 

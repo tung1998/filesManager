@@ -20,7 +20,7 @@ const trashRouter = require('./routes/trash');
 const loveRouter = require('./routes/love');
 const shareRouter = require('./routes/share');
 const pdfRouter = require('./routes/pdf');
-const errorRouter = require('./routes/error');
+const adminRouter = require('./routes/admin');
 
 
 const app = express();
@@ -55,7 +55,7 @@ connection.connect((err) => {
         console.error('error connecting: ' + err.stack);
         return;
     }
-
+    app.use('/admin', adminRouter);
     app.use('/trash', trashRouter);
     app.use('/love', loveRouter);
     app.use('/users', usersRouter);
@@ -67,7 +67,6 @@ connection.connect((err) => {
     app.use('/file', fileRouter);
     app.use('/share', shareRouter);
     app.use('/pdf', pdfRouter);
-    app.use('/error', errorRouter);
     app.use('/', indexRouter);
 
 
@@ -84,7 +83,7 @@ connection.connect((err) => {
 
       // render the error page
       res.status(err.status || 500);
-      res.render('error');
+      res.render('error/error');
     });
 
 });

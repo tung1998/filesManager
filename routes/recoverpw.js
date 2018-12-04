@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 /* GET users listing. */
 /* GET users listing. */
 router.get('/', (req, res, next) => {
-    res.render('recoverpw')
+    res.render('userPage/recoverpw')
 })
 
 //api recover pass

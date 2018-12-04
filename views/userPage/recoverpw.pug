@@ -1,4 +1,4 @@
-extends headerAndScript/header
+extends ../headerAndScript/header
 
 block content
     div.accountbg
@@ -16,7 +16,7 @@ block content
                                         a(href='index.html')
                                             img(src='images/logoText.png' alt='logo' height='50')
                                     div.p-3
-                                        form.form-horizontal.mb-0(action="javascript:resendconfirmmail()")
+                                        form.form-horizontal.mb-0(action="javascript:recoverpw()")
                                             div.alert.alert-info.mt-3.alert-dismissible
                                                 button.close(type='button' data-dismiss='alert' aria-hidden='true') &times;
                                                 | Enter your
@@ -27,14 +27,14 @@ block content
                                                     input#email.form-control(type='email' required='' placeholder='Email')
                                             div.form-group.text-center.row.m-t-20
                                                 div.col-12
-                                                    button.btn.btn-raised.btn-primary.btn-block.waves-effect.waves-light() Send Confirm Email
+                                                    button.btn.btn-raised.btn-primary.btn-block.waves-effect.waves-light() Send Email
 
 
 
 
     // jQuery
-    include   headerAndScript/script
-    script(src='javascript/indexjs/resendconfirmmail.js')
+    include  ../headerAndScript/script
+    script(src='javascript/indexjs/recoverpw.js')
 
 
 

@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
-    res.render('resendconfirmmail')
+    res.render('userPage/resendconfirmmail')
 })
 
 //api resendconfirmmail

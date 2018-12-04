@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 /* GET registerPage listing. */
 
 router.get('/', (req, res, next) => {
-    res.render('registerPage');
+    res.render('userPage/registerPage');
 });
 
 

@@ -1,0 +1,39 @@
+extends ../headerAndScript/header
+
+block content
+    body.fixed-left
+        include ../filePageElement/fileShow
+
+        div#preloader
+            div#status
+                div.spinner
+        // Begin page
+        div#wrapper
+            // ========== Left Sidebar Start ==========
+            include ../filePageElement/leftSideMenu
+                // end sidebarinner
+            // Left Sidebar End
+            // Start right Content here
+            div.content-page
+                // Start content
+                div#idFolder.content
+                    include ../filePageElement/topBar
+                    // Top Bar End
+                    div.page-content-wrapper
+                        div#pageContent.container-fluid
+                            include ../filePageElement/profile
+                footer.footer
+                    | &copy; 2018 Urora by Mannatthemes.
+            // End Right content here
+        // END wrapper
+        // jQuery
+        input(name="fileUpload" type="file" multiple id="fileUpload" class="product-input-data col-sm-8" style="display:none")
+
+        include  ../headerAndScript/script
+
+        script.
+            var folderData = !{JSON.stringify(folderData)};
+        link(href='/jquery/dist/jquery.contextMenu.css' rel='stylesheet' type='text/css')
+        include ../headerAndScript/filePageScript
+
+

@@ -8,14 +8,14 @@ const path =require("path");
 router.get('/', (req, res, next) => {
     let cookies = cookie.parse(req.headers.cookie || '');
     if (!cookies.name) {
-        res.render('loginPage');
+        res.render('userPage/loginPage');
     }
     else {
         connection = res.app.locals.connection;
         connection.query(`SELECT id, username FROM account WHERE cookie = "${cookies.name}"AND activate="1"`, (err, result, field) => {
             // console.log(result);
             if (result.length) res.redirect(`/${result[0].username}`);
-            else res.render('loginPage');
+            else res.render('userPage/loginPage');
         })
     }
 
@@ -53,7 +53,7 @@ router.get('/:user/*', (req, res, next) => {
     // console.log(cookies.name);
     if (!cookies.name) {
         // res.redirect('/login');
-        res.render('loginPage');
+        res.render('userPage/loginPage');
     }
     else {
         connection = res.app.locals.connection;
@@ -164,7 +164,7 @@ router.get('/:user/*', (req, res, next) => {
                 })
             }
             // else res.redirect('/login');
-            else res.render('loginPage');
+            else res.render('userPage/loginPage');
         })
 
     }
@@ -177,7 +177,7 @@ router.get('/:user', (req, res, next) => {
     let Path = req.originalUrl.substr(1);
     let cookies = cookie.parse(req.headers.cookie || '');
     if (!cookies.name) {
-        res.render('loginPage');
+        res.render('userPage/loginPage');
     }
     else {
         connection = res.app.locals.connection;
@@ -215,7 +215,7 @@ router.get('/:user', (req, res, next) => {
                 })
             }
             // else res.redirect('/login');
-            else res.render('loginPage');
+            else res.render('userPage/loginPage');
         })
 
     }
