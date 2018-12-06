@@ -89,12 +89,14 @@ router.post('/getUserData', function(req, res, next) {
             if (err) throw err;
             if (result.length == 0) res.send('0');
             else {
-                connection.query(`SELECT * FROM account`, (err, result, field) => {
+                connection.query(`select account.id as id, username,email,folderCount,fileCount,dataUsed from account 
+                                    left join (select count(*) as folderCount,Owner_id from folder group by Owner_id) as folder
+                                     on  account.id = folder.Owner_id 
+                                    left join (select count(*) as fileCount, SUM(size) as dataUsed,Owner_id from file group by Owner_id) as file 
+                                     on  account.id = file.Owner_id;`, (err, result, field) => {
                     if (err) throw err;
-                    // console.log(pass);
-                    // console.log(result[0].password);
                     if (result.length == 0) res.send('0');
-                    else {
+                    else { console.log(result)
                         res.send(result);
                     }
                 })

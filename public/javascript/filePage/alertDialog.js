@@ -183,10 +183,7 @@ function ADShareFile(idFile) {
     }
 }
 
-function ALNotWorkFunction() {
-    alertify.alert("Chức năng chưa được cập nhật, quý khách vui lòng sử dụng các chức năng khác");
-    return false;
-}
+
 
 
 function ALAddToLove(check) {
@@ -194,4 +191,11 @@ function ALAddToLove(check) {
         alertify.success("On Love")
     }
     else alertify.error("Un Love")
+}
+
+
+
+function ALNotWorkFunction() {
+    alertify.alert("Chức năng chưa được cập nhật, quý khách vui lòng sử dụng các chức năng khác");
+    return false;
 }
