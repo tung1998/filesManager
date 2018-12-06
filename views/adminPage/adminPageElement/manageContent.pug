@@ -1,15 +1,17 @@
-div#User
+div#User(style="display:none")
     div#userShow.card.m-b-30
         table.table.table-hover
             thead
                 tr.d-flex.col-md-12.row.waves-effect
                     th.col-md-1 #
-                    th.col-md-4 Name
-                    th.col-md-4 Path
-                    th.col-md-1 Size
+                    th.col-md-2 Name
+                    th.col-md-3 Email
+                    th.col-md-2 Data Used
+                    th.col-md-1 Count Folder
+                    th.col-md-1 Count File
                     th.col-md-2 Time Create
             tbody#user-row
-div#File
+div#File(style="display:none")
     div#fileShow.card.m-b-30
         table.table.table-hover
             thead
@@ -20,14 +22,14 @@ div#File
                     th.col-md-1 Size
                     th.col-md-2 Time Create
             tbody#file-row
-div#Admin
+div#Admin(style="display:none")
     div#adminShow.card.m-b-30
         table.table.table-hover
             thead
                 tr.d-flex.col-md-12.row.waves-effect
                     th.col-md-1 #
                     th.col-md-4 Name
-                    th.col-md-4 Path
-                    th.col-md-1 Size
+                    th.col-md-4 Full Name
+                    th.col-md-1 Level
                     th.col-md-2 Time Create
             tbody#admin-row

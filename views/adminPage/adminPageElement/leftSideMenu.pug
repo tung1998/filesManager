@@ -10,15 +10,15 @@ div.left.side-menu
         div#sidebar-menu
             ul
                 li#userManage.has_sub
-                    a.waves-effect
+                    a.waves-effect(href='javascript:SCGetUserData();')
                         i.mdi.mdi-account
                         span  User Manage
                 li#fileManage.has_sub
-                    a.waves-effect(href='javascript:SCGetShareWithMeData();')
+                    a.waves-effect(href='javascript:SCGetFileData();')
                         i.mdi.mdi-file
                         span  File Manage
                 li#adminManage.has_sub
-                    a.waves-effect(href='javascript:SCGetShareWithMeData();')
+                    a.waves-effect(href='javascript:SCGetAdminData();')
                         i.mdi.mdi-account-key
                         span  Admin Manage
         div.clearfix
