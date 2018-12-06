@@ -144,7 +144,7 @@ $(function () {
     // $('#folderCard a.folder-item').on('click' ,function () {
     //     SCGetDataFolder($(this).attr('idFolder'));
     // })
-
+    SCGetTreeData();
     CRUpdatePathBar(localFolder.path)
     CRUpdateFileCard(folderData.childrenFile);
     CRUpdateFolderCard(folderData.childrenFolder);

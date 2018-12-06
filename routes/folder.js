@@ -34,15 +34,38 @@ router.post('/addNewFolder', (req, res, next) => {
 });
 
 
-router.post('/updateTree', (req, res, next) => {
-    const idFolder = req.body.id;
+// router.post('/updateTree', (req, res, next) => {
+//     const idFolder = req.body.id;
+//     connection = res.app.locals.connection;
+//     connection.query(`SELECT id, FolderName FROM folder WHERE In_folder ='${idFolder}' AND onDelete = '0'`,(err, result, field) => {
+//         if(err) throw err;
+//         res.send(result);
+//         res.end()
+//     })
+// });
+
+router.post('/getTreeData', (req, res, next) => {
+    let cookies = cookie.parse(req.headers.cookie || '');
+    // console.log(path,idFolder);
     connection = res.app.locals.connection;
-    connection.query(`SELECT id, FolderName FROM folder WHERE In_folder ='${idFolder}' AND onDelete = '0'`,(err, result, field) => {
-        if(err) throw err;
-        res.send(result);
-        res.end()
-    })
+    if (!cookies.name) {
+        res.send({status:0})
+    }
+    else {
+        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) {
+                connection.query(`SELECT id,FolderName,In_folder FROM folder WHERE Owner_id="${result[0].id}" AND onDelete='0' `, (err, result, field) => {
+                    if (err) throw err;
+                    if (result.length){
+                        res.send(result);
+                    }else res.send('0')
+                })
+            }else res.send("0");
+        })
+    }
 });
+
 
 router.post('/getFolderData', (req, res, next) => {
     let cookies = cookie.parse(req.headers.cookie || '');

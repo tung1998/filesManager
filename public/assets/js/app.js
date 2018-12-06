@@ -63,9 +63,6 @@ var UroraApp = (function () {
                         adjustMainContentHeight();
                     });
                 }else {
-                    if(sub.html()=="") {
-                        SCGetTreeData(sub, parent.attr("idFolder"))
-                    }
                     $(this).toggleClass("mdi-chevron-down mdi-chevron-right")
                     sub.slideDown(300, function () {
                         adjustMainContentHeight();

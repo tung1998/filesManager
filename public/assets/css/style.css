@@ -3627,17 +3627,19 @@ body.fixed-left .side-menu.left {
 }
 
 #sidebar-menu ul ul a {
+  line-height: 30px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   color: rgba(45, 59, 72, 0.8);
   display: block;
   padding: 3px 25px 3px 30px;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 #sidebar-menu ul ul a:hover {
   color: #2d3b48;
+  background-color: rgba(63, 81, 181, 0.1); ;
 }
 
 #sidebar-menu ul ul a i {
@@ -3677,11 +3679,14 @@ body.fixed-left .side-menu.left {
 
 #sidebar-menu > ul > li > a:hover i {
   color: #3f51b5;
+  /*background-color: rgba(63, 81, 181, 0.1);*/
 }
 
+.has_sub:hover{
+  color: #3f51b5;
+}
 .has_sub > a > span > i {
   font-size: 25px;
-  line-height: 25px;
   margin-right: -5px;
 }
 

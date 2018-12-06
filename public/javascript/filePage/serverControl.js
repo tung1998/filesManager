@@ -14,6 +14,7 @@ function SCAddNewFolderToDb(ParentFolder, folderName) {
         success: function (data) {
             if(data.status!=0){
                 folderData.childrenFolder.push(data);
+                TRUpdateNode(data)
                 if(localStorage.getItem('view')==1){
                     $('#list-row').prepend(`<tr class="d-flex row folder-item col-lg-12 waves-effect" idFolder="${data.id}">
                                     <td class="col-1 mdi mdi-folder"></td>
@@ -49,7 +50,10 @@ function SCGetDataFolder(id,path){
         success: function(data){
             if(data==0){
                 ALRestoreFolder(id);
-            }else {
+            }else if(data==1){
+                alertify.error('Not Found')
+            }
+            else{
                 $('#list-row').empty();
                 window.history.pushState(data, "Title", "/" + data.localFolder.path);
                 localFolder = data.localFolder;
@@ -74,25 +78,36 @@ function SCGetDataFolder(id,path){
 
 
 
+//
+//
+// function  SCGetTreeData(sub, folderID) {
+//     $.ajax({
+//         url: `/folder/updateTree`,
+//         type: 'post',
+//         data: JSON.stringify({id: folderID}),
+//         contentType: "application/json",
+//         success: function (data) {
+//             // console.log(data);
+//             TRUpdateTree(sub, data)
+//
+//         }
+//     })
+// }
 
 
-function  SCGetTreeData(sub, folderID) {
+
+function  SCGetTreeData() {
     $.ajax({
-        url: `/folder/updateTree`,
+        url: `/folder/getTreeData`,
         type: 'post',
-        data: JSON.stringify({id: folderID}),
         contentType: "application/json",
         success: function (data) {
+            data.shift();
             // console.log(data);
-            TRUpdateTree(sub, data)
-
+            TRUpdateTree(data);
         }
     })
 }
-
-
-
-
 
 
 function SCRenameFolder(id, folderName){
