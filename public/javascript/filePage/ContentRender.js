@@ -8,16 +8,7 @@ function CRUpdateFolderCard(childrenFolder){
         $('#gridShow').hide();
         $('#listShow').show();
         childrenFolder.forEach(function (item) {
-            $('#list-row').prepend(`<tr class="d-flex row folder-item col-lg-12 waves-effect" idFolder="${item.id}">
-                                    <td class="col-1 mdi mdi-folder"></td>
-                                    <td class="col-4 list-view-name">${item.FolderName}</td>
-                                    <td class="col-4 list-view-path">${item.path}</td>
-                                    <td class="col-1 list-view-size">${CRSize(item.id,item.size)}</td>
-                                    <td class="col-2 list-view-time">${item.time_create}</td></tr>`)
-
-            if(item.onLove==1&&localFolder.id!=-7){
-                $('#list-row').find(`tr[idFolder="${item.id}"]`).first().addClass("love")
-            }
+            CRItemFolderListStyle(item);
         })
     }
 
@@ -28,15 +19,7 @@ function CRUpdateFolderCard(childrenFolder){
         else $("#folderShow").hide();
 
         childrenFolder.forEach(function (item) {
-            if(item.onLove==1&&localFolder.id!=-7) {
-                $('#folderCard').prepend(`<a class="folder-item col-sm-6 col-md-4 col-lg-3 love " idFolder="${item.id}">
-                                            <i class="waves-effect mdi mdi-folder">${item.FolderName}</i> 
-                                        </a>`);
-            }else {
-                $('#folderCard').prepend(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${item.id}">
-                                            <i class="waves-effect mdi mdi-folder">${item.FolderName}</i> 
-                                        </a>`);
-            }
+            CRItemFolderGridStyle(item)
         })
     }
 
@@ -51,15 +34,7 @@ function CRUpdateFileCard(childrenFile){
         $('#listShow').show();
         $('#gridShow').hide();
         childrenFile.forEach(function (item) {
-            $('#list-row').append(`<tr class="d-flex row file-item col-md-12 waves-effect" idFile="${item.file_id}" typeFile="${item.type}">
-                                    <td class="col-1 mdi ${CRAddFileIcon(item.file_id,item.type)}"></td>
-                                    <td class="col-4 list-view-name">${item.file_name}</td>
-                                    <td class="col-4 list-view-path">${localFolder.path}/${item.file_name}</td>
-                                    <td class="col-1 list-view-size">${CRSize(item.file_id,item.size)}</td>
-                                    <td class="col-2 list-view-time">${item.timeUpload}</td></tr>`)
-            if(item.onLove==1&&localFolder.id!=-7){
-                $('#list-row').find(`tr[idFile="${item.file_id}"]`).first().addClass("love")
-            }
+            CRItemFileListStyle(item)
         })
     }else {
         if(childrenFile.length) $("#fileShow").show();
@@ -67,43 +42,35 @@ function CRUpdateFileCard(childrenFile){
         $('#listShow').hide();
         $('#gridShow').show();
         childrenFile.forEach(function (item) {
-            $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.file_id}" typeFile="${item.type}">
-                                        <i class="waves-effect mdi ${CRAddFileIcon(item.file_id,item.type)}">${item.file_name}</i> 
-                                    </a>`);
-            if(item.onLove==1&&localFolder.id!=-7){
-                $('#fileCard').find(`[idFile="${item.file_id}"]`).addClass("love")
-            }
+            CRItemFileGridStyle(item);
         })
     }
-
-  
-
 }
 
-function CRUpdateSearch(data){
-    $("#searchDropdown").empty();
-    data.folderInfor.forEach((item)=> {
-        $("#searchDropdown").prepend(
-            `<a class="waves-effect dropdown-item notify-item search-folder-item"idFolder="${item.id}">
-                <div class="notify-icon bg-primary">
-                    <i class="mdi mdi-folder"></i></div>
-                <p class="notify-details">
-                    <b>${item.FolderName}</b>
-                    <small class="text-muted">${item.path}</small></p>
-            </a>`
-        )
-    })
-    data.fileInfor.forEach((item)=> {
-        $("#searchDropdown").append(`
-            <a class="waves-effect dropdown-item notify-item search-file-item" idFile="${item.file_id}" typeFile="${item.type}">
-                <div class="notify-icon bg-primary">
-                    <i class="mdi ${CRAddFileIcon(item.file_id,item.type)}"></i></div>
-                <p class="notify-details">
-                    <b>${item.file_name}</b> 
-                    <small class="text-muted"></small></p>
-            </a>`)
-    })
-}
+// function CRUpdateSearch(data){
+//     $("#searchDropdown").empty();
+//     data.folderInfor.forEach((item)=> {
+//         $("#searchDropdown").prepend(
+//             `<a class="waves-effect dropdown-item notify-item search-folder-item"idFolder="${item.id}">
+//                 <div class="notify-icon bg-primary">
+//                     <i class="mdi mdi-folder"></i></div>
+//                 <p class="notify-details">
+//                     <b>${item.FolderName}</b>
+//                     <small class="text-muted">${item.path}</small></p>
+//             </a>`
+//         )
+//     })
+//     data.fileInfor.forEach((item)=> {
+//         $("#searchDropdown").append(`
+//             <a class="waves-effect dropdown-item notify-item search-file-item" idFile="${item.file_id}" typeFile="${item.type}">
+//                 <div class="notify-icon bg-primary">
+//                     <i class="mdi ${CRAddFileIcon(item.file_id,item.type)}"></i></div>
+//                 <p class="notify-details">
+//                     <b>${item.file_name}</b>
+//                     <small class="text-muted"></small></p>
+//             </a>`)
+//     })
+// }
 
 
 function CRUpdatePathBar(path) {
@@ -139,8 +106,6 @@ function CRUpdatePathBar(path) {
     }
 }
 
-
-
 function CRRenameFolder(id, folderName) {
     if(localStorage.getItem('view')==1){
         $('#list-row').find(`[idFolder=${id}]>.list-view-name`).text(folderName);
@@ -150,6 +115,7 @@ function CRRenameFolder(id, folderName) {
     }
 
 }
+
 function CRRenameFile(id, fileName) {
     if(localStorage.getItem('view')==1){
         $('#list-row').find(`[idFile=${id}]>.list-view-name`).text(fileName);
@@ -158,8 +124,6 @@ function CRRenameFile(id, fileName) {
         $('#fileCard').find(`[idFile=${id}]>i`).text(fileName);
     }
 }
-
-
 
 async function CRGetSearchPage() {
     $('#list-row').empty();
@@ -171,59 +135,74 @@ async function CRGetSearchPage() {
     if(localStorage.getItem('view')==1) {
         folderData.childrenFile.forEach((item) => {
             if (item.file_name.toUpperCase().includes(text)) {
-                $('#list-row').append(`<tr class="d-flex row file-item col-md-12 waves-effect" idFile="${item.file_id}" typeFile="${item.type}">
-                                    <td class="col-1 mdi ${CRAddFileIcon(item.file_id,item.type)}"></td>
-                                    <td class="col-4 list-view-name">${item.file_name}</td>
-                                    <td class="col-4 list-view-path">${localFolder.path}/${item.file_name}</td>
-                                    <td class="col-1 list-view-size">${CRSize(item.file_id,item.size)}</td>
-                                    <td class="col-2 list-view-time">${item.timeUpload}</td></tr>`)
-                if(item.onLove==1&&localFolder.id!=-7){
-                    $('#list-row').find(`[idFile="${item.file_id}"] td`).first().addClass("love")
-                }
+                CRItemFileListStyle(item)
             }
 
         })
         folderData.childrenFolder.forEach((item) => {
             if (item.FolderName.toUpperCase().includes(text)) {
-                $('#list-row').prepend(`<tr class="d-flex row folder-item col-lg-12 waves-effect" idFolder="${item.id}">
-                                    <td class="col-1 mdi mdi-folder"></td>
-                                    <td class="col-4 list-view-name">${item.FolderName}</td>
-                                    <td class="col-4 list-view-path">${item.path}</td>
-                                    <td class="col-1 list-view-size">${CRSize(item.id,item.size)}</td>
-                                    <td class="col-2 list-view-time">${item.time_create}</td></tr>`)
-                if(item.onLove==1&&localFolder.id!=-7){
-                    $('#list-row').find(`[idFolder="${item.id}"] td`).first().addClass("love")
-                }
+                CRItemFolderListStyle(item)
             }
         })
     }else {
         folderData.childrenFile.forEach((item) => {
             if (item.file_name.toUpperCase().includes(text)) {
-                $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.file_id}" typeFile="${item.type}">
-                                        <i class="waves-effect mdi ${CRAddFileIcon(item.file_id,item.type)}>${item.file_name}</i> 
-                                    </a>`);
-                if(item.onLove==1&&localFolder.id!=-7){
-                    $('#fileCard').find(`[idFile="${item.file_id}"] i`).addClass("love")
-                }
+                CRItemFileGridStyle(item)
             }
         })
         folderData.childrenFolder.forEach((item) => {
             if (item.FolderName.toUpperCase().includes(text)) {
-                if(item.onLove==1&&localFolder.id!=-7) {
-                    $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3 love" idFolder="${item.id}">
-                                            <i class="waves-effect mdi mdi-folder">${item.FolderName}</i> 
-                                        </a>`);
-                }else {
-                    $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${item.id}">
-                                            <i class="waves-effect mdi mdi-folder">${item.FolderName}</i> 
-                                        </a>`);
-                }
+                CRItemFolderGridStyle(item)
             }
         })
     }
 
 }
 
+function CRItemFileListStyle(item) {
+    $('#list-row').append(`<tr class="d-flex row file-item col-md-12 waves-effect" idFile="${item.file_id}" typeFile="${item.type}">
+                                    <td class="col-1 mdi ${CRAddFileIcon(item.file_id,item.type)}"></td>
+                                    <td class="col-4 list-view-name">${item.file_name}</td>
+                                    <td class="col-4 list-view-path">${localFolder.path}/${item.file_name}</td>
+                                    <td class="col-1 list-view-size">${CRSize(item.file_id,item.size)}</td>
+                                    <td class="col-2 list-view-time">${item.timeUpload}</td></tr>`)
+    if(item.onLove==1&&localFolder.id!=-7){
+        $('#list-row').find(`[idFile="${item.file_id}"] td`).first().addClass("love")
+    }
+}
+
+function CRItemFileGridStyle(item) {
+    $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.file_id}" typeFile="${item.type}">
+                                        <i class="waves-effect mdi ${CRAddFileIcon(item.file_id,item.type)}">${item.file_name}</i> 
+                                    </a>`);
+    if(item.onLove==1&&localFolder.id!=-7){
+        $('#fileCard').find(`[idFile="${item.file_id}"]`).addClass("love")
+    }
+}
+
+function CRItemFolderListStyle(item) {
+    $('#list-row').prepend(`<tr class="d-flex row folder-item col-lg-12 waves-effect" idFolder="${item.id}">
+                                    <td class="col-1 mdi mdi-folder"></td>
+                                    <td class="col-4 list-view-name">${item.FolderName}</td>
+                                    <td class="col-4 list-view-path">${item.path}</td>
+                                    <td class="col-1 list-view-size">${CRSize(item.id,item.size)}</td>
+                                    <td class="col-2 list-view-time">${item.time_create}</td></tr>`)
+    if(item.onLove==1&&localFolder.id!=-7){
+        $('#list-row').find(`[idFolder="${item.id}"] td`).first().addClass("love")
+    }
+}
+
+function CRItemFolderGridStyle(item) {
+    if(item.onLove==1&&localFolder.id!=-7) {
+        $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3 love" idFolder="${item.id}">
+                                            <i class="waves-effect mdi mdi-folder">${item.FolderName}</i> 
+                                        </a>`);
+    }else {
+        $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${item.id}">
+                                            <i class="waves-effect mdi mdi-folder">${item.FolderName}</i> 
+                                        </a>`);
+    }
+}
 
 function CRAddFileIcon(id,type) {
     if(type==0){
@@ -281,3 +260,4 @@ function compareValues(key, order='asc') {
         );
     };
 }
+

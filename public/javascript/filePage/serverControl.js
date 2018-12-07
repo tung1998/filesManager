@@ -35,9 +35,6 @@ function SCAddNewFolderToDb(ParentFolder, folderName) {
     })
 }
 
-
-
-
 function SCGetDataFolder(id,path){
 
     $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
@@ -76,8 +73,6 @@ function SCGetDataFolder(id,path){
 
 }
 
-
-
 //
 //
 // function  SCGetTreeData(sub, folderID) {
@@ -93,8 +88,6 @@ function SCGetDataFolder(id,path){
 //         }
 //     })
 // }
-
-
 
 function  SCGetTreeData() {
     $.ajax({
@@ -218,8 +211,6 @@ function SCRestoreFile(fileID) {
     })
 }
 
-
-
 function SCDeleteFile(file) {
     if (localFolder.id==-7||localFolder.id==-1) alertify.error("Can't delete this file");
     else {
@@ -239,8 +230,6 @@ function SCDeleteFile(file) {
         })
     }
 }
-
-
 
 function SCAddNewFileToDb() {
     // console.log($("#fileUpload").val())
@@ -308,7 +297,6 @@ function SCAddNewFileToDb() {
     })
 }
 
-
 function SCGetTrashData() {
     $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
     $(document).find(`#trash>a`).addClass("menu-nav-active");
@@ -328,6 +316,7 @@ function SCGetTrashData() {
         }
     })
 }
+
 function SCGetShareWithMeData() {
     $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
     $(document).find(`#fileShare>a`).addClass("menu-nav-active");
@@ -346,7 +335,6 @@ function SCGetShareWithMeData() {
         }
     })
 }
-
 
 function SCGetShareWithMeFolderData(id,path) {
     if(id==""){
@@ -468,9 +456,6 @@ function SCGetFileOpenRecent() {
 //     })
 // }
 
-
-
-
 async function SCGetSearchPage() {
     CRGetSearchPage()
     // let data={
@@ -584,8 +569,6 @@ function SCAddToLoveFolder(folder) {
     })
 }
 
-
-
 function SCDownloadFile(id) {
     $.ajax({
         type: 'post',
@@ -598,7 +581,3 @@ function SCDownloadFile(id) {
     })
 }
 
-
-function checkNameFileUpload(id,name) {
-
-}
