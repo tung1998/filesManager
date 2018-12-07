@@ -55,7 +55,10 @@ connection.connect((err) => {
         console.error('error connecting: ' + err.stack);
         return;
     }
+
     app.use('/admin', adminRouter);
+    app.use(checkUser);
+
     app.use('/trash', trashRouter);
     app.use('/love', loveRouter);
     app.use('/users', usersRouter);
@@ -72,22 +75,44 @@ connection.connect((err) => {
 
     // catch 404 and forward to error handler
     app.use( (req, res, next) => {
-      next(createError(404));
+        next(createError(404));
     });
 
     // error handler
     app.use((err, req, res, next) => {
-      // set locals, only providing error in development
-      res.locals.message = err.message;
-      res.locals.error = req.app.get('env') === 'development' ? err : {};
+        // set locals, only providing error in development
+        res.locals.message = err.message;
+        res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-      // render the error page
-      res.status(err.status || 500);
-      res.render('error/error');
+        // render the error page
+        res.status(err.status || 500);
+        res.render('error/error');
     });
 
 });
 
+
+
+function checkUser(req,res,next){
+    let cookies = cookie.parse(req.headers.cookie || '');
+    if (!cookies.name) {
+        req.user=false;
+        next();
+    }
+    else {
+        connection.query(`SELECT id, RootID, username FROM account WHERE cookie = "${cookies.name}"AND activate="1"`, (err, result, field) => {
+            // console.log(result);
+            if (result.length){
+                req.user = result[0];
+                next();
+            }
+            else{
+                req.user=false;
+                next();
+            }
+        })
+    }
+}
 
 module.exports = app;
 

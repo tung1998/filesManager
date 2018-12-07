@@ -312,14 +312,10 @@ function SCAddNewFileToDb() {
 function SCGetTrashData() {
     $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
     $(document).find(`#trash>a`).addClass("menu-nav-active");
-    let data={
-        userID: folderData.userInfo.id,
-    }
     $.ajax({
         type: 'post',
         url: '/trash',
         dataType: 'json',
-        data: data,
         success: function (data) {
             $('#list-row').empty();
             $("#errorStatus").hide();
@@ -416,14 +412,10 @@ function shareFolderData(id,path) {
 function SCGetOnLoveData() {
     $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
     $(document).find(`#fileInLove>a`).addClass("menu-nav-active");
-    let data={
-        userID: folderData.userInfo.id,
-    }
     $.ajax({
         type: 'post',
         url: '/love',
         dataType: 'json',
-        data: data,
         success: function (data) {
             $('#list-row').empty();
             $("#errorStatus").hide();
@@ -441,14 +433,10 @@ function SCGetOnLoveData() {
 function SCGetFileOpenRecent() {
     $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
     $(document).find(`#fileOpenRecent>a`).addClass("menu-nav-active");
-    let data={
-        userID: folderData.userInfo.id,
-    }
     $.ajax({
         type: 'post',
         url: '/file/openRecent',
         dataType: 'json',
-        data: data,
         success: function (data) {
             $('#list-row').empty();
             $("#errorStatus").hide();

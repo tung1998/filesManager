@@ -68,10 +68,10 @@ $(function() {
                     let id =file.attr('idFolder');
                     if(localStorage.getItem('view')==1){
                         let name = file.find('.list-view-name').first().text();
-                        ALRenameFile(id,name);
+                        ALRenameFolder(id,name);
                     }else {
                         let name = file.find('i').first().text()
-                        ALRenameFile(id,name);
+                        ALRenameFolder(id,name);
                     }
                     // console.log(opt.$trigger)
                 }}

@@ -18,166 +18,105 @@ router.post("/shareFolder",(req,res,next)=>{
     let cookies = cookie.parse(req.headers.cookie || '');
     // console.log(req.headers.cookie);
     // console.log(cookies.name);
-    if (!cookies.name) {
-        // res.redirect('/login');
-        res.send({status:0})
-    }
-    else {
+    if(req.user){
         connection = res.app.locals.connection;
-        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
-            if(err) throw err;
+        connection.query(`SELECT * FROM folder WHERE id = "${idFolder}" AND Owner_id="${result[0].id}"`, (err, result, field) => {
+            if (err) throw err;
             if (result.length) {
-                connection.query(`SELECT * FROM folder WHERE id = "${idFolder}" AND Owner_id="${result[0].id}"`, (err, result, field) => {
+                connection.query(`SELECT id FROM account where  username='${shareUser}' OR email='${shareUser}'`, (err, result, field) => {
                     if (err) throw err;
-                    if (result.length) {
-                        connection.query(`SELECT id FROM account where  username='${shareUser}' OR email='${shareUser}'`, (err, result, field) => {
-                            if (err) throw err;
-                            if(result.length){
-                                let user_id = result[0].id;
-                                shareFolder(idFolder,user_id);
-                                res.send({status:2})
-                            }else {
-                                res.send({status:4});
-                            }
-
-                        })
-                    }else {
-                        res.send({status:3});
-                    }
+                    if(result.length){
+                        let user_id = result[0].id;
+                        shareFolder(idFolder,user_id);
+                        res.send({status:2})
+                    }else res.send({status:4});
                 })
-            }else {
-                res.send({status:1})
-            }
+            }else res.send({status:3});
         })
-    }
-
+    }else res.send({status:1})
 })
 
 router.post("/shareFile",(req,res,next)=>{
     let idFile = req.body.idFile;
     let shareUser = req.body.shareUser;
-    let cookies = cookie.parse(req.headers.cookie || '');
-    // console.log(req.headers.cookie);
-    // console.log(cookies.name);
-    if (!cookies.name) {
-        // res.redirect('/login');
-        res.send({status:0})
-    }
-    else {
+    if(req.user){
         connection = res.app.locals.connection;
-        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
-            if(err) throw err;
+        console.log(`SELECT * FROM file WHERE file_id = "${idFile}" AND Owner_id="${req.user.id}"`)
+        connection.query(`SELECT * FROM file WHERE file_id = "${idFile}" AND Owner_id="${result[0].id}"`, (err, result, field) => {
+            if (err) throw err;
             if (result.length) {
-                console.log(`SELECT * FROM file WHERE file_id = "${idFile}" AND Owner_id="${result[0].id}"`)
-                connection.query(`SELECT * FROM file WHERE file_id = "${idFile}" AND Owner_id="${result[0].id}"`, (err, result, field) => {
+                connection.query(`SELECT id FROM account where  username='${shareUser}' OR email='${shareUser}'`, (err, result, field) => {
                     if (err) throw err;
-                    if (result.length) {
-                        connection.query(`SELECT id FROM account where  username='${shareUser}' OR email='${shareUser}'`, (err, result, field) => {
-                            if (err) throw err;
-                            if(result.length){
-                                let user_id = result[0].id;
-                                shareFile(idFile,user_id);
-                                res.send({status:2})
-                            }else {
-                                res.send({status:4});
-                            }
+                    if(result.length){
+                        let user_id = result[0].id;
+                        shareFile(idFile,user_id);
+                        res.send({status:2})
+                    }else res.send({status:4});
 
-                        })
-                    }else {
-                        res.send({status:3});
-                    }
                 })
-            }else {
-                res.send({status:1})
-            }
+            }else res.send({status:3});
         })
-    }
-
+    }else res.send({status:1})
 })
 
 
 
 router.post("/getFolderData",(req,res,next)=>{
-    let cookies = cookie.parse(req.headers.cookie || '');
     let idFolder = req.body.id;
     let path = req.body.path;
     // console.log(path,idFolder);
     connection = res.app.locals.connection;
-    if (!cookies.name) {
-        res.send({status:0})
-    }
-    else {
-        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+    if(req.user){
+        let user =req.user;
+        connection.query(`SELECT * FROM folder WHERE id ='${idFolder}' OR path ='${path}' `, (err, result, field) => {
             if (err) throw err;
-            let user =result[0];
-            if (result.length) {
-                connection.query(`SELECT * FROM folder WHERE id ='${idFolder}' OR path ='${path}' `, (err, result, field) => {
-                    if (err) throw err;
-                    if (result.length){
-                        console.log(idFolder,path)
-                        if (result[0].onDelete == 0) {
-                            let data = {
-                                localFolder: result[0]
-                            }
-                            // console.log(idFolder)
-                            connection.query(`SELECT * FROM folder_share WHERE id ='${data.localFolder.id}' AND user_id ='${user.id}' `, (err, result, field) => {
+            if (result.length){
+                console.log(idFolder,path)
+                if (result[0].onDelete == 0) {
+                    let data = {
+                        localFolder: result[0]
+                    }
+                    connection.query(`SELECT * FROM folder_share WHERE id ='${data.localFolder.id}' AND user_id ='${user.id}' `, (err, result, field) => {
+                        if (err) throw err;
+                        console.log(idFolder,user.id)
+                        if (result.length) {
+                            connection.query(`SELECT * FROM folder WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`, (err, result, field) => {
                                 if (err) throw err;
-                                console.log(idFolder,user.id)
-                                if (result.length) {
-                                    connection.query(`SELECT * FROM folder WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`, (err, result, field) => {
-                                        if (err) throw err;
-                                        data.childrenFolder = result;
-                                        connection.query(`SELECT * FROM file WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`, (err, result, field) => {
-                                            if (err) throw err;
-                                            data.childrenFile = result;
-                                            data.localFolder.id=-7;
-                                            res.send(data);
-                                            res.end()
-                                        })
-                                    })
-                                }else (res.send('3'))
+                                data.childrenFolder = result;
+                                connection.query(`SELECT * FROM file WHERE In_folder ='${data.localFolder.id}' AND onDelete = '0'`, (err, result, field) => {
+                                    if (err) throw err;
+                                    data.childrenFile = result;
+                                    data.localFolder.id=-7;
+                                    res.send(data);
+                                    res.end()
+                                })
                             })
-                        } else res.send('2');
-                    }else res.send('1')
-                })
-            }else res.send("0");
+                        }else (res.send('3'))
+                    })
+                } else res.send('2');
+            }else res.send('1')
         })
-    }
+    }else res.send("0");
 });
 
 
 
 router.post("/getShare",(req,res,next)=>{
-    let cookies = cookie.parse(req.headers.cookie || '');
-    // console.log(req.headers.cookie);
-    // console.log(cookies.name);
-    if (!cookies.name) {
-        // res.redirect('/login');
-        res.send({status:0})
-    }
-    else {
-        connection = res.app.locals.connection;
-        connection.query(`SELECT id, RootID, userName FROM account WHERE cookie = "${cookies.name}" AND activate ='1'`, (err, result, field) => {
+    if(req.user){
+        let id=req.user.id;
+        connection.query(`SELECT * FROM folder WHERE id IN (SELECT id FROM folder_share WHERE user_id ="${id}" AND rootShare="1")  AND onDelete = '0'`,(err, result, field) => {
             if (err) throw err;
-            let id=result[0].id;
-            if (result.length) {
-                connection.query(`SELECT * FROM folder WHERE id IN (SELECT id FROM folder_share WHERE user_id ="${id}" AND rootShare="1")  AND onDelete = '0'`,(err, result, field) => {
-                    if (err) throw err;
-                    let data = {
-                        childrenFolder: result
-                    }
-                    connection.query(`SELECT * FROM file WHERE file_id IN (SELECT file_id from file_share WHERE user_id='${id}' AND rootShare="1") AND onDelete = '0'`, (err, result, field) => {
-                        if (err) throw err;
-                        data.childrenFile = result;
-                        res.send(data);
-                        res.end();
-                    })
-                })
-            }else {
-                res.send({status:1})
+            let data = {
+                childrenFolder: result
             }
+            connection.query(`SELECT * FROM file WHERE file_id IN (SELECT file_id from file_share WHERE user_id='${id}' AND rootShare="1") AND onDelete = '0'`, (err, result, field) => {
+                if (err) throw err;
+                data.childrenFile = result;
+                res.send(data);
+                res.end();
+            })
         })
-    }
+    }else res.send({status:1})
 })
 
 
