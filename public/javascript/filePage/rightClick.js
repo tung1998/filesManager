@@ -28,8 +28,6 @@ $(function() {
     // })
 });
 
-
-
 //folder right click
 $(function() {
     $.contextMenu({
@@ -78,13 +76,7 @@ $(function() {
         }
     });
 
-    // $('.folder-item').on('click', (e)=>{
-    //     // console.log('clicked', this);
-    // })
 });
-
-
-
 
 //file right click
 $(function() {
@@ -142,7 +134,4 @@ $(function() {
         }
     });
 
-    // $('.folder-item').on('click', (e)=>{
-    //     // console.log('clicked', this);
-    // })
 });

@@ -1,16 +1,4 @@
 let localFolder = folderData.localFolder;
-//
-// window.onpopstate = function(e){
-//     if(e.state){
-//         var currentState = history.state;
-//         $("body").html(e.state.html);
-//         console.log(e.state)
-//         document.title = e.state.pageTitle;
-//     }
-//
-// };
-// $(document).ready( () => {
-
 
 $(function () {
     if(localStorage.getItem('view')==1){
@@ -151,21 +139,6 @@ $(function () {
 
 })
 
-
-
-
-// });
-
-
-
-
-
-
-
-
-
-
-//logout
 function logout() {
     $.ajax({
         url:'/users/logout',
@@ -176,7 +149,6 @@ function logout() {
     });
 }
 
-
 function searchData() {
     let text = $("#Search").val();
     if(text.length>=3){
@@ -184,6 +156,7 @@ function searchData() {
         SCGetDataSearch(text);
     }else $('#searchDropdown').removeClass("show");
 }
+
 function setGridView() {
     localStorage.setItem('view','0');
     $('#list-row').empty();
@@ -194,6 +167,7 @@ function setGridView() {
     CRUpdateFileCard(folderData.childrenFile);
 
 }
+
 function setListView() {
     localStorage.setItem('view','1');
     $('#list-row').empty();
@@ -202,11 +176,10 @@ function setListView() {
     CRUpdateFolderCard(folderData.childrenFolder);
     CRUpdateFileCard(folderData.childrenFile);
 }
+
 function profile() {
 
 }
-
-
 
 function checkFolderName(folderName) {
     for(let i=0; i<folderData.childrenFolder.length; i++){
@@ -214,6 +187,7 @@ function checkFolderName(folderName) {
     }
     return true;
 }
+
 function checkFileName(fileName) {
     for(let i=0; i<folderData.childrenFile.length; i++){
         if (folderData.childrenFile[i].file_name == fileName) return false;

@@ -7,8 +7,6 @@ var codeName;
 var idFileOnShow;
 var nameFileOnShow;
 
-
-
 $(document).on("click","#download",function () {
     // let name = $(document).find("#caption>i").text();
     window.open("/download/"+codeName);
@@ -24,11 +22,11 @@ $(document).on("click","#close",function () {
     modal.hide();
     $('.modal-content').remove()
 })
+
 $(document).on("click","#size",function () {
     modal.toggleClass("small-box");
     $("#size>i").toggleClass("mdi-fullscreen mdi-fullscreen-exit");
 })
-
 
 async function showFile(type,id,name){
 
@@ -97,9 +95,11 @@ async function showFileTxt(id) {
         }
     })
 }
+
 function showFileMp3(id) {
     modal.append(`<div class="modal-content"><audio controls><source src="/userFile/${id}" type="audio/mpeg"></audio></div>`)
 }
+
 function showFileMp4(id) {
     modal.append(`<div class="modal-content"><video controls><source src="/userFile/${id}" type="video/mp4"></video></div>`)
 }

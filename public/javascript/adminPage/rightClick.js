@@ -1,12 +1,16 @@
+//user
 $(function() {
     $.contextMenu({
         selector: '.user-item',
         items: {
-            "add": {
-                name: "NewFolder", icon: 'fa-plus', callback: function () {
-                    ALNotWorkFunction();   ///contentRender
+            "active": {
+                name: "Active/Lock", icon: 'fa-key', callback: function (key,opt) {
+                    let id = opt.$trigger.attr('idUser');
+                    let activate = opt.$trigger.attr('activate');
+                    ALActivateUser(id,activate);   ///contentRender
                 }
             },
+            "sep1": "---------",
             "fileUpload": {
                 name: "FileUpload", icon: "fa-cloud-upload", callback: () => {
                     ALNotWorkFunction();
@@ -21,8 +25,7 @@ $(function() {
         }
     });
 });
-
-
+//file
 $(function() {
     $.contextMenu({
         selector: '.file-item',
@@ -46,9 +49,7 @@ $(function() {
         }
     });
 });
-
-
-
+//admin
 $(function() {
     $.contextMenu({
         selector: '.admin-item',

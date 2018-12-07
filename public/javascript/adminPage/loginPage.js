@@ -7,9 +7,6 @@ $(document).ready( () => {
 
 });
 
-
-
-
 function loginClick() {
     let data = {
         id    :   $('#login-id').val(),

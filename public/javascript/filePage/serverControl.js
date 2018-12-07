@@ -16,17 +16,9 @@ function SCAddNewFolderToDb(ParentFolder, folderName) {
                 folderData.childrenFolder.push(data);
                 TRUpdateNode(data)
                 if(localStorage.getItem('view')==1){
-                    $('#list-row').prepend(`<tr class="d-flex row folder-item col-lg-12 waves-effect" idFolder="${data.id}">
-                                    <td class="col-1 mdi mdi-folder"></td>
-                                    <td class="col-4 list-view-name">${data.FolderName}</td>
-                                    <td class="col-4 list-view-path">${data.path}</td>
-                                    <td class="col-1 list-view-size">${CRSize(data.id,data.size)}</td>
-                                    <td class="col-2 list-view-time">${data.time_create}</td></tr>`)
+                    CRItemFolderListStyle(data)
                 }else {
-                    // $("#folderShow").show()
-                    $('#folderCard').prepend(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${data.id}">
-                                <i class="waves-effect mdi mdi-folder"> ${folderName}</i> 
-                            </a>`);
+                    CRItemFolderGridStyle(data)
                 }
             }else alertify.error('Can not create folder')
             // console.log(data);
@@ -102,7 +94,6 @@ function  SCGetTreeData() {
     })
 }
 
-
 function SCRenameFolder(id, folderName){
     let data = {
         id: id,
@@ -129,7 +120,6 @@ function SCRenameFolder(id, folderName){
     })
 }
 
-
 function SCRenameFile(id, fileName){
     let data = {
         id: id,
@@ -155,7 +145,6 @@ function SCRenameFile(id, fileName){
         }
     })
 }
-
 
 function SCDeleteFolder(folder) {
     if (localFolder.id==-7||localFolder.id==-1) alertify.error("Can't delete this folder");
@@ -252,23 +241,15 @@ function SCAddNewFileToDb() {
             ALOnUploadFile();
         },
         success: function (data) {
-            // console.log(data);
             if(data.status==0) alertify.error("Can not upload")
             else {
                 $("#fileShow").show()
                 // console.log(data);
                 data.fileUpload.forEach((item)=> {
                     if (localStorage.getItem('view') == 1) {
-                        $('#list-row').append(`<tr class="d-flex row file-item col-md-12 waves-effect" idFile="${item.file_id}" typeFile="${item.type}">
-                                    <td class="col-1 mdi ${CRAddFileIcon(item.file_id,item.type)}"></td>
-                                    <td class="col-4 list-view-name">${item.file_name}</td>
-                                    <td class="col-4 list-view-path">${localFolder.path}/${item.file_name}</td>
-                                    <td class="col-1 list-view-size">${item.size}</td>
-                                    <td class="col-2 list-view-time">${item.timeUpload}</td></tr>`)
+                        CRItemFileListStyle(item)
                     } else{
-                        $('#fileCard').append(`<a class="file-item col-sm-6 col-md-4 col-lg-3" idFile="${item.file_id}" typeFile="${item.type}">
-                                                    <i class="waves-effect mdi ${CRAddFileIcon(item.file_id,item.type)}">${item.file_name}</i> 
-                                                </a>`);
+                        CRItemFileGridStyle(item)
                     }
                     let name = item.file_name;
                     let x=0;
@@ -396,7 +377,6 @@ function shareFolderData(id,path) {
     // });
 }
 
-
 function SCGetOnLoveData() {
     $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
     $(document).find(`#fileInLove>a`).addClass("menu-nav-active");
@@ -416,7 +396,6 @@ function SCGetOnLoveData() {
         }
     })
 }
-
 
 function SCGetFileOpenRecent() {
     $(document).find('#sidebar-menu a.menu-nav-active').removeClass("menu-nav-active");
@@ -476,6 +455,7 @@ async function SCGetSearchPage() {
     //     }
     // })
 }
+
 function SCShareFolder(idFolder,shareUser) {
     let data={
         idFolder:idFolder,
@@ -493,6 +473,7 @@ function SCShareFolder(idFolder,shareUser) {
         }
     })
 }
+
 function SCShareFile(idFile,shareUser) {
     let data={
         idFile:idFile,

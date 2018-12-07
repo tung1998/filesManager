@@ -64,7 +64,7 @@ router.post('/', function(req, res, next) {
                 // console.log(result1);
                 if (!result1.length) {
                     console.log("username can be use");
-                    connection.query("INSERT INTO `account` (`email`, `userName`, `password`, `salt`, `cookie`) VALUES ('" + email + "', '" + username + "', '" + pass + "', '" + salt + "', '" + cookie + "');", (err, result, field) => {
+                    connection.query("INSERT INTO `account` (`email`, `userName`, `password`, `salt`, `cookie`,`time_create`) VALUES ('" + email + "', '" + username + "', '" + pass + "', '" + salt + "', '" + cookie + "',NOW());", (err, result, field) => {
                         if(err) throw err;
                         // console.log(result);
                         //send mail confirm

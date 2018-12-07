@@ -15,7 +15,6 @@ router.get('/', (req, res, next) => {
     }
 });
 
-
 router.get('/*',(req, res, next) => {
     let path = req.originalUrl.substr(7);
     if(req.admin){
@@ -26,12 +25,24 @@ router.get('/*',(req, res, next) => {
     }
 });
 
-
 router.post('/addNewAdmin', function(req, res, next) {
     const data = req.body;
 })
 
-
+router.post('/userManager/activate', function(req, res, next) {
+    if(req.admin){
+         let data = req.body;
+         if(data.activate){
+             connection.query(`UPDATE account SET activate = '1' WHERE id = '${data.id}'`, (err, result, field) => {
+                res.send({status:1});
+             })
+         }else {
+             connection.query(`UPDATE account SET activate = '0' WHERE id = '${data.id}'`, (err, result, field) => {
+                 res.send({status:1});
+             })
+         }
+    }else res.send({status:0})
+})
 
 router.post('/login', function(req, res, next) {
     const data = req.body;
@@ -59,10 +70,9 @@ router.post('/login', function(req, res, next) {
     })
 });
 
-
 router.post('/getUserData', function(req, res, next) {
     if(req.admin){
-        connection.query(`select account.id as id, username,email,folderCount,fileCount,dataUsed from account 
+        connection.query(`select account.id as id,activate, username,email,folderCount,fileCount,dataUsed from account 
                                     left join (select count(*) as folderCount,Owner_id from folder group by Owner_id) as folder
                                      on  account.id = folder.Owner_id 
                                     left join (select count(*) as fileCount, SUM(size) as dataUsed,Owner_id from file group by Owner_id) as file 
@@ -84,8 +94,6 @@ router.post('/getFileData', function(req, res, next) {
     }else res.send('0');
 });
 
-
-
 router.post('/getAdminData', function(req, res, next) {
     if(req.admin){
         connection.query(`SELECT * FROM admin`, (err, result, field) => {
@@ -95,8 +103,6 @@ router.post('/getAdminData', function(req, res, next) {
         })
     }else res.send('0');
 });
-
-
 
 router.post('/logout',(req,res,next) => {
     console.log('admnlogout')

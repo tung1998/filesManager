@@ -29,8 +29,6 @@ function ADAddNewFolder() {
     }
 }
 
-
-
 function ALRenameFolder(id,name) {
     if (localFolder.id==-7) alertify.error("Can't rename this folder");
     else {
@@ -183,17 +181,12 @@ function ADShareFile(idFile) {
     }
 }
 
-
-
-
 function ALAddToLove(check) {
     if(check){
         alertify.success("On Love")
     }
     else alertify.error("Un Love")
 }
-
-
 
 function ALNotWorkFunction() {
     alertify.alert("Chức năng chưa được cập nhật, quý khách vui lòng sử dụng các chức năng khác");
