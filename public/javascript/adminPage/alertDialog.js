@@ -21,3 +21,33 @@ function ALActivateUser(id,activate) {
         });
     }
 }
+
+
+function ALResetUserPassword(id) {
+    let userName = $(`#user-row>[idUser='${id}']>.list-view-name`).text()
+    alertify
+        .placeholder("Enter Password")
+        .defaultValue('')
+        .prompt(`Reset Password for ${userName}`, function (newPass, ev) {
+            ev.preventDefault();
+            if (newPass) {
+                SCUserChangePass(id,newPass);
+            } else {
+                alertify.error('Please enter Password')
+                ALResetUserPassword(id)
+            }
+        }, function (ev) {
+            ev.preventDefault();
+        });
+}
+
+
+function ALDeleteUser(id) {
+    let userName = $(`#user-row>[idUser='${id}']>.list-view-name`).text()
+    alertify.confirm(`Delete Account : ${userName}`, function (ev) {
+        ev.preventDefault();
+        SCDeleteUser(id);
+    }, function(ev) {
+        ev.preventDefault();
+    });
+}

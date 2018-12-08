@@ -18,6 +18,7 @@ function SCAddNewFolderToDb(ParentFolder, folderName) {
                 if(localStorage.getItem('view')==1){
                     CRItemFolderListStyle(data)
                 }else {
+                    $('#folderShow').show();
                     CRItemFolderGridStyle(data)
                 }
             }else alertify.error('Can not create folder')

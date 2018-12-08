@@ -15,12 +15,9 @@ const cookie = require('cookie');
 router.post("/shareFolder",(req,res,next)=>{
     let idFolder = req.body.idFolder;
     let shareUser = req.body.shareUser;
-    let cookies = cookie.parse(req.headers.cookie || '');
-    // console.log(req.headers.cookie);
-    // console.log(cookies.name);
     if(req.user){
         connection = res.app.locals.connection;
-        connection.query(`SELECT * FROM folder WHERE id = "${idFolder}" AND Owner_id="${result[0].id}"`, (err, result, field) => {
+        connection.query(`SELECT * FROM folder WHERE id = "${idFolder}" AND Owner_id="${req.user.id}"`, (err, result, field) => {
             if (err) throw err;
             if (result.length) {
                 connection.query(`SELECT id FROM account where  username='${shareUser}' OR email='${shareUser}'`, (err, result, field) => {
@@ -41,8 +38,7 @@ router.post("/shareFile",(req,res,next)=>{
     let shareUser = req.body.shareUser;
     if(req.user){
         connection = res.app.locals.connection;
-        console.log(`SELECT * FROM file WHERE file_id = "${idFile}" AND Owner_id="${req.user.id}"`)
-        connection.query(`SELECT * FROM file WHERE file_id = "${idFile}" AND Owner_id="${result[0].id}"`, (err, result, field) => {
+        connection.query(`SELECT * FROM file WHERE file_id = "${idFile}" AND Owner_id="${req.user.id}"`, (err, result, field) => {
             if (err) throw err;
             if (result.length) {
                 connection.query(`SELECT id FROM account where  username='${shareUser}' OR email='${shareUser}'`, (err, result, field) => {
@@ -126,9 +122,15 @@ function shareFolder(idFolder,idUser,level=0){
     connection.query(`SELECT * FROM folder_share where  id='${idFolder}' AND user_id='${idUser}'`, (err, result, field) => {
         if (err) throw err;
         if (result.length==0){
-            connection.query(`INSERT INTO folder_share SET id = '${idFolder}',user_id= "${idUser}"`, (err, result, field) => {
-                if (err) throw err;
-            })
+            if(level==0){
+                connection.query(`INSERT INTO folder_share SET id = '${idFolder}',user_id="${idUser}",rootShare='1' `, (err, result, field) => {
+                    if (err) throw err;
+                })
+            }else {
+                connection.query(`INSERT INTO folder_share SET id = '${idFolder}',user_id= "${idUser}"`, (err, result, field) => {
+                    if (err) throw err;
+                })
+            }
             connection.query(`UPDATE folder SET onShare="1" WHERE id = "${idFolder}"`, (err, result, field) => {
                 if (err) throw err;
             })
@@ -144,7 +146,7 @@ function shareFolder(idFolder,idUser,level=0){
     connection.query(`SELECT * FROM file WHERE In_folder='${idFolder}'`, (err, result, field) => {
         if (err) throw err;
         result.forEach(function (item) {
-            connection.query(`SELECT * FROM file_share where  file_id='${idFolder}' AND user_id='${idUser}'`, (err, result, field) => {
+            connection.query(`SELECT * FROM file_share where file_id='${item.file_id}' AND user_id='${idUser}'`, (err, result, field) => {
                 if (err) throw err;
                 if (result.length==0){
                     connection.query(`INSERT INTO file_share SET file_id = '${item.file_id}',user_id= "${idUser}"`, (err, result, field) => {
@@ -153,16 +155,10 @@ function shareFolder(idFolder,idUser,level=0){
                     connection.query(`UPDATE file SET onShare="1" WHERE file_id = "${item.file_id}"`, (err, result, field) => {
                         if (err) throw err;
                     })
-
                 }
             })
         })
     })
-    if(level==0){
-        connection.query(`UPDATE folder_share SET rootShare="1" WHERE id = "${idFolder}"`, (err, result, field) => {
-            if (err) throw err;
-        })
-    }
 
 }
 

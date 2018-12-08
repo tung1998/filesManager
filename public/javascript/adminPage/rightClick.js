@@ -4,22 +4,24 @@ $(function() {
         selector: '.user-item',
         items: {
             "active": {
-                name: "Active/Lock", icon: 'fa-key', callback: function (key,opt) {
+                name: "Active/Lock", icon: 'fa-lock', callback: function (key,opt) {
                     let id = opt.$trigger.attr('idUser');
                     let activate = opt.$trigger.attr('activate');
                     ALActivateUser(id,activate);   ///contentRender
                 }
             },
             "sep1": "---------",
-            "fileUpload": {
-                name: "FileUpload", icon: "fa-cloud-upload", callback: () => {
-                    ALNotWorkFunction();
+            "Change Pass": {
+                name: "Change Pass", icon: "fa-key", callback: (key,opt) => {
+                    let id = opt.$trigger.attr('idUser');
+                    ALResetUserPassword(id);
                 }
             },
-            "sep1": "---------",
-            "paste": {
-                name: "Paste", icon: "paste", callback: () => {
-                    ALNotWorkFunction();
+            "sep2": "---------",
+            "delete": {
+                name: "delete User", icon: "paste", callback: (key,opt) => {
+                    let id = opt.$trigger.attr('idUser');
+                    ALDeleteUser(id)
                 }
             },
         }

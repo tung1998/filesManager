@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const cookie = require('cookie');
 const md5 = require('md5');
-
+const fs = require('fs');
+const path =require('path');
 
 
 router.use('/',checkAdmin)
@@ -41,6 +42,38 @@ router.post('/userManager/activate', function(req, res, next) {
                  res.send({status:1});
              })
          }
+    }else res.send({status:0})
+})
+
+router.post('/userManager/resetPass', function(req, res, next) {
+    if(req.admin){
+        let data = req.body;
+        let newSalt = md5(Math.random().toString());
+        let newPass = md5(data.newPass+newSalt);
+        let newCookie = md5(Math.random().toString());
+        connection.query(`UPDATE account SET password = '${newPass}',salt='${newSalt}',cookie ='${newCookie}' WHERE id = '${data.id}'`, (err, result, field) => {
+            if (err) throw res.send({status:0});
+            res.send({status:1});
+        })
+    }else res.send({status:0})
+})
+
+router.post('/userManager/delete', function(req, res, next) {
+    if(req.admin){
+        let id = req.body.id;
+        connection.query(`SELECT codeName FROM file WHERE  Owner_id = '${id}'`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length){
+                result.forEach((item)=>{
+                    let Path = path.join(__dirname,"../","public","userFile",item.codeName);
+                    fs.unlink(Path, (err) => {
+                        if (err) throw err;
+                        console.log('was deleted');
+                    });
+                })
+            }
+            deleteUser(id, res)
+        })
     }else res.send({status:0})
 })
 
@@ -109,6 +142,25 @@ router.post('/logout',(req,res,next) => {
     res.clearCookie("admin");
     res.send('success');
 })
+
+function deleteUser(id,res) {
+    connection.query(`DELETE FROM file_share WHERE user_id = '${id}'`, (err, result, field) => {
+        if (err) throw res.send({status: 0});
+        connection.query(`DELETE FROM folder_share WHERE user_id = '${id}'`, (err, result, field) => {
+            if (err) throw res.send({status: 0});
+            connection.query(`DELETE FROM file WHERE Owner_id = '${id}'`, (err, result, field) => {
+                if (err) throw res.send({status: 0});
+                connection.query(`DELETE FROM folder WHERE Owner_id = '${id}'`, (err, result, field) => {
+                    if (err) throw res.send({status: 0});
+                    connection.query(`DELETE FROM account WHERE id = '${id}'`, (err, result, field) => {
+                        if (err) throw res.send({status: 0});
+                        res.send({status: 1});
+                    })
+                })
+            })
+        })
+    })
+}
 
 function checkAdmin(req,res,next){
     connection = res.app.locals.connection;

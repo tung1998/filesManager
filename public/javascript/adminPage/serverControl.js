@@ -73,3 +73,34 @@ function SCActivateUser (id,activate) {
         }
     })
 }
+
+function SCUserChangePass(id,newPass) {
+    $.ajax({
+        url: `/admin/userManager/resetPass`,
+        type: 'post',
+        contentType: "application/json",
+        data: JSON.stringify({id:id,newPass:newPass}),
+        success: function (data) {
+            if(data.status){
+                alertify.success('SUCCESS');
+            }
+            else  alertify.error('ERROR');
+        }
+    })
+}
+
+function SCDeleteUser(id) {
+    $.ajax({
+        url: `/admin/userManager/delete`,
+        type: 'post',
+        contentType: "application/json",
+        data: JSON.stringify({id:id}),
+        success: function (data) {
+            if(data.status){
+                $('#user_row').find(`tr[idUser='${id}']`).remove();
+                alertify.success('SUCCESS');
+            }
+            else  alertify.error('ERROR');
+        }
+    })
+}

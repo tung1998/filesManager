@@ -193,11 +193,11 @@ function CRItemFolderListStyle(item) {
 
 function CRItemFolderGridStyle(item) {
     if(item.onLove==1&&localFolder.id!=-7) {
-        $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3 love" idFolder="${item.id}">
+        $('#folderCard').prepend(`<a class="folder-item col-sm-6 col-md-4 col-lg-3 love" idFolder="${item.id}">
                                             <i class="waves-effect mdi mdi-folder">${item.FolderName}</i> 
                                         </a>`);
     }else {
-        $('#folderCard').append(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${item.id}">
+        $('#folderCard').prepend(`<a class="folder-item col-sm-6 col-md-4 col-lg-3" idFolder="${item.id}">
                                             <i class="waves-effect mdi mdi-folder">${item.FolderName}</i> 
                                         </a>`);
     }
