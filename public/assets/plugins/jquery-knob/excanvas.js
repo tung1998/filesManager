@@ -143,7 +143,7 @@ if (!document.createElement('canvas').getContext) {
         // text nodes but who really cares about the fallback content.
         el.innerHTML = '';
 
-        // do not use inline function because that will leak memory
+        // do not use inline function because that will leak clipboard
         el.attachEvent('onpropertychange', onPropertyChange);
         el.attachEvent('onresize', onResize);
 

@@ -48,7 +48,7 @@ define( [
 
 		documentElement.removeChild( container );
 
-		// Nullify the div so it wouldn't be stored in the memory and
+		// Nullify the div so it wouldn't be stored in the clipboard and
 		// it will also be a sign that checks already performed
 		div = null;
 	}

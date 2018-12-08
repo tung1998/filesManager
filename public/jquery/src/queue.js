@@ -66,7 +66,7 @@ jQuery.extend( {
 	_queueHooks: function( elem, type ) {
 		var key = type + "queueHooks";
 		return dataPriv.get( elem, key ) || dataPriv.access( elem, key, {
-			empty: jQuery.Callbacks( "once memory" ).add( function() {
+			empty: jQuery.Callbacks( "once clipboard" ).add( function() {
 				dataPriv.remove( elem, [ type + "queue", key ] );
 			} )
 		} );

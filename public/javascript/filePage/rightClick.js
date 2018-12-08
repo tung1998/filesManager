@@ -18,7 +18,7 @@ $(function() {
                 }},
             "sep1": "---------",
             "paste": {name: "Paste", icon: "paste",callback:()=> {
-                    ALNotWorkFunction();
+                    ALClipboard(localFolder.id,localFolder.FolderName);
                 }},
         }
     });
@@ -38,14 +38,41 @@ $(function() {
                     SCGetDataFolder(id);
                 }},
             "sep1": "---------",
-            "cut": {name: "Cut", icon: "cut",callback:()=> {
-                    ALNotWorkFunction();
+            "cut": {name: "Cut", icon: "cut",callback:(key,opt)=> {
+                    let folder =opt.$trigger;
+                    clipboard.type=1;
+                    clipboard.id=folder.attr('idFolder');
+                    clipboard.method=0;
+                    clipboard.localFolder=localFolder.id;
+                    if(localStorage.getItem('view')==1){
+                        clipboard.name = folder.find('.list-view-name').first().text();
+                    }else {
+                        clipboard.name = folder.find('i').first().text()
+                    }
                 }},
-            'copy': {name: "Copy", icon: "copy",callback:()=> {
-                    ALNotWorkFunction();
+            'copy': {name: "Copy", icon: "copy",callback:(key,opt)=> {
+                    let folder =opt.$trigger;
+                    clipboard.type=1;
+                    clipboard.id=folder.attr('idFolder');
+                    clipboard.method=1;
+                    clipboard.localFolder=localFolder.id;
+                    if(localStorage.getItem('view')==1){
+                        clipboard.name = folder.find('.list-view-name').first().text();
+                    }else {
+                        clipboard.name = folder.find('i').first().text()
+                    }
                 }},
-            "paste": {name: "Paste", icon: "paste",callback:()=> {
-                    ALNotWorkFunction();
+            "paste": {name: "Paste", icon: "paste",callback:(key,opt)=> {
+                    let folder = opt.$trigger;
+                    let id =folder.attr('idFolder');
+                    if(localStorage.getItem('view')==1){
+                        let name = folder.find('.list-view-name').first().text();
+                        ALClipboard(id,name);
+                    }else {
+                        let name = folder.find('i').first().text()
+                        ALClipboard(id,name);
+                    }
+
                 }},
             "delete": {name: "Add to trash", icon: "delete",callback:(key,opt)=> {
                     SCDeleteFolder(opt.$trigger);
@@ -91,14 +118,31 @@ $(function() {
                     showFile(type,id,name);
                 }},
             "sep1": "---------",
-            "cut": {name: "Cut", icon: "cut",callback:()=> {
-                    ALNotWorkFunction();
+            "cut": {name: "Cut", icon: "cut",callback:(key,opt)=> {
+                    let file = opt.$trigger;
+                    clipboard.type=0;
+                    clipboard.id=file.attr('idFolder');
+                    clipboard.method=0;
+                    clipboard.localFolder=localFolder.id;
+                    if(localStorage.getItem('view')==1){
+                        clipboard.name = file.find('.list-view-name').first().text();
+                    }else {
+                        clipboard.name = file.find('i').first().text()
+                    }
                 }},
-            'copy': {name: "Copy", icon: "copy",callback:()=> {
-                    ALNotWorkFunction();
-                }},
-            "paste": {name: "Paste", icon: "paste",callback:()=> {
-                    ALNotWorkFunction();
+            'copy': {name: "Copy", icon: "copy",callback:(key,opt)=> {
+                    if(localFolder.id!=-1){
+                        let file = opt.$trigger;
+                        clipboard.type=0;
+                        clipboard.id=file.attr('idFolder');
+                        clipboard.method=1;
+                        clipboard.localFolder=localFolder.id;
+                        if(localStorage.getItem('view')==1){
+                            clipboard.name = file.find('.list-view-name').first().text();
+                        }else {
+                            clipboard.name = file.find('i').first().text()
+                        }
+                    }else alertify.error('Can not add to clipboard')
                 }},
             "delete": {name: "Add to trash", icon: "delete",callback:(key,opt)=> {
                     SCDeleteFile(opt.$trigger);

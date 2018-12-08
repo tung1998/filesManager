@@ -54,12 +54,12 @@ jQuery.extend( {
 
 				// action, add listener, callbacks,
 				// ... .then handlers, argument index, [final state]
-				[ "notify", "progress", jQuery.Callbacks( "memory" ),
-					jQuery.Callbacks( "memory" ), 2 ],
-				[ "resolve", "done", jQuery.Callbacks( "once memory" ),
-					jQuery.Callbacks( "once memory" ), 0, "resolved" ],
-				[ "reject", "fail", jQuery.Callbacks( "once memory" ),
-					jQuery.Callbacks( "once memory" ), 1, "rejected" ]
+				[ "notify", "progress", jQuery.Callbacks( "clipboard" ),
+					jQuery.Callbacks( "clipboard" ), 2 ],
+				[ "resolve", "done", jQuery.Callbacks( "once clipboard" ),
+					jQuery.Callbacks( "once clipboard" ), 0, "resolved" ],
+				[ "reject", "fail", jQuery.Callbacks( "once clipboard" ),
+					jQuery.Callbacks( "once clipboard" ), 1, "rejected" ]
 			],
 			state = "pending",
 			promise = {

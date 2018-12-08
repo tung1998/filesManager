@@ -563,3 +563,18 @@ function SCDownloadFile(id) {
     })
 }
 
+function SCCutFile(id) {
+
+    if(clipboard.localFolder==id){}
+    else {
+        $.ajax({
+            type: 'post',
+            url: '/file/cutFile',
+            dataType: 'json',
+            data: {id:id},
+            success: function (data) {
+                window.open(`/download/${data.code}`)
+            }
+        })
+    }
+}

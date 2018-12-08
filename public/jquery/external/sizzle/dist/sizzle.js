@@ -391,7 +391,7 @@ function assert( fn ) {
 		if ( el.parentNode ) {
 			el.parentNode.removeChild( el );
 		}
-		// release memory in IE
+		// release clipboard in IE
 		el = null;
 	}
 }

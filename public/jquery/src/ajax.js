@@ -436,7 +436,7 @@ jQuery.extend( {
 
 			// Deferreds
 			deferred = jQuery.Deferred(),
-			completeDeferred = jQuery.Callbacks( "once memory" ),
+			completeDeferred = jQuery.Callbacks( "once clipboard" ),
 
 			// Status-dependent callbacks
 			statusCode = s.statusCode || {},

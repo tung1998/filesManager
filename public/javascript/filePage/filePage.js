@@ -1,4 +1,11 @@
 let localFolder = folderData.localFolder;
+let clipboard={
+    type:undefined,//1=folder,0=file
+    id:undefined,
+    name:undefined,
+    method:undefined,//1=coppy,0=cut
+    localFolder:undefined
+};
 
 $(function () {
     if(localStorage.getItem('view')==1){
