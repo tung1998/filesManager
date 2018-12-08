@@ -105,7 +105,7 @@ router.post('/login', function(req, res, next) {
 
 router.post('/getUserData', function(req, res, next) {
     if(req.admin){
-        connection.query(`select account.id as id,activate, username,email,folderCount,fileCount,dataUsed from account 
+        connection.query(`select account.id as id,activate, username,email,folderCount,fileCount,dataUsed,time_create from account 
                                     left join (select count(*) as folderCount,Owner_id from folder group by Owner_id) as folder
                                      on  account.id = folder.Owner_id 
                                     left join (select count(*) as fileCount, SUM(size) as dataUsed,Owner_id from file group by Owner_id) as file 
@@ -144,12 +144,14 @@ router.post('/logout',(req,res,next) => {
 })
 
 function deleteUser(id,res) {
-    connection.query(`DELETE FROM file_share WHERE user_id = '${id}'`, (err, result, field) => {
+    connection.query(`DELETE FROM file_share WHERE user_id = '${id}' OR file_id IN(select file_id from file where Owner_id = '${id}')`, (err, result, field) => {
         if (err) throw res.send({status: 0});
-        connection.query(`DELETE FROM folder_share WHERE user_id = '${id}'`, (err, result, field) => {
+        connection.query(`DELETE FROM folder_share WHERE user_id = '${id}' OR id IN(select id from folder where Owner_id ='${id}')`, (err, result, field) => {
             if (err) throw res.send({status: 0});
+            console.log("1");
             connection.query(`DELETE FROM file WHERE Owner_id = '${id}'`, (err, result, field) => {
                 if (err) throw res.send({status: 0});
+                console.log("1");
                 connection.query(`DELETE FROM folder WHERE Owner_id = '${id}'`, (err, result, field) => {
                     if (err) throw res.send({status: 0});
                     connection.query(`DELETE FROM account WHERE id = '${id}'`, (err, result, field) => {
