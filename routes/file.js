@@ -257,6 +257,42 @@ router.post('/addToLove', (req,res,next) => {
     }else res.send({status:0})
 })
 
+router.post('/cutFile', (req,res,next) => {
+    if(req.user){
+        let data = req.body;
+        connection.query(`UPDATE file SET In_folder='${data.pasteId}' WHERE file_id='${data.cutFileId}';`, (err, result, field) => {
+            if (err) throw err;
+            connection.query(`SELECT * FROM file WHERE file_id='${data.cutFileId}';`, (err, result, field) => {
+                if (err) throw err;
+                if (result.length) {
+                    res.send(result[0])
+                    res.end();
+                }else res.send({status:0})
+            })
+        })
+    }else res.send({status:0})
+})
+
+router.post('/copyFile', (req,res,next) => {
+    if(req.user){
+        let data = req.body;
+        connection.query(`SELECT file_name,type,timeUpload,Owner_id,codeName,size FROM file WHERE file_id='${data.copyFileId}';`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) {
+                let copyFile =result[0];
+                copyFile.In_folder=data.pasteId;
+                connection.query(`INSERT INTO file SET ?`,copyFile, (err, result, field) => {
+                    if (err) throw err;
+                    copyFile.file_id=result.insertId;
+                    res.send(copyFile);
+                    res.end();
+                })
+            }else res.send({status:0})
+        })
+    }else res.send({status:0})
+})
+
+
 function shareWhileUpload(idFolder,idUser,idFile){
     connection.query(`SELECT user_id FROM folder_share WHERE id='${idFolder}';`, (err, result, field) => {
         if (err) throw err;

@@ -183,19 +183,20 @@ function ADShareFile(idFile) {
 
 function ALClipboard(id,name) {
     if(clipboard.id===undefined) alertify.error('No file or folder in clipboard')
+    else if (clipboard.id==id) alertify.error('Can not paste hear')
     else {
         if(clipboard.method){
             alertify.confirm(`COPY ${clipboard.name} TO ${name}?`, function (ev) {
                 ev.preventDefault();
                 if(clipboard.type){SCCopyFolder(id,name)}
-                else {SCCutFolder(id,name)}
+                else {SCCopyFile(id,name)}
             }, function(ev) {
                 ev.preventDefault();
             });
         }else {
             alertify.confirm(`CUT ${clipboard.name} TO ${name}?`, function (ev) {
                 ev.preventDefault();
-                if(clipboard.type){SCCopyFile(id,name)}
+                if(clipboard.type){SCCutFolder(id,name)}
                 else {SCCutFile(id,name)}
             }, function(ev) {
                 ev.preventDefault();

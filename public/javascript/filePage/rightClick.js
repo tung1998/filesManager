@@ -121,7 +121,7 @@ $(function() {
             "cut": {name: "Cut", icon: "cut",callback:(key,opt)=> {
                     let file = opt.$trigger;
                     clipboard.type=0;
-                    clipboard.id=file.attr('idFolder');
+                    clipboard.id=file.attr('idFile');
                     clipboard.method=0;
                     clipboard.localFolder=localFolder.id;
                     if(localStorage.getItem('view')==1){
@@ -134,7 +134,7 @@ $(function() {
                     if(localFolder.id!=-1){
                         let file = opt.$trigger;
                         clipboard.type=0;
-                        clipboard.id=file.attr('idFolder');
+                        clipboard.id=file.attr('idFile');
                         clipboard.method=1;
                         clipboard.localFolder=localFolder.id;
                         if(localStorage.getItem('view')==1){

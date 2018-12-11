@@ -564,17 +564,49 @@ function SCDownloadFile(id) {
 }
 
 function SCCutFile(id) {
-
-    if(clipboard.localFolder==id){}
-    else {
-        $.ajax({
-            type: 'post',
-            url: '/file/cutFile',
-            dataType: 'json',
-            data: {id:id},
-            success: function (data) {
-                window.open(`/download/${data.code}`)
-            }
-        })
+    let data={
+        pasteId: id,
+        cutFileId: clipboard.id
     }
+    $.ajax({
+        type: 'post',
+        url: '/file/cutFile',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            if(localFolder.id==id){
+                folderData.childrenFile.push(data);
+                if (localStorage.getItem('view') == 1) {
+                    CRItemFileListStyle(data);
+                } else{
+                    $("#fileShow").show();
+                    CRItemFileGridStyle(data);
+                }
+            }
+        }
+    })
+}
+
+function SCCopyFile(id) {
+    let data={
+        pasteId: id,
+        copyFileId: clipboard.id
+    }
+    $.ajax({
+        type: 'post',
+        url: '/file/copyFile',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            if(localFolder.id==id){
+                folderData.childrenFile.push(data);
+                if (localStorage.getItem('view') == 1) {
+                    CRItemFileListStyle(data);
+                } else{
+                    $("#fileShow").show();
+                    CRItemFileGridStyle(data);
+                }
+            }
+        }
+    })
 }
