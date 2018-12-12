@@ -31,11 +31,11 @@ body {
     color: lightgrey;
     cursor: pointer;
 }
-.abc{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+/*#myFolder a>span:first-of-type{*/
+    /*white-space: nowrap;*/
+    /*overflow: hidden;*/
+    /*text-overflow: ellipsis;*/
+/*}*/
 .file-name{
 
 }

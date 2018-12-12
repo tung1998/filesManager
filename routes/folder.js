@@ -137,8 +137,6 @@ router.post('/addToLove', (req,res,next) => {
 router.post('/cutFolder', (req,res,next) => {
     if(req.user){
         let data = req.body;
-        console.log(data);
-        console.log(`UPDATE folder SET In_folder='${data.pasteId}' WHERE id='${data.cutFolderId}';`);
         connection.query(`UPDATE folder SET In_folder='${data.pasteId}' WHERE id='${data.cutFolderId}';`, (err, result, field) => {
             if (err) throw err;
 
@@ -159,6 +157,19 @@ router.post('/cutFolder', (req,res,next) => {
                 res.end();
             })
 
+        })
+    }else res.send({status:0})
+})
+
+router.post('/copyFolder', (req,res,next) => {
+    if(req.user){
+        let data = req.body;
+        console.log(data);
+        connection.query(`SELECT FolderName,path,Owner_id,size,time_create FROM folder WHERE id='${data.pasteId}';`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) {
+                copyFolder(data.copyFolderId,data.pasteId,result[0].path)
+            }
         })
     }else res.send({status:0})
 })
@@ -229,6 +240,36 @@ function updatePath(id,path,name){
                 updatePath(item.id,newPath,item.FolderName);
             })
         }
+    })
+}
+
+
+function copyFolder(copyFolderId,pasteId,path){
+    console.log(copyFolderId,pasteId,path)
+    connection.query(`SELECT FolderName,size,Owner_id,time_create FROM folder WHERE id='${copyFolderId}';`, (err, result, field) => {
+        if (err) throw err;
+        let newData =result[0];
+        newData.path=path+"/"+newData.FolderName;
+        newData.In_folder=pasteId;
+        connection.query(`INSERT INTO folder SET ?`,newData, (err, result, field) => {
+            if (err) throw err;
+            let newid =result.insertId;
+            connection.query(`SELECT * FROM folder WHERE In_folder='${copyFolderId}';`, (err, result, field) => {
+                result.forEach((item)=>{
+                    copyFolder(item.id,newid,newData.path)
+                })
+            })
+            connection.query(`SELECT file_name,type,timeUpload,Owner_id,codeName,size FROM file WHERE In_folder='${copyFolderId}';`, (err, result, field) => {
+                if (err) throw err;
+                result.forEach((item)=>{
+                    let newFileData=item;
+                    newFileData.In_folder=newid;
+                    connection.query(`INSERT INTO file SET ?`,newFileData, (err, result, field) => {
+                        if (err) throw err;
+                    })
+                })
+            })
+        })
     })
 }
 module.exports = router;

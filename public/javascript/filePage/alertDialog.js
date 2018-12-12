@@ -188,8 +188,8 @@ function ALClipboard(id,name) {
         if(clipboard.method){
             alertify.confirm(`COPY ${clipboard.name} TO ${name}?`, function (ev) {
                 ev.preventDefault();
-                if(clipboard.type){SCCopyFolder(id,name)}
-                else {SCCopyFile(id,name)}
+                if(clipboard.type){SCCopyFolder(id)}
+                else {SCCopyFile(id)}
             }, function(ev) {
                 ev.preventDefault();
             });
@@ -197,7 +197,7 @@ function ALClipboard(id,name) {
             alertify.confirm(`CUT ${clipboard.name} TO ${name}?`, function (ev) {
                 ev.preventDefault();
                 if(clipboard.type){SCCutFolder(id)}
-                else {SCCutFile(id,name)}
+                else {SCCutFile(id)}
             }, function(ev) {
                 ev.preventDefault();
             });
