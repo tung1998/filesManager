@@ -1,0 +1,28 @@
+div#CreateAdmin(style="display:none")
+    div#formOutside
+    div#CreateAdminForm.col-md-6
+        div.card
+            div.card-body
+                div.text-center.pt-3
+                    a(href='index.html')
+                        img(src='/images/logoText.png' alt='logo' height='50')
+                div.text-center.pt-3
+                    |CREATE ADMIN
+                div.pb-3.px-3
+                    form.form-horizontal.m-t-20.mb-0(action="javascript:registerClick()")
+                        div.form-group.row
+                            div.col-12
+                                input#fullname.form-control(type='text' required='' placeholder='Email' )
+                        div.form-group.row
+                            div.col-12
+                                input#id.form-control(type='text' required='' placeholder='Username' )
+                        div.form-group.row
+                            div.col-12
+                                input#pass.form-control(type='password' required='' placeholder='Password' )
+                        div.form-group.row
+                            div.col-12
+                                input#confirm-pass.form-control(type='password' required='' placeholder='ConfirmPassword' )
+                        div.form-group.text-center.row.m-t-20
+                            div.col-12
+                                button#button.btn.btn-raised.btn-primary.btn-block.waves-effect.waves-light Register
+

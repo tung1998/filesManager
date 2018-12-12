@@ -57,21 +57,16 @@ $(function() {
         selector: '.admin-item',
         items: {
             "add": {
-                name: "NewFolder", icon: 'fa-plus', callback: function () {
-                    ALNotWorkFunction();   ///contentRender
+                name: "NewAdmin", icon: 'fa-plus', callback: function () {
+                    showCreateAdminForm();   ///contentRender
                 }
             },
-            "fileUpload": {
-                name: "FileUpload", icon: "fa-cloud-upload", callback: () => {
+            "delete": {
+                name: "Delete Admin", icon: "fa-trash", callback: () => {
                     ALNotWorkFunction();
                 }
             },
             "sep1": "---------",
-            "paste": {
-                name: "Paste", icon: "paste", callback: () => {
-                    ALNotWorkFunction();
-                }
-            },
         }
     });
 });
