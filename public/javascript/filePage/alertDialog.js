@@ -196,7 +196,7 @@ function ALClipboard(id,name) {
         }else {
             alertify.confirm(`CUT ${clipboard.name} TO ${name}?`, function (ev) {
                 ev.preventDefault();
-                if(clipboard.type){SCCutFolder(id,name)}
+                if(clipboard.type){SCCutFolder(id)}
                 else {SCCutFile(id,name)}
             }, function(ev) {
                 ev.preventDefault();

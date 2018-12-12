@@ -184,11 +184,6 @@ function setListView() {
     CRUpdateFileCard(folderData.childrenFile);
 }
 
-
-function paste(id) {
-    
-}
-
 function profile() {
 
 }

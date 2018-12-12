@@ -583,6 +583,9 @@ function SCCutFile(id) {
                     CRItemFileGridStyle(data);
                 }
             }
+            if(localFolder.id==clipboard.localFolder){
+                $(`[idFile="${clipboard.id}"]`).remove();
+            }
         }
     })
 }
@@ -606,6 +609,59 @@ function SCCopyFile(id) {
                     $("#fileShow").show();
                     CRItemFileGridStyle(data);
                 }
+            }
+        }
+    })
+}
+
+
+function SCCopyFolder(id) {
+    let data={
+        pasteId: id,
+        copyFolderId: clipboard.id
+    }
+    $.ajax({
+        type: 'post',
+        url: '/folder/copyFolder',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            if(localFolder.id==id){
+                folderData.childrenFile.push(data);
+                if (localStorage.getItem('view') == 1) {
+                    CRItemFolderListStyle(data);
+                } else{
+                    $("#folderShow").show();
+                    CRItemFolderGridStyle(data);
+                }
+            }
+        }
+    })
+}
+
+
+function SCCutFolder(id) {
+    let data={
+        pasteId: id,
+        cutFolderId: clipboard.id
+    }
+    $.ajax({
+        type: 'post',
+        url: '/folder/cutFolder',
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            if(localFolder.id==id){
+                folderData.childrenFile.push(data);
+                if (localStorage.getItem('view') == 1) {
+                    CRItemFolderListStyle(data);
+                } else{
+                    $("#folderShow").show();
+                    CRItemFolderGridStyle(data);
+                }
+            }
+            if(localFolder.id==clipboard.localFolder){
+                $(`[idFolder="${clipboard.id}"]`).remove();
             }
         }
     })

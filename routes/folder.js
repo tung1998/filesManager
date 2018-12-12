@@ -134,6 +134,35 @@ router.post('/addToLove', (req,res,next) => {
     }
 })
 
+router.post('/cutFolder', (req,res,next) => {
+    if(req.user){
+        let data = req.body;
+        console.log(data);
+        console.log(`UPDATE folder SET In_folder='${data.pasteId}' WHERE id='${data.cutFolderId}';`);
+        connection.query(`UPDATE folder SET In_folder='${data.pasteId}' WHERE id='${data.cutFolderId}';`, (err, result, field) => {
+            if (err) throw err;
+
+            connection.query(`SELECT * FROM folder WHERE id='${data.cutFolderId}';`, (err, result, field) => {
+                if (err) throw err;
+                if (result.length) {
+                    let name =result[0].FolderName;
+                    connection.query(`SELECT * FROM folder WHERE id='${data.pasteId}';`, (err, result, field) => {
+                        if (err) throw err;
+                        if (result.length) {
+                            let path = result[0].path;
+                            updatePath(data.cutFolderId,path,name)
+                        }else res.send({status: 0})
+
+                    })
+                } else res.send({status: 0})
+                res.send(result[0])
+                res.end();
+            })
+
+        })
+    }else res.send({status:0})
+})
+
 function renameFolder(data,path){
     let newPath = path+"/"+data.FolderName;
     connection.query(`UPDATE folder SET path='${newPath}' WHERE id='${data.id}';`, (err, result, field) => {
@@ -184,6 +213,22 @@ function restoreFolder(id){
     })
     connection.query(`UPDATE file SET onDelete='0' WHERE In_folder='${id}';`, (err, result, field) => {
         if(err) throw err;
+    })
+}
+
+
+function updatePath(id,path,name){
+    let newPath =path+"/"+name;
+    connection.query(`UPDATE folder SET path='${newPath}' WHERE id='${id}';`, (err, result, field) => {
+        if (err) throw err;
+    })
+    connection.query(`SELECT * FROM folder WHERE In_folder='${id}';`, (err, result, field) => {
+        if (err) throw err;
+        if (result.length) {
+            result.forEach( (item)=> {
+                updatePath(item.id,newPath,item.FolderName);
+            })
+        }
     })
 }
 module.exports = router;
