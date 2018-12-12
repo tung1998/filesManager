@@ -169,6 +169,7 @@ router.post('/copyFolder', (req,res,next) => {
             if (err) throw err;
             if (result.length) {
                 copyFolder(data.copyFolderId,data.pasteId,result[0].path)
+                res.send({status:1})
             }
         })
     }else res.send({status:0})

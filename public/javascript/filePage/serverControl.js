@@ -627,13 +627,7 @@ function SCCopyFolder(id) {
         data: data,
         success: function (data) {
             if(localFolder.id==id){
-                folderData.childrenFile.push(data);
-                if (localStorage.getItem('view') == 1) {
-                    CRItemFolderListStyle(data);
-                } else{
-                    $("#folderShow").show();
-                    CRItemFolderGridStyle(data);
-                }
+                SCGetDataFolder(id,"");
             }
         }
     })
