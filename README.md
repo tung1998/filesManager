@@ -60,13 +60,13 @@ FilesManager_blackBirds
         - xóa admin
 ## III Công nghệ
   #### FrontEnd
-      PUGENGINE: Ngôn ngữ hỗ trợ lập trình frontEnd https://pugjs.org/api/getting-started.html
-      THEME : URORA-bootstrap4 https://mannatthemes.com/urora/
+      PUGENGINE: Ngôn ngữ hỗ trợ lập trình frontEnd (link: https://pugjs.org/api/getting-started.html )
+      THEME : URORA-bootstrap4 (link: https://mannatthemes.com/urora/)
       JQUERY: thư viện javascript
-      Contextmenu2x : https://swisnl.github.io/jQuery-contextMenu//
+      Contextmenu2x :  (link: https://swisnl.github.io/jQuery-contextMenu//)
   #### BackEnd
-      NodeJS EXPRESS server: https://expressjs.com/en/api.html#res
-      Mysql database: https://www.mysql.com/
+      NodeJS EXPRESS server: (link: https://expressjs.com/en/api.html#res)
+      Mysql database: (link: https://www.mysql.com/ )
       Các Module: - 
 
        
