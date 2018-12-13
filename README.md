@@ -3,7 +3,7 @@ FilesManager_blackBirds
 ## I Hướng dẫn cài đặt
 1. Cài đặt môi trường nodejs để chạy server - setup nodejs environment (link: https://nodejs.org/en/ )
 2. clone repo  (link: https://github.com/tung1998/filesManager/)
-3. Cài đặt mysql server và filesmanager database (filemanager.sql)
+3. Cài đặt mysql server và filesmanager database (thư mục cấu hình database: filemanager.sql)
 4. cài đặt các thư viện sử dụng tại server - setup module: chạy lệnh( npm i )
 5. Chạy server - run server: chạy lệnh ( node www ) trong thư mục bin
 ## II Các chức năng chính
@@ -39,6 +39,24 @@ FilesManager_blackBirds
       3. Các chức năng khác
        - Thêm vào yêu thích: Đánh dấu những mục hay truy cập để tiện việc theo dõi.
        - Hiện những file truy cập trong ngày, để tiện việc theo dõi.
+       - Tìm kiếm: sàng lọc các thư mục và file cho ra kết quả mà người dùng mong muốn.
+       - Duyệt cây: hỗ trợ truy xuất thư mục
+       - Thay đổi dạng trình chiếu: Hiện nay có 2 dạng trình chiếu cơ bản là list và grid
+              + list cung cấp danh sách kèm theo một số thông tin như kích cỡ, đường dẫn, ngày khởi tạo.
+              + Grid style cung vấp sự gọn gàng dễ nhìn, hiển thị được số lượng nhiều hơn.
+       - Chia sẻ: dễ dàng chia sẻ dữ liệu với các người dùng khác, người được chia sẻ sẽ không thể sửa đổi tên hay xóa, nhưng có thể trình chiếu và download.
+### 3. Chức năng của Admin
+       1. Quản lý Người dùng: 
+        - Liệt kê danh sách người dùng: hiển thị thông tin của người dùng, tiện cho việc quản lí
+        - Kích hoạt tài khoản: có thể kích hoạt tài khoản trực tiếp cho người dùng thay vì người dùng phải xác nhận qua mail
+        - Đổi mật khẩu người dùng: có thể trực tiếp thay đổi mật khẩu giúp người dùng.
+        - khóa tài khoản: Có thể khóa tài khoản người dùng nếu người dùng vi phạm các quy tắc khi tham gia sử dụng app
+        - Xóa tài khoản: Tài khoản vi phạm điều lệ nhiều lần, tài khoản ma,... có thể bị xóa khi sử dụng chức năng này
+       2. Quản lí thư mục
+       3. Quản lí Admin
+        - Hiện thị danh sách các admin
+        - thêm mới admin
+        - xóa admin
        
                                                                                           
        
