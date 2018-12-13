@@ -39,7 +39,9 @@ $(function() {
                 }},
             "sep1": "---------",
             "cut": {name: "Cut", icon: "cut",callback:(key,opt)=> {
+                    $(document).find(".on-cut").removeClass("on-cut")
                     let folder =opt.$trigger;
+                    folder.addClass('on-cut')
                     clipboard.type=1;
                     clipboard.id=folder.attr('idFolder');
                     clipboard.method=0;
@@ -51,6 +53,7 @@ $(function() {
                     }
                 }},
             'copy': {name: "Copy", icon: "copy",callback:(key,opt)=> {
+                    $(document).find(".on-cut").removeClass("on-cut")
                     let folder =opt.$trigger;
                     clipboard.type=1;
                     clipboard.id=folder.attr('idFolder');
@@ -120,6 +123,8 @@ $(function() {
             "sep1": "---------",
             "cut": {name: "Cut", icon: "cut",callback:(key,opt)=> {
                     let file = opt.$trigger;
+                    $(document).find(".on-cut").removeClass("on-cut")
+                    file.addClass("on-cut");
                     clipboard.type=0;
                     clipboard.id=file.attr('idFile');
                     clipboard.method=0;
@@ -132,6 +137,7 @@ $(function() {
                 }},
             'copy': {name: "Copy", icon: "copy",callback:(key,opt)=> {
                     if(localFolder.id!=-1){
+                        $(document).find(".on-cut").removeClass("on-cut")
                         let file = opt.$trigger;
                         clipboard.type=0;
                         clipboard.id=file.attr('idFile');

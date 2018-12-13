@@ -215,6 +215,13 @@ float: right;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
 }
+.on-cut{
+    color: rgba(0,0,0,0.3);!important; /* Black w/ opacity */
+}
+a.love.on-cut{
+    color: rgb(0,0,0);
+    color: rgba(0,0,0,0.3);!important; /* Black w/ opacity */
+}
 /*!* *!*/
 /*.panWrapper {position:fixed; width:100%; height:100%; overflow:hidden; background-color:rgba(0,0,0,0.9); z-index:9999; left:0; top:0; display:none; cursor:move;}*/
 /*.panWrapper * {-moz-user-select: -moz-none;-khtml-user-select: none;-webkit-user-select: none;-o-user-select: none;user-select: none;}*/
