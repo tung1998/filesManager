@@ -6,13 +6,13 @@ div#CreateAdmin(style="display:none")
                 div.text-center.pt-3
                     a(href='index.html')
                         img(src='/images/logoText.png' alt='logo' height='50')
-                div.text-center.pt-3
+                h3.text-center.pt-3
                     |CREATE ADMIN
                 div.pb-3.px-3
-                    form.form-horizontal.m-t-20.mb-0(action="javascript:registerClick()")
+                    form.form-horizontal.m-t-20.mb-0(action="javascript:createAdminClick()")
                         div.form-group.row
                             div.col-12
-                                input#fullname.form-control(type='text' required='' placeholder='Email' )
+                                input#fullName.form-control(type='text' required='' placeholder='Full Name' )
                         div.form-group.row
                             div.col-12
                                 input#id.form-control(type='text' required='' placeholder='Username' )
@@ -24,5 +24,5 @@ div#CreateAdmin(style="display:none")
                                 input#confirm-pass.form-control(type='password' required='' placeholder='ConfirmPassword' )
                         div.form-group.text-center.row.m-t-20
                             div.col-12
-                                button#button.btn.btn-raised.btn-primary.btn-block.waves-effect.waves-light Register
+                                button#button.btn.btn-raised.btn-primary.btn-block.waves-effect.waves-light Create
 

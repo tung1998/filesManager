@@ -62,8 +62,9 @@ $(function() {
                 }
             },
             "delete": {
-                name: "Delete Admin", icon: "fa-trash", callback: () => {
-                    ALNotWorkFunction();
+                name: "Delete Admin", icon: "fa-trash", callback: (key,opt) => {
+                    let id = opt.$trigger.attr('idUser');
+                    ALDeleteAdmin(id);
                 }
             },
             "sep1": "---------",

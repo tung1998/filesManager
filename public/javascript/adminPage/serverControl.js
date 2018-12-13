@@ -89,6 +89,8 @@ function SCUserChangePass(id,newPass) {
     })
 }
 
+
+
 function SCDeleteUser(id) {
     $.ajax({
         url: `/admin/userManager/delete`,
@@ -98,6 +100,23 @@ function SCDeleteUser(id) {
         success: function (data) {
             if(data.status){
                 $('#user_row').find(`tr[idUser='${id}']`).remove();
+                alertify.success('SUCCESS');
+            }
+            else  alertify.error('ERROR');
+        }
+    })
+}
+
+
+function SCDeleteAdmin(id) {
+    $.ajax({
+        url: `/admin/adminManager/delete`,
+        type: 'post',
+        contentType: "application/json",
+        data: JSON.stringify({id:id}),
+        success: function (data) {
+            if(data.status){
+                $('#admin-row').find(`tr[idUser='${id}']`).remove();
                 alertify.success('SUCCESS');
             }
             else  alertify.error('ERROR');

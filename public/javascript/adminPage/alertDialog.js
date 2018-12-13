@@ -51,3 +51,14 @@ function ALDeleteUser(id) {
         ev.preventDefault();
     });
 }
+
+
+function ALDeleteAdmin(id) {
+    let userName = $(`#admin-row>[idUser='${id}']>.list-view-name`).text()
+    alertify.confirm(`Delete Account : ${userName}`, function (ev) {
+        ev.preventDefault();
+        SCDeleteAdmin(id);
+    }, function(ev) {
+        ev.preventDefault();
+    });
+}

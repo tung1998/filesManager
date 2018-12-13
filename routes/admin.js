@@ -12,7 +12,7 @@ router.get('/', (req, res, next) => {
     if(req.admin){
         res.redirect(`/admin/${req.admin.username}`);
     }else {
-        res.render('adminPae/loginPage');
+        res.render('adminPage/loginPage');
     }
 });
 
@@ -22,13 +22,10 @@ router.get('/*',(req, res, next) => {
         if(path==req.admin.username) res.render('adminPage/adminPage',{userName:req.admin.username})
         else res.redirect(`/admin/${req.admin.username}`);
     }else {
-        res.render('adminPae/loginPage');
+        res.render('adminPage/loginPage');
     }
 });
 
-router.post('/addNewAdmin', function(req, res, next) {
-    const data = req.body;
-})
 
 router.post('/userManager/activate', function(req, res, next) {
     if(req.admin){
@@ -73,6 +70,23 @@ router.post('/userManager/delete', function(req, res, next) {
                 })
             }
             deleteUser(id, res)
+        })
+    }else res.send({status:0})
+})
+
+
+
+router.post('/adminManager/delete', function(req, res, next) {
+    if(req.admin){
+        let id = req.body.id;
+        connection.query(`SELECT * FROM admin WHERE  id = '${id}'`, (err, result, field) => {
+            if (err) throw err;
+            if(req.admin.level<result[0].level){
+                connection.query(`DELETE FROM admin WHERE id = '${id}'`, (err, result, field) => {
+                    if (err) throw res.send({status: 0});
+                    res.send({status: 1});
+                })
+            }else res.send({status:0})
         })
     }else res.send({status:0})
 })
@@ -137,6 +151,29 @@ router.post('/getAdminData', function(req, res, next) {
     }else res.send('0');
 });
 
+
+
+
+router.post('/createAdmin', function(req, res, next) {
+    if(req.admin){
+        let data = req.body;
+        connection.query(`SELECT * FROM admin WHERE username = '${data.username}'`, (err, result, field) => {
+            if (err) throw err;
+            if (result.length) res.send({status:0});
+            else {
+                let newSalt = md5(Math.random().toString());
+                let newPass = md5(data.pass+newSalt);
+                let newCookie = md5(Math.random().toString());
+                connection.query(`INSERT INTO admin SET username = '${data.username}',password='${newPass}',salt ='${newSalt}',level ='${req.admin.level+1}',cookie='${newCookie}',fullName ='${data.fullName}',time_create=NOW(),id_create='${req.admin.id}' `, (err, result, field) => {
+                    if (err) throw err;
+                    res.send({status:1})
+                })
+            }
+        })
+    }else res.send({status:0});
+});
+
+
 router.post('/logout',(req,res,next) => {
     console.log('admnlogout')
     res.clearCookie("admin");
@@ -172,7 +209,7 @@ function checkAdmin(req,res,next){
         next();
     }
     else {
-        connection.query(`SELECT id,username FROM admin WHERE cookie = "${cookies.admin}"`, (err, result, field) => {
+        connection.query(`SELECT id,username,level FROM admin WHERE cookie = "${cookies.admin}"`, (err, result, field) => {
             if (err) throw err;
             if(result.length) {
                 req.admin=result[0];
