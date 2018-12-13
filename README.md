@@ -3,8 +3,9 @@ FilesManager_blackBirds
 ## I Hướng dẫn cài đặt
 1. Cài đặt môi trường nodejs để chạy server - setup nodejs environment (link: https://nodejs.org/en/ )
 2. clone repo  (link: https://github.com/tung1998/filesManager/)
-3. cài đặt các thư viện sử dụng tại server - setup module: chạy lệnh( npm i )
-4. Chạy server - run server: chạy lệnh ( node www )
+3. Cài đặt mysql server và filesmanager database (filemanager.sql)
+4. cài đặt các thư viện sử dụng tại server - setup module: chạy lệnh( npm i )
+5. Chạy server - run server: chạy lệnh ( node www ) trong thư mục bin
 ## II Các chức năng chính
   ### 1. Đăng kí, Đăng nhập, và các chức năng liên quan
     1. Đăng kí (/register) .
@@ -32,6 +33,14 @@ FilesManager_blackBirds
        - Upload File (right click --> Upload File  --> Chọn File --> ok) 
                 - File upload sẽ ở trong thư mục hiện thời
                 - không thể upload file tại các khu vực khác ngoài myFodler
+       - Xóa, đổi tên file (right click)
+       - Trình chiếu file (hiện nay app có thể trình chiếu được một số loại file cơ bản): (pdf,mp3,mp4,các loại file ảnh, các loại file text)
+       - Download file: Người dùng có thể download file mà mình sở hữu hoặc được chia sẻ
+      3. Các chức năng khác
+       - Thêm vào yêu thích: Đánh dấu những mục hay truy cập để tiện việc theo dõi.
+       - Hiện những file truy cập trong ngày, để tiện việc theo dõi.
+       
+                                                                                          
        
       
  
