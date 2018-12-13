@@ -37,6 +37,7 @@ FilesManager_blackBirds
        - Trình chiếu file (hiện nay app có thể trình chiếu được một số loại file cơ bản): (pdf,mp3,mp4,các loại file ảnh, các loại file text)
        - Download file: Người dùng có thể download file mà mình sở hữu hoặc được chia sẻ
       3. Các chức năng khác
+       - cut,copy,paste: hỗ trợ người dùng quản lí.
        - Thêm vào yêu thích: Đánh dấu những mục hay truy cập để tiện việc theo dõi.
        - Hiện những file truy cập trong ngày, để tiện việc theo dõi.
        - Tìm kiếm: sàng lọc các thư mục và file cho ra kết quả mà người dùng mong muốn.
