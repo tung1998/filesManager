@@ -58,6 +58,9 @@ FilesManager_blackBirds
         - Hiện thị danh sách các admin
         - thêm mới admin
         - xóa admin
+### 4.Các chức năng trong tương lai
+        - Trình chiếu được nhiều loại file hơn nữa
+        - Đặt mật khẩu khi truy cập file
 ## III Công nghệ
   #### FrontEnd
       PUGENGINE: Ngôn ngữ hỗ trợ lập trình frontEnd (link: https://pugjs.org/api/getting-started.html )
@@ -65,9 +68,8 @@ FilesManager_blackBirds
       JQUERY: thư viện javascript (https://jquery.com/)
       Contextmenu2x :  (link: https://swisnl.github.io/jQuery-contextMenu//)
   #### BackEnd
-      NodeJS EXPRESS server: (link: https://expressjs.com/en/api.html#res)
-      Mysql database: (link:[link] https://www.mysql.com/ )
-      Các Module: - 
+      NodeJS EXPRESS server: (link: https://expressjs.com/en/api.html#res )
+      Mysql database: (link: https://www.mysql.com/ )
 
        
       
