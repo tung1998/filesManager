@@ -67,9 +67,11 @@ FilesManager_blackBirds
       THEME : URORA-bootstrap4 (link: https://mannatthemes.com/urora/)
       JQUERY: thư viện javascript (https://jquery.com/)
       Contextmenu2x :  (link: https://swisnl.github.io/jQuery-contextMenu//)
+      pdf.js: hỗ trợ trình chiếu file pdf https://mozilla.github.io/pdf.js/
   #### BackEnd
-      NodeJS EXPRESS server: (link: https://expressjs.com/en/api.html#res )
+      NodeJS EXPRESS server: (link: [link](https://expressjs.com/en/api.html#res) )
       Mysql database: (link: https://www.mysql.com/ )
+      Module: xem trong file cấu hình package.json
 
        
       
