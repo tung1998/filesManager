@@ -62,7 +62,7 @@ FilesManager_blackBirds
   #### FrontEnd
       PUGENGINE: Ngôn ngữ hỗ trợ lập trình frontEnd (link: https://pugjs.org/api/getting-started.html )
       THEME : URORA-bootstrap4 (link: https://mannatthemes.com/urora/)
-      JQUERY: thư viện javascript
+      JQUERY: thư viện javascript (https://jquery.com/)
       Contextmenu2x :  (link: https://swisnl.github.io/jQuery-contextMenu//)
   #### BackEnd
       NodeJS EXPRESS server: (link: https://expressjs.com/en/api.html#res)
