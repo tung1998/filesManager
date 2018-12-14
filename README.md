@@ -71,7 +71,7 @@ FilesManager_blackBirds
   #### BackEnd
       NodeJS EXPRESS server: (link: [link](https://expressjs.com/en/api.html#res) )
       Mysql database: (link: https://www.mysql.com/ )
-      Module: xem trong file cấu hình package.json
+      Module: xem trong file cấu hình [package.json](https://github.com/tung1998/filesManager/blob/master/package.json)
 
        
       
