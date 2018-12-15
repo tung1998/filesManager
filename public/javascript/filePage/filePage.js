@@ -146,6 +146,8 @@ $(function () {
 
 })
 
+
+
 function logout() {
     $.ajax({
         url:'/users/logout',
